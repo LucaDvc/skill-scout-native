@@ -14,7 +14,6 @@ const getPopularCourses = async () => {
   const response = await axios.get(
     `${API_URL}/courses/?page=1&ordering=-enrolled_learners`
   );
-  console.log(response.data);
   return response.data;
 };
 
