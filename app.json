@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SkillScoutNative",
-    "slug": "SkillScoutNative",
+    "slug": "skillscout",
     "scheme": "skill-scout",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -29,6 +29,15 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "731a2b56-6dba-426a-8f28-395b02805c27"
+      }
+    },
+    "owner": "lukadvc"
   }
 }
