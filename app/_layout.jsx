@@ -13,7 +13,7 @@ export default () => (
       <IconRegistry icons={EvaIconsPack} />
       <Stack>
         <Stack.Screen
-          name='(tabs)'
+          name='(root)/(tabs)'
           options={{
             headerShown: false,
           }}

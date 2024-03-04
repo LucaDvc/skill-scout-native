@@ -11,7 +11,7 @@ import {
 } from '@ui-kitten/components';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
-import PopularCoursesList from '../../components/catalog/PopularCoursesList';
+import PopularCoursesList from '../../../components/catalog/PopularCoursesList';
 
 const PlusIcon = (props) => <Icon {...props} name='plus-outline' />;
 
