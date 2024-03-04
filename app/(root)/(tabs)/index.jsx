@@ -9,7 +9,7 @@ import {
   TopNavigation,
   useTheme,
 } from '@ui-kitten/components';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, Platform } from 'react-native';
 import { router } from 'expo-router';
 import PopularCoursesList from '../../../components/catalog/PopularCoursesList';
 
@@ -17,6 +17,7 @@ const PlusIcon = (props) => <Icon {...props} name='plus-outline' />;
 
 export default function HomeScreen() {
   const theme = useTheme();
+
   return (
     <View style={{ flex: 1 }}>
       <TopNavigation
@@ -24,8 +25,11 @@ export default function HomeScreen() {
         title={() => <Text category='h6'>Home</Text>}
         style={styles.topNavigation}
       />
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        <Layout level='1'>
+      <ScrollView
+        style={{ flex: 1, backgroundColor: '#fff' }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Layout level='1' style={{ flex: 1 }}>
           {/* Discover courses */}
           <Card
             style={{ padding: 12, borderRadius: 12, margin: 16 }}
@@ -76,9 +80,19 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   topNavigation: {
-    marginTop: 36,
     zIndex: 1,
     elevation: 3,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3.84,
+      },
+    }),
   },
   container: {
     justifyContent: 'center',

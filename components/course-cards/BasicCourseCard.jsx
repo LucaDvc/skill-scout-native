@@ -16,12 +16,11 @@ const StarIcon = (props) => <Icon {...props} name='star' />;
 
 const BasicCourseCard = ({ course }) => {
   const theme = useTheme();
-  console.log('Rendering course:', course);
 
   return course ? (
     <Card
       style={styles.card}
-      onPress={() => router.push(`(pages)/catalog/${course.id}`)}
+      onPress={() => router.push(`(catalog)/${course.id}/(tabs)`)}
     >
       <Layout style={{ display: 'flex', flexDirection: 'row' }}>
         <Avatar
@@ -94,6 +93,7 @@ const BasicCourseCard = ({ course }) => {
 const styles = StyleSheet.create({
   card: {
     width: 360,
+    height: 130,
     margin: 8,
     borderRadius: 12,
     elevation: 3,

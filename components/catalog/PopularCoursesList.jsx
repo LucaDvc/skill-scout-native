@@ -54,7 +54,7 @@ const PopularCoursesList = () => {
   }, [popularCourses]);
 
   return (
-    <>
+    <View style={{ height: 370 }}>
       <Divider />
       <TopNavigation
         title={() => <Text category='h6'>Popular Courses</Text>}
@@ -86,11 +86,13 @@ const PopularCoursesList = () => {
           contentContainerStyle={styles.horizontalList}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           data={pairedCourses}
           renderItem={renderHorizontalCourseItem}
+          bounces={false}
         />
       )}
-    </>
+    </View>
   );
 };
 
@@ -98,8 +100,9 @@ const styles = StyleSheet.create({
   horizontalList: {
     marginVertical: 0,
     paddingHorizontal: 8,
-    height: 350,
+    height: '100%',
     backgroundColor: '#FFF',
+    overflow: 'hidden',
   },
 });
 
