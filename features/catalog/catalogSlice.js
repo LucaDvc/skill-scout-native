@@ -128,6 +128,7 @@ export const catalogSlice = createSlice({
       state.highestRatedCourses = [];
       state.popularCourses = [];
       state.filteredCourses = [];
+      state.course = {};
     },
     statusesReset: (state) => {
       state.isLoading = false;
