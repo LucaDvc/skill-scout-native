@@ -8,7 +8,6 @@ import {
   TopNavigationAction,
 } from '@ui-kitten/components';
 import { router, withLayoutContext } from 'expo-router';
-import { BlurView } from 'expo-blur';
 import CatalogTabBar from '../CatalogTabBar';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
@@ -35,6 +34,7 @@ const CatalogCourseDetails = ({ course }) => {
       <Divider />
 
       <ImageBackground
+        blurRadius={10}
         source={{ uri: course.image }}
         style={{
           height: backgroundImageHeight,
@@ -43,17 +43,6 @@ const CatalogCourseDetails = ({ course }) => {
         }}
         imageStyle={{ transform: [{ scale: 1.2 }] }}
       >
-        <BlurView
-          experimentalBlurMethod='dimezisBlurView'
-          style={{
-            position: 'absolute',
-            top: -20,
-            bottom: 0,
-            left: 0,
-            right: 0,
-          }}
-          intensity={20}
-        />
         {/* Content that goes on top of the blurred image */}
         <View
           style={{
