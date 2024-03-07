@@ -48,7 +48,7 @@ export const login = createAsyncThunk('users/login', async (user, thunkAPI) => {
   try {
     return await usersService.login(user);
   } catch (error) {
-    let message = 'Invalid credentials';
+    let message = 'Invalid email or password';
     if (error.response && error.response.data && error.response.data.error) {
       message = error.response.data.error;
     }
@@ -82,23 +82,6 @@ export const confirmEmail = createAsyncThunk(
   async (token, thunkAPI) => {
     try {
       return await usersService.confirmEmail(token);
-    } catch (error) {
-      let message = error.message || error.toString();
-      if (error.response && error.response.data && error.response.data.error) {
-        message = error.response.data.error;
-      }
-
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const refreshAccessToken = createAsyncThunk(
-  'users/refreshAccessToken',
-  async (_, thunkAPI) => {
-    try {
-      const refreshToken = await AsyncStorage.getItem('refreshToken');
-      return await usersService.refreshAccessToken(refreshToken);
     } catch (error) {
       let message = error.message || error.toString();
       if (error.response && error.response.data && error.response.data.error) {
@@ -281,8 +264,7 @@ export const usersSlice = createSlice({
         state.isSuccess = true;
         state.user = action.payload.user;
         state.accessToken = action.payload.tokens.access;
-        const refreshToken = localStorage.getItem('refreshToken');
-        state.refreshToken = refreshToken ? refreshToken : null;
+        state.refreshToken = action.payload.tokens.access.refresh;
       })
       .addCase(login.rejected, (state, action) => {
         state.isError = true;
@@ -318,24 +300,6 @@ export const usersSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.message = action.payload;
-      })
-      .addCase(refreshAccessToken.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(refreshAccessToken.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        sessionStorage.setItem('accessToken', action.payload.access);
-        state.accessToken = action.payload.access;
-      })
-      .addCase(refreshAccessToken.rejected, (state, action) => {
-        state.isLoading = false;
-        state.accessToken = null;
-        state.refreshToken = null;
-        state.user = null;
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('user');
-        sessionStorage.removeItem('accessToken');
       })
       .addCase(updateUserProfile.pending, (state) => {
         state.isLoading = true;

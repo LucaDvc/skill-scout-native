@@ -13,6 +13,9 @@ import {
 } from '@ui-kitten/components';
 import { router } from 'expo-router';
 import { BackIcon } from '../../../components/extra/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../../features/users/usersSlice';
+import LoadingModal from '../../../components/layout/LoadingModal';
 
 const Login = () => {
   const [email, setEmail] = React.useState();
@@ -38,6 +41,24 @@ const Login = () => {
       <Icon {...props} name={passwordVisible ? 'eye-off' : 'eye'} />
     </TouchableWithoutFeedback>
   );
+
+  const { isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.users
+  );
+  const dispatch = useDispatch();
+
+  const onSubmit = () => {
+    if (email && password) {
+      dispatch(login({ email, password }));
+    }
+  };
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      router.replace('/');
+    }
+  }, [isSuccess]);
+
   return (
     <>
       <ImageBackground
@@ -91,6 +112,17 @@ const Login = () => {
           onChangeText={setPassword}
           autoCapitalize='none'
         />
+        {isError && (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 16,
+            }}
+          >
+            <Text status='danger'>{message}</Text>
+          </View>
+        )}
         <View style={styles.forgotPasswordContainer}>
           <Button
             style={styles.forgotPasswordButton}
@@ -103,7 +135,7 @@ const Login = () => {
         </View>
       </Layout>
       <Layout>
-        <Button style={styles.signInButton} size='giant'>
+        <Button style={styles.signInButton} size='giant' onPress={onSubmit}>
           SIGN IN
         </Button>
         <Button
@@ -115,6 +147,7 @@ const Login = () => {
           Don't have an account? Create
         </Button>
       </Layout>
+      <LoadingModal visible={isLoading} />
     </>
   );
 };

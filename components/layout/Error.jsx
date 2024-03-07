@@ -15,7 +15,7 @@ const BackIcon = (props) => <Icon {...props} name='arrow-back' />;
 const Error = ({
   stateName,
   action,
-  errorMessage = 'Something went wrong... Please swipe down to retry.',
+  errorMessage = 'Something went wrong... Please try again.',
 }) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
@@ -47,9 +47,9 @@ const Error = ({
       >
         <Image
           source={require('../../assets/errorMascot.png')}
-          style={{ height: 180, width: 180 }}
+          style={{ height: 220, width: 220, marginLeft: 20 }}
         />
-        <Text category='s1'>{errorMessage}</Text>
+        <Text category='h6'>{errorMessage}</Text>
       </Layout>
     </ScrollView>
   );
