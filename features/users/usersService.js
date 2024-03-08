@@ -32,7 +32,7 @@ const login = async (userData) => {
   const response = await axios.post(`${API_URL}/login/`, { email, password });
   if (response.data) {
     try {
-      await AsyncStorage.setItem('user', JSON.stringify(response.data));
+      await AsyncStorage.setItem('user', JSON.stringify(response.data.user));
       await AsyncStorage.setItem('accessToken', response.data.tokens.access);
       await AsyncStorage.setItem('refreshToken', response.data.tokens.refresh);
     } catch (e) {
