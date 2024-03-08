@@ -14,7 +14,7 @@ import {
 import { router } from 'expo-router';
 import { BackIcon } from '../../../components/extra/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../../features/users/usersSlice';
+import { login, reset } from '../../../features/users/usersSlice';
 import LoadingModal from '../../../components/layout/LoadingModal';
 
 const Login = () => {
@@ -30,6 +30,10 @@ const Login = () => {
 
   const onForgotPasswordButtonPress = () => {
     router.push('/forgot-password');
+  };
+
+  const onConfirmEmailButtonPress = () => {
+    router.replace('/auth/confirm-email');
   };
 
   const onPasswordIconPress = () => {
@@ -56,7 +60,12 @@ const Login = () => {
   React.useEffect(() => {
     if (isSuccess) {
       router.replace('/');
+      dispatch(reset());
     }
+
+    return () => {
+      dispatch(reset());
+    };
   }, [isSuccess]);
 
   return (
@@ -112,6 +121,25 @@ const Login = () => {
           onChangeText={setPassword}
           autoCapitalize='none'
         />
+        <View style={styles.forgotPasswordContainer}>
+          <Button
+            style={styles.forgotPasswordButton}
+            appearance='ghost'
+            status='basic'
+            onPress={onConfirmEmailButtonPress}
+          >
+            Confirm email
+          </Button>
+          <Button
+            style={styles.forgotPasswordButton}
+            appearance='ghost'
+            status='basic'
+            onPress={onForgotPasswordButtonPress}
+          >
+            Forgot your password?
+          </Button>
+        </View>
+
         {isError && (
           <View
             style={{
@@ -123,16 +151,6 @@ const Login = () => {
             <Text status='danger'>{message}</Text>
           </View>
         )}
-        <View style={styles.forgotPasswordContainer}>
-          <Button
-            style={styles.forgotPasswordButton}
-            appearance='ghost'
-            status='basic'
-            onPress={onForgotPasswordButtonPress}
-          >
-            Forgot your password?
-          </Button>
-        </View>
       </Layout>
       <Layout>
         <Button style={styles.signInButton} size='giant' onPress={onSubmit}>
@@ -171,7 +189,7 @@ const themedStyles = StyleService.create({
   },
   forgotPasswordContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   passwordInput: {
     marginTop: 16,
