@@ -14,3 +14,7 @@ export const SettingsIcon = (style) => <Icon {...style} name='settings' />;
 export const EditIcon = (style) => <Icon {...style} name='edit' />;
 
 export const ArrowRightIcon = (style) => <Icon {...style} name='arrow-right' />;
+
+export const CheckmarkIcon = (style) => <Icon {...style} name='checkmark' />;
+
+export const LockIcon = (style) => <Icon {...style} name='lock' />;

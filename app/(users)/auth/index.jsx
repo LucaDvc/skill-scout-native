@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   const onForgotPasswordButtonPress = () => {
-    router.push('/forgot-password');
+    router.replace('/auth/forgot-password');
   };
 
   const onConfirmEmailButtonPress = () => {

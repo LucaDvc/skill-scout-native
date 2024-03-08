@@ -11,18 +11,18 @@ import {
   TopNavigation,
   TopNavigationAction,
 } from '@ui-kitten/components';
-import { BackIcon, CheckmarkIcon } from '../../../components/extra/icons';
+import { BackIcon, LockIcon } from '../../../components/extra/icons';
 import { router } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  resendConfirmationEmail,
   reset,
+  sendForgotPasswordEmail,
 } from '../../../features/users/usersSlice';
 import LoadingModal from '../../../components/layout/LoadingModal';
 import { MailForwardAvatar } from '../../../components/extra/MailForwardAvatar';
 import Toast from 'react-native-root-toast';
 
-export default ConfirmEmail = () => {
+export default ForgotPassword = () => {
   const [email, setEmail] = React.useState();
 
   const styles = useStyleSheet(themedStyles);
@@ -34,8 +34,8 @@ export default ConfirmEmail = () => {
 
   React.useEffect(() => {
     if (isSuccess) {
-      Toast.show('Account confirmation message sent', {
-        duration: Toast.durations.SHORT,
+      Toast.show(message, {
+        duration: Toast.durations.LONG,
         position: Toast.positions.CENTER,
         shadow: true,
         animation: true,
@@ -55,7 +55,7 @@ export default ConfirmEmail = () => {
   const onSubmit = () => {
     if (email) {
       dispatch(reset());
-      dispatch(resendConfirmationEmail(email));
+      dispatch(sendForgotPasswordEmail(email));
     }
   };
 
@@ -63,7 +63,7 @@ export default ConfirmEmail = () => {
     <Button
       style={styles.editAvatarButton}
       status='basic'
-      accessoryRight={CheckmarkIcon}
+      accessoryRight={LockIcon}
     />
   );
 
@@ -119,7 +119,7 @@ export default ConfirmEmail = () => {
       </Layout>
       <Layout>
         <Button style={styles.signInButton} size='giant' onPress={onSubmit}>
-          SEND CONFIRMATION
+          SEND EMAIL
         </Button>
       </Layout>
       <LoadingModal visible={isLoading} />
