@@ -26,8 +26,7 @@ const BasicCourseCard = ({ course }) => {
         <Avatar
           shape='rounded'
           source={{ uri: course.image }}
-          size='giant'
-          style={{ borderRadius: 8 }}
+          style={{ borderRadius: 8, height: 64, width: 64 }}
         />
 
         <Layout
@@ -93,7 +92,7 @@ const BasicCourseCard = ({ course }) => {
 const styles = StyleSheet.create({
   card: {
     width: 360,
-    height: 130,
+    height: 140,
     margin: 8,
     borderRadius: 12,
     elevation: 3,
