@@ -1,5 +1,10 @@
 import React from 'react';
-import { TouchableWithoutFeedback, ImageBackground, View } from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  ImageBackground,
+  View,
+  ScrollView,
+} from 'react-native';
 import {
   Button,
   CheckBox,
@@ -20,10 +25,15 @@ import {
   PlusIcon,
 } from '../../../components/extra/icons';
 import { router } from 'expo-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { register, reset } from '../../../features/users/usersSlice';
+import LoadingModal from '../../../components/layout/LoadingModal';
 
-export default ({ navigation }) => {
+export default Register = () => {
   const [passwordVisible, setPasswordVisible] = React.useState(false);
   const [termsAccepted, setTermsAccepted] = React.useState(false);
+  const [isFormInvalid, setIsFormInvalid] = React.useState(false);
+  const [formErrorMessages, setFormErrorMessages] = React.useState([]);
 
   const [formData, setFormData] = React.useState({
     email: '',
@@ -44,9 +54,57 @@ export default ({ navigation }) => {
 
   const styles = useStyleSheet(themedStyles);
 
+  const dispatch = useDispatch();
+  const { isLoading, isSuccess, isError, message, errors } = useSelector(
+    (state) => state.users
+  );
+
   const onSignUpButtonPress = () => {
-    navigation && navigation.goBack();
+    setFormErrorMessages([]);
+    setIsFormInvalid(false);
+    dispatch(reset());
+
+    if (!email || !password1 || !password2 || !first_name || !last_name) {
+      setIsFormInvalid(true);
+      setFormErrorMessages(['All fields are required']);
+      return;
+    } else {
+      let valid = true;
+
+      if (!termsAccepted) {
+        setIsFormInvalid(true);
+        setFormErrorMessages((prevState) => [
+          ...prevState,
+          'You must accept the terms and conditions',
+        ]);
+        valid = false;
+      }
+
+      if (password1 !== password2) {
+        setIsFormInvalid(true);
+        setFormErrorMessages((prevState) => [
+          ...prevState,
+          'Passwords do not match',
+        ]);
+        valid = false;
+      }
+
+      if (valid) {
+        dispatch(register(formData));
+      }
+    }
   };
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      router.replace('/profile');
+      dispatch(reset());
+    }
+
+    return () => {
+      dispatch(reset());
+    };
+  }, [isSuccess]);
 
   const onSignInButtonPress = () => {
     router.replace('/auth');
@@ -87,7 +145,7 @@ export default ({ navigation }) => {
         justifyContent: 'space-between',
       }}
     >
-      <View>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <ImageBackground
           blurRadius={10}
           source={require('../../../assets/logo.png')}
@@ -134,7 +192,7 @@ export default ({ navigation }) => {
             placeholder='Last Name'
             accessoryRight={PersonIcon}
             value={last_name}
-            onChangeText={(value) => onChange('first_name', value)}
+            onChangeText={(value) => onChange('last_name', value)}
           />
           <Input
             style={styles.input}
@@ -161,8 +219,48 @@ export default ({ navigation }) => {
           >
             {renderCheckboxLabel}
           </CheckBox>
+          {isFormInvalid &&
+            formErrorMessages.map((message, index) => (
+              <View
+                key={index}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 16,
+                }}
+              >
+                <Text status='danger'>{message}</Text>
+              </View>
+            ))}
+
+          {message && (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 16,
+              }}
+            >
+              <Text status={'danger'}>{message}</Text>
+            </View>
+          )}
+
+          {errors &&
+            Object.keys(errors).map((key) =>
+              errors[key].map((errMessage, idx) => (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 16,
+                  }}
+                >
+                  <Text status={'danger'}>{errMessage}</Text>
+                </View>
+              ))
+            )}
         </Layout>
-      </View>
+      </ScrollView>
       <Layout>
         <Button
           style={styles.signUpButton}
@@ -180,6 +278,7 @@ export default ({ navigation }) => {
           Already have an account? Sign In
         </Button>
       </Layout>
+      <LoadingModal visible={isLoading} />
     </Layout>
   );
 };
