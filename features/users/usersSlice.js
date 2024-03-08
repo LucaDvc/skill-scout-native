@@ -272,10 +272,14 @@ export const usersSlice = createSlice({
         state.user = null;
         state.message = action.payload;
       })
+      .addCase(logout.rejected, (state) => {
+        state.isError = false;
+      })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.accessToken = null;
         state.refreshToken = null;
+        state.isSuccess = true;
       })
       .addCase(resendConfirmationEmail.pending, (state) => {
         state.isLoading = true;
