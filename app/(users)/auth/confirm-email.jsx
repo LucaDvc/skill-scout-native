@@ -23,14 +23,14 @@ import { MailForwardAvatar } from '../../../components/extra/MailForwardAvatar';
 import Toast from 'react-native-root-toast';
 
 export default ConfirmEmail = () => {
-  const [email, setEmail] = React.useState();
-
-  const styles = useStyleSheet(themedStyles);
-
-  const dispatch = useDispatch();
-  const { isLoading, isSuccess, isError, message } = useSelector(
+  const { isLoading, isSuccess, isError, message, user } = useSelector(
     (state) => state.users
   );
+  const dispatch = useDispatch();
+
+  const [email, setEmail] = React.useState(user?.email || '');
+
+  const styles = useStyleSheet(themedStyles);
 
   React.useEffect(() => {
     if (isSuccess) {

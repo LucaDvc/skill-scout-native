@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 import { Image, StyleSheet, Platform, View } from 'react-native';
 import { router } from 'expo-router';
 import { EditIcon, SettingsIcon } from '../../../../components/extra/icons';
+import UnsignedUserProfile from '../../../../components/profile/UnsignedUserProfile';
+import UnconfirmedUserProfile from '../../../../components/profile/UnconfirmedUserProfile';
 
 const UserHeader = ({ user }) => (
   <View style={{ flexDirection: 'column', flex: 1 }}>
@@ -53,7 +55,7 @@ const UserHeader = ({ user }) => (
 );
 
 const ProfileScreen = () => {
-  const { user } = useSelector((state) => state.users);
+  const { user, accessToken } = useSelector((state) => state.users);
 
   return (
     <View style={{ flex: 1 }}>
@@ -66,22 +68,13 @@ const ProfileScreen = () => {
       />
       <Layout style={styles.container}>
         {user ? (
-          <Text>Welcome {user.first_name}</Text>
+          accessToken ? (
+            <Text>Welcome {user.first_name}</Text>
+          ) : (
+            <UnconfirmedUserProfile firstName={user.first_name} />
+          )
         ) : (
-          <>
-            <Image
-              source={require('../../../../assets/mascot.png')}
-              style={{ height: 180, width: 180, marginRight: 7 }}
-            />
-            <Text style={{ marginTop: 10 }}>Sign in to continue</Text>
-            <Button
-              appearance='outline'
-              style={{ backgroundColor: 'transparent', marginTop: 15 }}
-              onPress={() => router.push('/auth')}
-            >
-              Sign In
-            </Button>
-          </>
+          <UnsignedUserProfile />
         )}
       </Layout>
     </View>

@@ -18,8 +18,13 @@ import { login, reset } from '../../../features/users/usersSlice';
 import LoadingModal from '../../../components/layout/LoadingModal';
 
 const Login = () => {
-  const [email, setEmail] = React.useState();
-  const [password, setPassword] = React.useState();
+  const { isError, isSuccess, isLoading, message, user } = useSelector(
+    (state) => state.users
+  );
+  const dispatch = useDispatch();
+
+  const [email, setEmail] = React.useState(user?.email || '');
+  const [password, setPassword] = React.useState('');
   const [passwordVisible, setPasswordVisible] = React.useState(false);
 
   const styles = useStyleSheet(themedStyles);
@@ -45,11 +50,6 @@ const Login = () => {
       <Icon {...props} name={passwordVisible ? 'eye-off' : 'eye'} />
     </TouchableWithoutFeedback>
   );
-
-  const { isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.users
-  );
-  const dispatch = useDispatch();
 
   const onSubmit = () => {
     if (email && password) {
