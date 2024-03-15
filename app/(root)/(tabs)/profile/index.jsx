@@ -8,13 +8,15 @@ import {
   TopNavigationAction,
 } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
-import { Image, StyleSheet, Platform, View } from 'react-native';
+import { Image, StyleSheet, Platform, View, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { EditIcon, SettingsIcon } from '../../../../components/extra/icons';
 import UnsignedUserProfile from '../../../../components/profile/UnsignedUserProfile';
 import UnconfirmedUserProfile from '../../../../components/profile/UnconfirmedUserProfile';
+import SignedInUserProfile from '../../../../components/profile/SignedInUserProfile';
 
 const UserHeader = ({ user }) => (
+  // TODO add wishlist, my reviews, my courses (teaching), maybe heatmap
   <View style={{ flexDirection: 'column', flex: 1 }}>
     <View
       style={{
@@ -58,7 +60,7 @@ const ProfileScreen = () => {
   const { user, accessToken } = useSelector((state) => state.users);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <TopNavigation
         alignment={user ? 'start' : 'center'}
         title={() =>
@@ -66,17 +68,19 @@ const ProfileScreen = () => {
         }
         style={styles.topBar}
       />
-      <Layout style={styles.container}>
-        {user ? (
-          accessToken ? (
-            <Text>Welcome {user.first_name}</Text>
-          ) : (
+      {user && accessToken ? (
+        <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
+          <SignedInUserProfile />
+        </ScrollView>
+      ) : (
+        <Layout style={styles.container}>
+          {user && !accessToken ? (
             <UnconfirmedUserProfile firstName={user.first_name} />
-          )
-        ) : (
-          <UnsignedUserProfile />
-        )}
-      </Layout>
+          ) : (
+            <UnsignedUserProfile />
+          )}
+        </Layout>
+      )}
     </View>
   );
 };
