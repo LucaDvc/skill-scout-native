@@ -179,6 +179,23 @@ export const refreshAuthUser = createAsyncThunk(
   }
 );
 
+export const refreshAccessToken = createAsyncThunk(
+  'users/refreshAccessToken',
+  async (_, thunkAPI) => {
+    try {
+      const refreshToken = await AsyncStorage.getItem('refreshToken');
+      return await usersService.refreshAccessToken(refreshToken);
+    } catch (error) {
+      let message = error.message || error.toString();
+      if (error.response && error.response.data && error.response.data.error) {
+        message = error.response.data.error;
+      }
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const clearErrors = () => ({
   type: 'users/clearErrors',
 });
@@ -359,6 +376,24 @@ export const usersSlice = createSlice({
       .addCase(refreshAuthUser.rejected, (state) => {
         state.isError = true;
         state.isLoading = false;
+      })
+      .addCase(refreshAccessToken.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(refreshAccessToken.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.accessToken = action.payload.access;
+        AsyncStorage.setItem('accessToken', action.payload.access);
+      })
+      .addCase(refreshAccessToken.rejected, (state, action) => {
+        state.isLoading = false;
+        state.accessToken = null;
+        state.refreshToken = null;
+        state.user = null;
+        AsyncStorage.removeItem('refreshToken');
+        AsyncStorage.removeItem('accessToken');
+        AsyncStorage.removeItem('user');
       });
   },
 });

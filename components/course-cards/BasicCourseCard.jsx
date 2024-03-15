@@ -1,20 +1,17 @@
 import React from 'react';
 import {
   Avatar,
+  Button,
   Card,
-  Icon,
   Layout,
   Text,
   useTheme,
 } from '@ui-kitten/components';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, View } from 'react-native';
 import { router } from 'expo-router';
+import { ForwardIcon, PeopleIcon, StarIcon } from '../extra/icons';
 
-const PeopleIcon = (props) => <Icon {...props} name='people' />;
-
-const StarIcon = (props) => <Icon {...props} name='star' />;
-
-const BasicCourseCard = ({ course }) => {
+const BasicCourseCard = ({ course, viewMoreLink }) => {
   const theme = useTheme();
 
   return course ? (
@@ -85,6 +82,25 @@ const BasicCourseCard = ({ course }) => {
       >
         {course.price === '0' ? 'Free' : '$' + course.price}
       </Text>
+    </Card>
+  ) : viewMoreLink ? (
+    <Card style={styles.card} onPress={() => router.push(viewMoreLink)}>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+        }}
+      >
+        <Button
+          accessoryRight={ForwardIcon}
+          size='large'
+          style={{ borderRadius: 8 }}
+          onPress={() => router.push(viewMoreLink)}
+        >
+          View More
+        </Button>
+      </View>
     </Card>
   ) : null;
 };

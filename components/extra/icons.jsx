@@ -18,3 +18,11 @@ export const ArrowRightIcon = (style) => <Icon {...style} name='arrow-right' />;
 export const CheckmarkIcon = (style) => <Icon {...style} name='checkmark' />;
 
 export const LockIcon = (style) => <Icon {...style} name='lock' />;
+
+export const PeopleIcon = (props) => <Icon {...props} name='people' />;
+
+export const StarIcon = (props) => <Icon {...props} name='star' />;
+
+export const ForwardIcon = (props) => <Icon {...props} name='arrow-forward' />;
+
+export const RefreshIcon = (props) => <Icon {...props} name='refresh' />;
