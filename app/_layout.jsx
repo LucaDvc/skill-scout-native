@@ -4,10 +4,13 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { default as theme } from '../theme/theme.json';
 import { Stack } from 'expo-router';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { store } from '../features/store';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { initializeAuth } from '../features/users/usersSlice';
+import {
+  initializeAuth,
+  refreshAccessToken,
+} from '../features/users/usersSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootSiblingParent } from 'react-native-root-siblings';
 
@@ -15,12 +18,25 @@ const App = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    // const f = async () => {
-    //   await AsyncStorage.clear();
-    // };
-    // f();
-    dispatch(initializeAuth());
+    const init = async () => {
+      dispatch(initializeAuth());
+      //await AsyncStorage.clear();
+    };
+
+    init();
   }, [dispatch, initializeAuth]);
+
+  const { refreshToken } = useSelector((state) => state.users);
+
+  React.useEffect(() => {
+    const checkAuthStatus = async () => {
+      if (refreshToken) {
+        dispatch(refreshAccessToken());
+      }
+    };
+
+    checkAuthStatus();
+  }, [dispatch, refreshToken]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
