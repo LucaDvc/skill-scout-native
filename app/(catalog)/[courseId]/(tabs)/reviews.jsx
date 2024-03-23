@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  useWindowDimensions,
-  ScrollView,
-  RefreshControl,
-} from 'react-native';
+import { View, ScrollView, RefreshControl } from 'react-native';
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
