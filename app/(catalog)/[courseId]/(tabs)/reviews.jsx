@@ -20,8 +20,6 @@ const Reviews = () => {
   const dispatch = useDispatch();
   const { course, isLoading } = useSelector((state) => state.catalog);
 
-  const { width } = useWindowDimensions();
-
   const [refreshing, setRefreshing] = React.useState(false);
 
   React.useEffect(() => {
