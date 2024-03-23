@@ -26,3 +26,35 @@ export const StarIcon = (props) => <Icon {...props} name='star' />;
 export const ForwardIcon = (props) => <Icon {...props} name='arrow-forward' />;
 
 export const RefreshIcon = (props) => <Icon {...props} name='refresh' />;
+
+export const HeartOutlineIcon = (props) => (
+  <Icon {...props} name='heart-outline' />
+);
+
+export const HeartIcon = (props) => <Icon {...props} name='heart' />;
+
+export const ClockOutlineIcon = (props) => (
+  <Icon {...props} name='clock-outline' />
+);
+
+export const BarChart2OutlineIcon = (props) => (
+  <Icon {...props} name='bar-chart-2-outline' />
+);
+
+export const FolderOutlineIcon = (props) => (
+  <Icon {...props} name='folder-outline' />
+);
+
+export const ListOutlineIcon = (props) => (
+  <Icon {...props} name='list-outline' />
+);
+
+export const PersonDoneOutlineIcon = (props) => (
+  <Icon {...props} name='person-done-outline' />
+);
+
+export const PeopleOutlineIcon = (props) => (
+  <Icon {...props} name='people-outline' />
+);
+
+export const HashIcon = (props) => <Icon {...props} name='hash' />;
