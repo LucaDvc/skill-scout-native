@@ -40,7 +40,7 @@ const EnrolledCourseCard = ({ course }) => {
           style={{ borderRadius: 8, height: 64, width: 64 }}
         />
 
-        <Layout
+        <View
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -52,7 +52,7 @@ const EnrolledCourseCard = ({ course }) => {
         >
           <Text category='h6'>{course.title}</Text>
 
-          <Layout style={{ width: '100%' }}>
+          <View style={{ width: '100%' }}>
             <Text category='p2'>
               {course.learner_progress.completed_lessons.length +
                 ' / ' +
@@ -65,8 +65,8 @@ const EnrolledCourseCard = ({ course }) => {
               animating={false}
               size='small'
             />
-          </Layout>
-        </Layout>
+          </View>
+        </View>
       </View>
     </Card>
   ) : null;

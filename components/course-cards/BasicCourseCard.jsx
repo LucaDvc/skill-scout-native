@@ -19,14 +19,14 @@ const BasicCourseCard = ({ course, viewMoreLink }) => {
       style={styles.card}
       onPress={() => router.push(`(catalog)/${course.id}/(tabs)`)}
     >
-      <Layout style={{ display: 'flex', flexDirection: 'row' }}>
+      <View style={{ display: 'flex', flexDirection: 'row' }}>
         <Avatar
           shape='rounded'
           source={{ uri: course.image }}
           style={{ borderRadius: 8, height: 64, width: 64 }}
         />
 
-        <Layout
+        <View
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -37,7 +37,7 @@ const BasicCourseCard = ({ course, viewMoreLink }) => {
         >
           <Text category='h6'>{course.title}</Text>
 
-          <Layout
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'flex-start',
@@ -64,13 +64,13 @@ const BasicCourseCard = ({ course, viewMoreLink }) => {
                 <Text category='p2'>{course.average_rating}</Text>
               </>
             )}
-          </Layout>
+          </View>
 
           <Text category='s1' numberOfLines={2} ellipsizeMode='tail'>
             {course.intro}
           </Text>
-        </Layout>
-      </Layout>
+        </View>
+      </View>
 
       <Text
         style={{
