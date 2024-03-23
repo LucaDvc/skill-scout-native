@@ -14,6 +14,7 @@ import { EditIcon, SettingsIcon } from '../../../../components/extra/icons';
 import UnsignedUserProfile from '../../../../components/profile/UnsignedUserProfile';
 import UnconfirmedUserProfile from '../../../../components/profile/UnconfirmedUserProfile';
 import SignedInUserProfile from '../../../../components/profile/SignedInUserProfile';
+import awsConstants from '../../../../constants/awsConstants';
 
 const UserHeader = ({ user }) => (
   // TODO add wishlist, my reviews, my courses (teaching), maybe heatmap
@@ -46,7 +47,7 @@ const UserHeader = ({ user }) => (
         source={{
           uri: user.picture
             ? user.picture
-            : 'https://courses-platform-bucket.s3.eu-north-1.amazonaws.com/profiles/images/user-default.png',
+            : awsConstants.DEFAULT_USER_PICTURE_URL,
         }}
         size='giant'
         style={{ marginRight: 32, height: 70, width: 70 }}
