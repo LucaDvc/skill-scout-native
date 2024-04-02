@@ -1,4 +1,4 @@
-import { ImageBackground, View, StyleSheet } from 'react-native';
+import { ImageBackground, View, StyleSheet, BackHandler } from 'react-native';
 import React from 'react';
 import {
   Button,
@@ -9,7 +9,7 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import { router, withLayoutContext } from 'expo-router';
-import CatalogTabBar from '../CatalogTabBar';
+import CatalogTabBar from './CatalogTabBar';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Rating from '../../extra/Rating';
 import { HeartOutline, PeopleIcon } from '../../extra/icons';
@@ -26,6 +26,24 @@ const CatalogCourseDetails = ({ course }) => {
   const theme = useTheme();
 
   const { accessToken } = useSelector((state) => state.users);
+
+  React.useEffect(() => {
+    const backAction = () => {
+      if (router.canGoBack()) {
+        router.back();
+      } else {
+        BackHandler.exitApp();
+      }
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <>
@@ -111,7 +129,7 @@ const CatalogCourseDetails = ({ course }) => {
       </ImageBackground>
       <MaterialTopTabs tabBar={(props) => <CatalogTabBar {...props} />}>
         <MaterialTopTabs.Screen
-          name='index'
+          name='info'
           options={{
             headerShown: false,
           }}

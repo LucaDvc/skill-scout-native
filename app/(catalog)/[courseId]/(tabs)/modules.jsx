@@ -1,18 +1,9 @@
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import React from 'react';
-import {
-  Divider,
-  Layout,
-  List,
-  ListItem,
-  Text,
-  useTheme,
-} from '@ui-kitten/components';
+import { Divider, Layout, Text, useTheme } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocalSearchParams } from 'expo-router';
 import { getCourseById } from '../../../../features/catalog/catalogSlice';
-
-const renderItem = ({ item, index }) => <ListItem title={`${item.title}`} />;
 
 const Modules = () => {
   const { courseId } = useLocalSearchParams();

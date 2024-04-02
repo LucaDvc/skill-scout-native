@@ -3,6 +3,7 @@ import {
   ScrollView,
   useWindowDimensions,
   RefreshControl,
+  StyleSheet,
 } from 'react-native';
 import React from 'react';
 import { Avatar, Card, Divider, Layout, Text } from '@ui-kitten/components';
@@ -188,7 +189,7 @@ const Info = () => {
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   icons: {
     marginRight: 16,
   },
@@ -204,6 +205,6 @@ const styles = {
     marginTop: 12,
     marginLeft: 32,
   },
-};
+});
 
 export default Info;

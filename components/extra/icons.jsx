@@ -58,3 +58,11 @@ export const PeopleOutlineIcon = (props) => (
 );
 
 export const HashIcon = (props) => <Icon {...props} name='hash' />;
+
+export const SearchIcon = (props) => <Icon {...props} name='search' />;
+
+export const OptionsIcon = (props) => <Icon {...props} name='options-2' />;
+
+export const ArrowIosRightIcon = (props) => (
+  <Icon {...props} name='arrow-ios-forward' />
+);

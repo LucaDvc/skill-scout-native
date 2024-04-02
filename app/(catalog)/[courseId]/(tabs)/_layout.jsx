@@ -5,7 +5,7 @@ import { Layout, Spinner } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getCourseById,
-  reset,
+  statusesReset,
 } from '../../../../features/catalog/catalogSlice';
 import Error from '../../../../components/layout/Error';
 
@@ -21,7 +21,7 @@ const CourseDetailsTabsLayout = () => {
     dispatch(getCourseById(courseId));
 
     return () => {
-      dispatch(reset());
+      dispatch(statusesReset());
     };
   }, [courseId]);
 
@@ -29,7 +29,7 @@ const CourseDetailsTabsLayout = () => {
     <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Spinner size='giant' />
     </Layout>
-  ) : isSuccess ? (
+  ) : Object.keys(course).length > 0 && isSuccess ? (
     <CatalogCourseDetails course={course} />
   ) : (
     isError && (
