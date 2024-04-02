@@ -9,24 +9,50 @@ import {
   TopNavigation,
   useTheme,
 } from '@ui-kitten/components';
-import { ScrollView, StyleSheet, View, Platform } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Platform,
+  RefreshControl,
+} from 'react-native';
 import { router } from 'expo-router';
 import PopularCoursesList from '../../../components/catalog/PopularCoursesList';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPopularCourses } from '../../../features/catalog/catalogSlice';
 
 const PlusIcon = (props) => <Icon {...props} name='plus-outline' />;
 
 export default function HomeScreen() {
   const theme = useTheme();
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const { isLoading } = useSelector((state) => state.catalog.popularCourses);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    setRefreshing(isLoading);
+  }, [isLoading]);
+
+  const onRefresh = React.useCallback(() => {
+    dispatch(getPopularCourses());
+  }, []);
+
   return (
-    <View style={{ flex: 1 }}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: theme['color-basic-100'] }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <TopNavigation
         alignment='center'
         title={() => <Text category='h6'>Home</Text>}
         style={styles.topNavigation}
       />
       <ScrollView
-        style={{ flex: 1, backgroundColor: '#fff' }}
+        style={{ flex: 1, backgroundColor: theme['color-basic-100'] }}
         showsVerticalScrollIndicator={false}
       >
         <Layout level='1' style={{ flex: 1 }}>
@@ -74,7 +100,7 @@ export default function HomeScreen() {
           <PopularCoursesList />
         </Layout>
       </ScrollView>
-    </View>
+    </ScrollView>
   );
 }
 

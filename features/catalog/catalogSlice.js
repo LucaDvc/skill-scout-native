@@ -25,6 +25,7 @@ const initialState = {
   },
   courses: [],
   resultsCount: 0,
+  hasMore: true,
   course: {},
   isError: false,
   isSuccess: false,
@@ -133,6 +134,8 @@ export const catalogSlice = createSlice({
       state.message = '';
       state.courses = [];
       state.course = {};
+      state.resultsCount = 0;
+      state.hasMore = true;
     },
     statusesReset: (state) => {
       state.isLoading = false;
@@ -175,8 +178,9 @@ export const catalogSlice = createSlice({
       .addCase(getCoursesByFilter.fulfilled, (state, action) => {
         state.isSuccess = true;
         state.isLoading = false;
-        state.courses = action.payload.results;
+        state.courses = [...state.courses, ...action.payload.results];
         state.resultsCount = action.payload.count;
+        state.hasMore = action.payload.next != null;
       })
       .addCase(getCoursesByFilter.rejected, (state, action) => {
         state.isError = true;

@@ -56,6 +56,12 @@ const App = () => {
             }}
           />
           <Stack.Screen
+            name='(catalog)/search/index'
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
             name='(users)'
             options={{
               headerShown: false,
