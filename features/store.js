@@ -3,6 +3,7 @@ import catalogReducer from './catalog/catalogSlice';
 import usersReducer from './users/usersSlice';
 import learningReducer from './learning/learningSlice';
 import teachingReducer from './teaching/teachingSlice';
+import categoryReducer from './category/categorySlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     users: usersReducer,
     learning: learningReducer,
     teaching: teachingReducer,
+    category: categoryReducer,
   },
 });
