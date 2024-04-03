@@ -24,7 +24,7 @@ import PopularCoursesList from '../../../../components/catalog/PopularCoursesLis
 import TopCategoriesGrid from '../../../../components/catalog/TopCategoriesGrid';
 import { getCategories } from '../../../../features/category/categorySlice';
 import SearchPopover from '../../../../components/catalog/SearchPopover';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 
 export default function CatalogScreen() {
   const theme = useTheme();
@@ -88,7 +88,12 @@ export default function CatalogScreen() {
             )
           }
           accessoryRight={(props) => (
-            <Pressable onPress={() => console.log('press')}>
+            <Pressable
+              onPress={() => {
+                router.push('/search/filters');
+                setSearchOptionsVisible(true);
+              }}
+            >
               <OptionsIcon {...props} />
             </Pressable>
           )}
@@ -102,7 +107,7 @@ export default function CatalogScreen() {
           returnKeyType='search'
           onSubmitEditing={() => {
             router.navigate({
-              pathname: '/search',
+              pathname: '/search/index',
               params: { search: searchValue, filters: JSON.stringify(filters) },
             });
           }}

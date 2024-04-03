@@ -12,6 +12,7 @@
     "@eva-design/eva": "^2.2.0",
     "@react-native-async-storage/async-storage": "1.21.0",
     "@react-navigation/material-top-tabs": "^6.6.10",
+    "@react-navigation/stack": "^6.3.29",
     "@reduxjs/toolkit": "^2.2.1",
     "@ui-kitten/components": "^5.3.1",
     "@ui-kitten/eva-icons": "^5.3.1",
@@ -31,7 +32,8 @@
     "react-native-screens": "~3.29.0",
     "react-native-svg": "14.1.0",
     "react-native-tab-view": "^3.5.2",
-    "react-redux": "^9.1.0"
+    "react-redux": "^9.1.0",
+    "react-native-gesture-handler": "~2.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -13,6 +13,16 @@ import {
 } from '../features/users/usersSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from '@react-navigation/stack';
+
+import { withLayoutContext } from 'expo-router';
+
+const { Navigator } = createStackNavigator();
+
+export const JsStack = withLayoutContext(Navigator);
 
 const App = () => {
   const dispatch = useDispatch();
@@ -42,7 +52,7 @@ const App = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
         <IconRegistry icons={EvaIconsPack} />
-        <Stack>
+        <JsStack>
           <Stack.Screen
             name='(root)/(tabs)'
             options={{
@@ -67,7 +77,17 @@ const App = () => {
               headerShown: false,
             }}
           />
-        </Stack>
+          <JsStack.Screen
+            name='(catalog)/search/filters'
+            options={{
+              // Set the presentation mode to modal for filters modal route.
+              ...TransitionPresets.ModalPresentationIOS,
+              presentation: 'modal',
+              gestureEnabled: true,
+              headerShown: false,
+            }}
+          />
+        </JsStack>
       </ApplicationProvider>
     </SafeAreaView>
   );

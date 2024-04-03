@@ -7,7 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import React from 'react';
-import { router, useLocalSearchParams, useNavigation } from 'expo-router';
+import { Link, router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { Input, Layout, List, Spinner, useTheme } from '@ui-kitten/components';
 import { BackIcon, OptionsIcon } from '../../../components/extra/icons';
 import {
@@ -105,9 +105,9 @@ const SearchPage = () => {
             </Pressable>
           )}
           accessoryRight={(props) => (
-            <Pressable onPress={() => setFiltersVisible(true)}>
+            <Link href='/search/filters'>
               <OptionsIcon {...props} />
-            </Pressable>
+            </Link>
           )}
           onChangeText={(nextValue) => setInputValue(nextValue)}
           style={{

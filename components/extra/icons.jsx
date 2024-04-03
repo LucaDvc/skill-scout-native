@@ -66,3 +66,5 @@ export const OptionsIcon = (props) => <Icon {...props} name='options-2' />;
 export const ArrowIosRightIcon = (props) => (
   <Icon {...props} name='arrow-ios-forward' />
 );
+
+export const CloseIcon = (props) => <Icon {...props} name='close-outline' />;

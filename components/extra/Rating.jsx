@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import Star from './Star';
 
-const Rating = ({ value }) => {
+const Rating = ({ value, style }) => {
   // Calculate the number of full stars, half stars, and empty stars
   value = !value ? 0 : value;
   const roundedValue = Math.round(value * 2) / 2;
@@ -10,7 +10,12 @@ const Rating = ({ value }) => {
   const emptyStars = 5 - fullStars;
 
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <View
+      style={{
+        flexDirection: 'row',
+        ...style,
+      }}
+    >
       {[...Array(fullStars)].map((_, index) => (
         <Star key={`full-${index}`} filled />
       ))}

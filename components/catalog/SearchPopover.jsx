@@ -41,7 +41,6 @@ const SearchPopover = ({ visible, setVisible, inputRef, setSearchValue }) => {
 
   React.useEffect(() => {
     const backAction = () => {
-      console.log(visible);
       if (!visible) {
         setSearchValue('');
         if (router.canGoBack()) {
@@ -62,10 +61,6 @@ const SearchPopover = ({ visible, setVisible, inputRef, setSearchValue }) => {
     );
 
     return () => backHandler.remove();
-  }, [visible]);
-
-  React.useEffect(() => {
-    if (visible) inputRef.current.focus();
   }, [visible]);
 
   if (!visible) return null;
