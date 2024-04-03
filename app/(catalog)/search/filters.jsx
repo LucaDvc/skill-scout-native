@@ -8,9 +8,11 @@ import {
   Layout,
   Radio,
   RadioGroup,
+  Spinner,
   Text,
   TopNavigation,
   TopNavigationAction,
+  useTheme,
 } from '@ui-kitten/components';
 import {
   BackIcon,
@@ -22,25 +24,93 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Rating from '../../../components/extra/Rating';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from '../../../features/category/categorySlice';
+import Toast from 'react-native-root-toast';
+import { changeFilters } from '../../../features/catalog/catalogSlice';
 
 export default function FiltersModal() {
   // If the page was reloaded or navigated to directly, then the modal should be presented as
   // a full screen page. You may need to change the UI to account for this.
   const isPresented = router.canGoBack();
 
+  const theme = useTheme();
+
   const [filters, setFilters] = useState({});
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState({});
 
-  const { categories } = useSelector((state) => state.category);
+  const { categories, isLoading, isError } = useSelector(
+    (state) => state.category
+  );
+  const { filters: searchFilters } = useSelector((state) => state.catalog);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(filters);
-  }, [filters]);
+    console.log('searchFilters', searchFilters);
+    setFilters(searchFilters);
+    setSelectedPrice(
+      searchFilters.price__lte === '0'
+        ? 0
+        : searchFilters.price__gte === '1'
+        ? 1
+        : null
+    );
+    setSelectedRating(
+      searchFilters.average_rating__gte === '5'
+        ? 0
+        : searchFilters.average_rating__gte === '4'
+        ? 1
+        : searchFilters.average_rating__gte === '3'
+        ? 2
+        : null
+    );
+  }, [searchFilters]);
 
-  const initSelectedCategories = () => {
+  useEffect(() => {
+    const selectedFilterCategoriesSet = new Set(
+      searchFilters.categories ? searchFilters.categories.split(',') : []
+    );
+
+    // Initialize all categories and subcategories based on whether they are in the selectedFilterCategoriesSet.
+    const initialSelectedCategories = categories.reduce((acc, category) => {
+      const isSelected = selectedFilterCategoriesSet.has(category.name);
+      if (isSelected) {
+        acc[category.name] = isSelected;
+        // If the category is selected, select all subcategories as well
+        category.subcategories.forEach((subcategory) => {
+          acc[subcategory.name] = isSelected;
+        });
+      } else {
+        // Initialize subcategories
+        category.subcategories.forEach((subcategory) => {
+          acc[subcategory.name] = selectedFilterCategoriesSet.has(
+            subcategory.name
+          );
+        });
+      }
+
+      return acc;
+    }, {});
+
+    setSelectedCategories(initialSelectedCategories);
+  }, [searchFilters.categories, categories]);
+
+  useEffect(() => {
+    if (!isLoading && isError) {
+      Toast.show('Failed to retrieve categories', {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+        backgroundColor: theme['color-danger-500'],
+        textColor: theme['color-basic-100'],
+      });
+    }
+  }, [isLoading, isError]);
+
+  const resetSelectedCategories = () => {
     setSelectedCategories(() => {
       const selected = {};
       categories.forEach((category) => {
@@ -55,7 +125,6 @@ export default function FiltersModal() {
 
   useEffect(() => {
     if (categories.length === 0) dispatch(getCategories());
-    else initSelectedCategories();
   }, [categories, dispatch]);
 
   const handlePriceFilterChnage = (index) => {
@@ -75,11 +144,11 @@ export default function FiltersModal() {
     setFilters((prev) => {
       switch (index) {
         case 0:
-          return { ...prev, rating__gte: '5' };
+          return { ...prev, average_rating__gte: '5' };
         case 1:
-          return { ...prev, rating__gte: '4' };
+          return { ...prev, average_rating__gte: '4' };
         case 2:
-          return { ...prev, rating__gte: '3' };
+          return { ...prev, average_rating__gte: '3' };
       }
     });
   };
@@ -175,7 +244,13 @@ export default function FiltersModal() {
     setFilters({});
     setSelectedPrice(null);
     setSelectedRating(null);
-    initSelectedCategories();
+    resetSelectedCategories();
+  };
+
+  const handleApplyFilters = () => {
+    dispatch(changeFilters(filters));
+    if (isPresented) router.back();
+    else router.navigate('../');
   };
 
   return (
@@ -246,34 +321,38 @@ export default function FiltersModal() {
         {/* Categories */}
         <View style={styles.filterItem}>
           <Text category='h6'>Category</Text>
-          <View style={{ marginTop: 12 }}>
-            {categories.map((category) => (
-              <React.Fragment key={category.id}>
-                <CheckBox
-                  checked={selectedCategories[category.name]}
-                  indeterminate={isIndeterminate(category.name)}
-                  onChange={(checked) =>
-                    handleCategoriesChange(checked, category.name)
-                  }
-                  style={{ marginVertical: 4 }}
-                >
-                  {category.name}
-                </CheckBox>
-                {category.subcategories.map((subcategory) => (
+          {isLoading ? (
+            <Spinner size='giant' />
+          ) : (
+            <View style={{ marginTop: 12 }}>
+              {categories.map((category) => (
+                <React.Fragment key={category.id}>
                   <CheckBox
-                    key={subcategory.id}
-                    checked={selectedCategories[subcategory.name]}
+                    checked={selectedCategories[category.name]}
+                    indeterminate={isIndeterminate(category.name)}
                     onChange={(checked) =>
-                      handleCategoriesChange(checked, subcategory.name, true)
+                      handleCategoriesChange(checked, category.name)
                     }
-                    style={{ marginVertical: 4, marginLeft: 16 }}
+                    style={{ marginVertical: 4 }}
                   >
-                    {subcategory.name}
+                    {category.name}
                   </CheckBox>
-                ))}
-              </React.Fragment>
-            ))}
-          </View>
+                  {category.subcategories.map((subcategory) => (
+                    <CheckBox
+                      key={subcategory.id}
+                      checked={selectedCategories[subcategory.name]}
+                      onChange={(checked) =>
+                        handleCategoriesChange(checked, subcategory.name, true)
+                      }
+                      style={{ marginVertical: 4, marginLeft: 16 }}
+                    >
+                      {subcategory.name}
+                    </CheckBox>
+                  ))}
+                </React.Fragment>
+              ))}
+            </View>
+          )}
         </View>
         <Divider />
       </ScrollView>
@@ -294,6 +373,7 @@ export default function FiltersModal() {
           accessoryRight={(props) => (
             <CheckmarkIcon style={{ ...props.style, marginHorizontal: 5 }} />
           )}
+          onPress={handleApplyFilters}
         >
           Apply
         </Button>

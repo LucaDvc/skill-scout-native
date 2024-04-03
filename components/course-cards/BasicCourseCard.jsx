@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Avatar,
-  Button,
-  Card,
-  Layout,
-  Text,
-  useTheme,
-} from '@ui-kitten/components';
+import { Avatar, Button, Card, Text, useTheme } from '@ui-kitten/components';
 import { StyleSheet, Platform, View } from 'react-native';
 import { router } from 'expo-router';
 import { ForwardIcon, PeopleIcon, StarIcon } from '../extra/icons';
@@ -53,17 +46,14 @@ const BasicCourseCard = ({ course, viewMoreLink }) => {
             <Text category='p2' style={{ marginRight: 12 }}>
               {course.enrolled_learners}
             </Text>
-            {course.average_rating && (
-              <>
-                <StarIcon
-                  width={16}
-                  height={16}
-                  fill={theme['color-basic-600']}
-                  style={{ marginRight: 2 }}
-                />
-                <Text category='p2'>{course.average_rating}</Text>
-              </>
-            )}
+
+            <StarIcon
+              width={16}
+              height={16}
+              fill={theme['color-basic-600']}
+              style={{ marginRight: 2 }}
+            />
+            <Text category='p2'>{course.average_rating}</Text>
           </View>
 
           <Text category='s1' numberOfLines={2} ellipsizeMode='tail'>

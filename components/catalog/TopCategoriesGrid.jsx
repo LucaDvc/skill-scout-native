@@ -11,6 +11,7 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import { router } from 'expo-router';
+import { changeFilters } from '../../features/catalog/catalogSlice';
 
 const cardColors = [
   'color-info-100',
@@ -90,15 +91,10 @@ const TopCategoriesGrid = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              onPress={() =>
-                router.push({
-                  pathname: '/search',
-                  params: {
-                    search: category.name,
-                    filters: JSON.stringify({ categories: category.name }),
-                  },
-                })
-              }
+              onPress={() => {
+                router.push('/search');
+                dispatch(changeFilters({ categories: category.name }));
+              }}
             >
               <Text
                 category='s1'

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from '../../features/category/categorySlice';
 import { ArrowIosRightIcon } from '../extra/icons';
 import { router } from 'expo-router';
+import { changeFilters } from '../../features/catalog/catalogSlice';
 
 const topSearches = [
   'python',
@@ -60,8 +61,22 @@ const SearchPopover = ({ visible, setVisible, inputRef, setSearchValue }) => {
       backAction
     );
 
-    return () => backHandler.remove();
+    return () => {
+      backHandler.remove();
+      setSearchValue('');
+    };
   }, [visible]);
+
+  const handleCategoryPress = (categoryName) => {
+    setVisible(false);
+    router.navigate({
+      pathname: '/search',
+      params: {
+        search: categoryName,
+      },
+    });
+    dispatch(changeFilters({ categories: categoryName }));
+  };
 
   if (!visible) return null;
 
@@ -127,18 +142,7 @@ const SearchPopover = ({ visible, setVisible, inputRef, setSearchValue }) => {
                           alignItems: 'center',
                           paddingVertical: 12,
                         }}
-                        onPress={() => {
-                          setVisible(false);
-                          router.navigate({
-                            pathname: '/search',
-                            params: {
-                              search: category.name,
-                              filters: JSON.stringify({
-                                categories: category.name,
-                              }),
-                            },
-                          });
-                        }}
+                        onPress={() => handleCategoryPress(category.name)}
                       >
                         <Text category='p1'>{category.name}</Text>
                         <ArrowIosRightIcon width={20} height={20} />
@@ -153,18 +157,7 @@ const SearchPopover = ({ visible, setVisible, inputRef, setSearchValue }) => {
                             alignItems: 'center',
                             paddingVertical: 12,
                           }}
-                          onPress={() => {
-                            setVisible(false);
-                            router.navigate({
-                              pathname: '/search',
-                              params: {
-                                search: subcategory.name,
-                                filters: JSON.stringify({
-                                  categories: subcategory.name,
-                                }),
-                              },
-                            });
-                          }}
+                          onPress={() => handleCategoryPress(subcategory.name)}
                         >
                           <Text category='p1'>{subcategory.name}</Text>
                           <ArrowIosRightIcon width={20} height={20} />

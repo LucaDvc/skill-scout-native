@@ -32,6 +32,7 @@ const initialState = {
   isLoading: false,
   isWishlistUpdating: false,
   message: '',
+  filters: {},
 };
 
 export const getHighestRatedCourses = createAsyncThunk(
@@ -143,6 +144,12 @@ export const catalogSlice = createSlice({
       state.isSuccess = false;
       state.message = '';
     },
+    changeFilters: (state, action) => {
+      state.filters = action.payload;
+    },
+    resetFilters: (state) => {
+      state.filters = {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -227,4 +234,10 @@ export const catalogSlice = createSlice({
 
 export default catalogSlice.reducer;
 
-export const { reset, statusesReset } = catalogSlice.actions;
+export const {
+  reset,
+  statusesReset,
+  changeFilters,
+  resetFilters,
+  resetHasMore,
+} = catalogSlice.actions;

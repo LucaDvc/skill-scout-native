@@ -14,7 +14,7 @@ const BackIcon = (props) => <Icon {...props} name='arrow-back' />;
 
 const Error = ({
   stateName,
-  action,
+  refreshCallback,
   errorMessage = 'Something went wrong... Please try again.',
 }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -27,7 +27,7 @@ const Error = ({
   }, [isLoading]);
 
   const onRefresh = useCallback(() => {
-    dispatch(action());
+    refreshCallback();
   }, [action, dispatch]);
 
   return (

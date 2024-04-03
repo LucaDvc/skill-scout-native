@@ -46,17 +46,13 @@ const SearchResultCourseCard = ({ course }) => {
             <Text category='p2' style={{ marginRight: 12 }}>
               {course.enrolled_learners}
             </Text>
-            {course.average_rating && (
-              <>
-                <StarIcon
-                  width={16}
-                  height={16}
-                  fill={theme['color-basic-600']}
-                  style={{ marginRight: 2 }}
-                />
-                <Text category='p2'>{course.average_rating}</Text>
-              </>
-            )}
+            <StarIcon
+              width={16}
+              height={16}
+              fill={theme['color-basic-600']}
+              style={{ marginRight: 2 }}
+            />
+            <Text category='p2'>{course.average_rating}</Text>
           </View>
 
           <Text category='s1' numberOfLines={2} ellipsizeMode='tail'>
@@ -86,6 +82,7 @@ const styles = StyleSheet.create({
     margin: 8,
     borderRadius: 12,
     elevation: 3,
+    paddingRight: 8,
     // shadow properties for iOS
     ...Platform.select({
       ios: {

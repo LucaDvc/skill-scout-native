@@ -24,7 +24,7 @@ import PopularCoursesList from '../../../../components/catalog/PopularCoursesLis
 import TopCategoriesGrid from '../../../../components/catalog/TopCategoriesGrid';
 import { getCategories } from '../../../../features/category/categorySlice';
 import SearchPopover from '../../../../components/catalog/SearchPopover';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 
 export default function CatalogScreen() {
   const theme = useTheme();
@@ -32,7 +32,6 @@ export default function CatalogScreen() {
   const [refreshing, setRefreshing] = React.useState(false);
   const [searchOptionsVisible, setSearchOptionsVisible] = React.useState(false);
   const searchInputRef = React.useRef(null);
-  const [filters, setFilters] = React.useState({});
 
   const { isLoading: highestRatedLoading } = useSelector(
     (state) => state.catalog.highestRatedCourses
@@ -107,8 +106,8 @@ export default function CatalogScreen() {
           returnKeyType='search'
           onSubmitEditing={() => {
             router.navigate({
-              pathname: '/search/index',
-              params: { search: searchValue, filters: JSON.stringify(filters) },
+              pathname: '/search',
+              params: { search: searchValue },
             });
           }}
           clearButtonMode='while-editing'

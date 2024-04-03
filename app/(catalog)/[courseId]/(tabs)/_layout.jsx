@@ -33,7 +33,10 @@ const CourseDetailsTabsLayout = () => {
     <CatalogCourseDetails course={course} />
   ) : (
     isError && (
-      <Error stateName='catalog' action={() => getCourseById(courseId)} />
+      <Error
+        stateName='catalog'
+        refreshCallback={() => dispatch(getCourseById(courseId))}
+      />
     )
   );
 };

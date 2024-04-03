@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   BackHandler,
   Pressable,
   StyleSheet,
@@ -8,35 +7,40 @@ import {
 } from 'react-native';
 import React from 'react';
 import { Link, router, useLocalSearchParams, useNavigation } from 'expo-router';
-import { Input, Layout, List, Spinner, useTheme } from '@ui-kitten/components';
+import {
+  Input,
+  Layout,
+  List,
+  Spinner,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import { BackIcon, OptionsIcon } from '../../../components/extra/icons';
 import {
   getCoursesByFilter,
   reset,
+  resetFilters,
 } from '../../../features/catalog/catalogSlice';
 import { getCategories } from '../../../features/category/categorySlice';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchResultCourseCard from '../../../components/course-cards/SearchResultCourseCard';
+import Error from '../../../components/layout/Error';
 
 const renderCourseItem = ({ item }) => <SearchResultCourseCard course={item} />;
 
 const SearchPage = () => {
-  const { search, filters } = useLocalSearchParams();
-  console.log(filters);
+  const { search } = useLocalSearchParams();
   const [searchValue, setSearchValue] = React.useState(search || '');
   const [inputValue, setInputValue] = React.useState(search || '');
   const [searchPressed, setSearchPressed] = React.useState(false);
-  const [filtersValue, setFiltersValue] = React.useState(
-    filters ? JSON.parse(filters) : {}
-  );
-  const [filtersVisible, setFiltersVisible] = React.useState(false);
   const [page, setPage] = React.useState(1);
+  const [searchParams, setSearchParams] = React.useState({});
 
   const theme = useTheme();
 
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.category);
-  const { courses, isLoading, isError, message, isSuccess, hasMore } =
+  const { courses, isLoading, isError, message, isSuccess, hasMore, filters } =
     useSelector((state) => state.catalog);
 
   React.useEffect(() => {
@@ -46,9 +50,12 @@ const SearchPage = () => {
   }, [categories]);
 
   const fetchData = () => {
-    const searchParams = { search: searchValue, page };
-    for (const filter of Object.keys(filtersValue)) {
-      const value = filtersValue[filter];
+    const searchParams = { page: 1 };
+    if (searchValue) {
+      searchParams.search = searchValue;
+    }
+    for (const filter of Object.keys(filters)) {
+      const value = filters[filter];
 
       if (value) {
         searchParams[filter] = value;
@@ -57,6 +64,27 @@ const SearchPage = () => {
       }
     }
 
+    setSearchParams(searchParams);
+
+    dispatch(getCoursesByFilter(searchParams));
+  };
+
+  const fetchMoreData = () => {
+    const searchParams = { page: page + 1 };
+    if (searchValue) {
+      searchParams.search = searchValue;
+    }
+    for (const filter of Object.keys(filters)) {
+      const value = filters[filter];
+      if (value) {
+        searchParams[filter] = value;
+      } else {
+        delete searchParams[filter];
+      }
+    }
+
+    setSearchParams(searchParams);
+
     if (hasMore) {
       setPage(page + 1);
       dispatch(getCoursesByFilter(searchParams));
@@ -64,12 +92,9 @@ const SearchPage = () => {
   };
 
   React.useEffect(() => {
+    dispatch(reset());
     fetchData();
-
-    return () => {
-      dispatch(reset());
-    };
-  }, [searchValue, filtersValue, dispatch, searchPressed]);
+  }, [searchValue, filters, dispatch, searchPressed]);
 
   React.useEffect(() => {
     const backAction = () => {
@@ -80,7 +105,10 @@ const SearchPage = () => {
       'hardwareBackPress',
       backAction
     );
-    return () => backHandler.remove();
+    return () => {
+      backHandler.remove();
+      dispatch(resetFilters());
+    };
   }, []);
 
   const renderFooter = () => {
@@ -126,17 +154,24 @@ const SearchPage = () => {
         />
       </View>
       <Layout style={styles.container}>
-        {courses.length === 0 && isLoading ? (
+        {isLoading ? (
           <Spinner size='giant' />
-        ) : (
+        ) : isError ? (
+          <Error
+            stateName='catalog'
+            refreshCallback={() => dispatch(getCoursesByFilter(searchParams))}
+          />
+        ) : isSuccess && courses.length > 0 ? (
           <List
             data={courses}
             renderItem={renderCourseItem}
             ListFooterComponent={renderFooter}
-            onEndReached={fetchData}
+            onEndReached={fetchMoreData}
             onEndReachedThreshold={0.5}
             style={{ backgroundColor: theme['color-basic-100'] }}
           />
+        ) : (
+          <Text category='h5'>No results found</Text>
         )}
       </Layout>
     </View>
