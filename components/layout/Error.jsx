@@ -7,7 +7,7 @@ import {
   TopNavigation,
   TopNavigationAction,
 } from '@ui-kitten/components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { router } from 'expo-router';
 
 const BackIcon = (props) => <Icon {...props} name='arrow-back' />;
@@ -18,7 +18,6 @@ const Error = ({
   errorMessage = 'Something went wrong... Please try again.',
 }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const dispatch = useDispatch();
 
   const isLoading = useSelector((state) => state[stateName]?.isLoading);
 
@@ -28,7 +27,7 @@ const Error = ({
 
   const onRefresh = useCallback(() => {
     refreshCallback();
-  }, [action, dispatch]);
+  }, [refreshCallback]);
 
   return (
     <ScrollView
