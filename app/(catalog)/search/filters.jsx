@@ -46,7 +46,6 @@ export default function FiltersModal() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('searchFilters', searchFilters);
     setFilters(searchFilters);
     setSelectedPrice(
       searchFilters.price__lte === '0'

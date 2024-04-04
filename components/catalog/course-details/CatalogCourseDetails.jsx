@@ -12,8 +12,11 @@ import { router, withLayoutContext } from 'expo-router';
 import CatalogTabBar from './CatalogTabBar';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Rating from '../../extra/Rating';
-import { HeartOutline, PeopleIcon } from '../../extra/icons';
-import { useSelector } from 'react-redux';
+import { HeartOutlineIcon, HeartIcon, PeopleIcon } from '../../extra/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { wishlistCourse } from '../../../features/catalog/catalogSlice';
+import { refreshAuthUser } from '../../../features/users/usersSlice';
+import Toast from 'react-native-root-toast';
 
 const BackIcon = (props) => <Icon {...props} name='arrow-back' />;
 
@@ -25,7 +28,12 @@ const CatalogCourseDetails = ({ course }) => {
   const backgroundImageHeight = 190;
   const theme = useTheme();
 
-  const { accessToken } = useSelector((state) => state.users);
+  const { accessToken, user } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
+
+  const [isWishlited, setIsWishlited] = React.useState(
+    user?.wishlist?.some((c) => c.id === course.id)
+  );
 
   React.useEffect(() => {
     const backAction = () => {
@@ -45,6 +53,24 @@ const CatalogCourseDetails = ({ course }) => {
     return () => backHandler.remove();
   }, []);
 
+  const handleWishlist = () => {
+    if (accessToken) {
+      dispatch(wishlistCourse(course.id));
+      setIsWishlited(!isWishlited);
+      setTimeout(() => {
+        dispatch(refreshAuthUser());
+        Toast.show(
+          `Course ${!isWishlited ? 'added to' : 'removed from'} wishlist`,
+          {
+            position: Toast.positions.BOTTOM,
+          }
+        );
+      }, 500);
+    } else {
+      router.push('/auth');
+    }
+  };
+
   return (
     <>
       <TopNavigation
@@ -55,13 +81,14 @@ const CatalogCourseDetails = ({ course }) => {
           <TopNavigationAction icon={BackIcon} onPress={() => router.back()} />
         }
         accessoryRight={
-          accessToken && (
-            <TopNavigationAction
-              icon={HeartOutline}
-              // TODO: Implement wishlist functionality
-              onPress={() => router.back()}
-            />
-          )
+          <TopNavigationAction
+            icon={
+              !isWishlited
+                ? HeartOutlineIcon
+                : (props) => <HeartIcon fill={'#ff4a5e'} {...props} />
+            }
+            onPress={handleWishlist}
+          />
         }
         style={styles.topNavigation}
       />
@@ -92,7 +119,7 @@ const CatalogCourseDetails = ({ course }) => {
               paddingHorizontal: 42,
               marginTop: 70,
             }}
-            onPress={() => router.push(`/enroll/${course.id}/checkout`)}
+            onPress={() => router.push('/payment?courseId=' + course.id)}
           >
             Join Course
           </Button>
