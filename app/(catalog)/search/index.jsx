@@ -4,6 +4,8 @@ import {
   Pressable,
   StyleSheet,
   Platform,
+  RefreshControl,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import { Link, router, useLocalSearchParams, useNavigation } from 'expo-router';
@@ -111,10 +113,20 @@ const SearchPage = () => {
     };
   }, []);
 
+  const handleRefresh = () => {
+    dispatch(reset());
+    setPage(1);
+    fetchData();
+  };
+
   const renderFooter = () => {
     if (!isLoading) return null;
     return <Spinner style={{ margin: 20 }} />;
   };
+
+  if (isError) {
+    return <Error stateName='catalog' refreshCallback={handleRefresh} />;
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -156,13 +168,14 @@ const SearchPage = () => {
       <Layout style={styles.container}>
         {isLoading ? (
           <Spinner size='giant' />
-        ) : isError ? (
-          <Error
-            stateName='catalog'
-            refreshCallback={() => dispatch(getCoursesByFilter(searchParams))}
-          />
-        ) : isSuccess && courses.length > 0 ? (
+        ) : courses.length > 0 ? (
           <List
+            refreshControl={
+              <RefreshControl
+                refreshing={isLoading}
+                onRefresh={handleRefresh}
+              />
+            }
             data={courses}
             renderItem={renderCourseItem}
             ListFooterComponent={renderFooter}
@@ -171,7 +184,17 @@ const SearchPage = () => {
             style={{ backgroundColor: theme['color-basic-100'] }}
           />
         ) : (
-          <Text category='h5'>No results found</Text>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            refreshControl={
+              <RefreshControl
+                refreshing={isLoading}
+                onRefresh={handleRefresh}
+              />
+            }
+          >
+            <Text category='h5'>No results found</Text>
+          </ScrollView>
         )}
       </Layout>
     </View>
