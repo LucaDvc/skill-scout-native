@@ -23,6 +23,12 @@ const initialState = {
     isLoading: false,
     message: '',
   },
+  enroll: {
+    isError: false,
+    isSuccess: false,
+    isLoading: false,
+    message: '',
+  },
   courses: [],
   resultsCount: 0,
   hasMore: true,
@@ -130,6 +136,26 @@ export const wishlistCourse = createAsyncThunk(
   }
 );
 
+export const courseEnroll = createAsyncThunk(
+  'catalog/courseEnroll',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      return await catalogService.courseEnroll(id, token);
+    } catch (error) {
+      console.error(error);
+      let message;
+      if (error.response.status === 404) {
+        message = 'Not found';
+      } else {
+        message = error.response.data.error || error.toString();
+      }
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const catalogSlice = createSlice({
   name: 'catalog',
   initialState,
@@ -155,6 +181,14 @@ export const catalogSlice = createSlice({
     },
     resetFilters: (state) => {
       state.filters = {};
+    },
+    resetEnroll: (state) => {
+      state.enroll = {
+        isError: false,
+        isSuccess: false,
+        isLoading: false,
+        message: '',
+      };
     },
   },
   extraReducers: (builder) => {
@@ -234,6 +268,20 @@ export const catalogSlice = createSlice({
       })
       .addCase(wishlistCourse.rejected, (state) => {
         state.isWishlistUpdating = false;
+      })
+      .addCase(courseEnroll.pending, (state) => {
+        state.enroll.isLoading = true;
+        state.enroll.isError = false;
+        state.enroll.isSuccess = false;
+        state.enroll.message = '';
+      })
+      .addCase(courseEnroll.fulfilled, (state) => {
+        state.enroll.isLoading = false;
+        state.enroll.isSuccess = true;
+      })
+      .addCase(courseEnroll.rejected, (state) => {
+        state.enroll.isLoading = false;
+        state.enroll.isError = true;
       });
   },
 });
@@ -246,4 +294,5 @@ export const {
   changeFilters,
   resetFilters,
   resetHasMore,
+  resetEnroll,
 } = catalogSlice.actions;
