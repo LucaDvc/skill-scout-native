@@ -52,7 +52,7 @@ const App = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
         <IconRegistry icons={EvaIconsPack} />
-        <JsStack>
+        <JsStack screenOptions={{ headerShown: false }}>
           <Stack.Screen
             name='(root)/(tabs)'
             options={{
@@ -66,13 +66,13 @@ const App = () => {
             }}
           />
           <Stack.Screen
-            name='(catalog)/search/index'
+            name='(users)'
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
-            name='(users)'
+            name='(catalog)/search/index'
             options={{
               headerShown: false,
             }}

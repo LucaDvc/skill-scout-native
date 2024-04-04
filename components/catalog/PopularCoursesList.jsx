@@ -3,21 +3,23 @@ import BasicCourseCard from '../course-cards/BasicCourseCard';
 import { getPopularCourses } from '../../features/catalog/catalogSlice';
 import HorizontalCourseList from '../layout/HorizontalCourseList';
 import HorizontalCourseListTopNav from '../layout/HorizontalCourseListTopNav';
+import { useTheme } from '@ui-kitten/components';
 
 const PopularCoursesList = () => {
+  const theme = useTheme();
   return (
     <HorizontalCourseList
       actionCreator={getPopularCourses}
       courseCardComponent={BasicCourseCard}
       selector={(state) => state.catalog.popularCourses}
-      viewMoreLink='/popular-courses'
+      viewMoreLink='/search/popular-courses'
       ListHeaderComponent={
         <HorizontalCourseListTopNav
           title='Popular Courses'
-          route='/popular-courses'
+          route='/search/popular-courses'
         />
       }
-      listBackgroundColor={'#fff'}
+      listBackgroundColor={theme['color-basic-100']}
       courseListName={'popularCourses'}
     />
   );

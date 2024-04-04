@@ -41,6 +41,7 @@ export const getHighestRatedCourses = createAsyncThunk(
     try {
       return await catalogService.getHighestRatedCourses();
     } catch (error) {
+      console.error(error);
       let message = error.message || error.toString();
 
       return thunkAPI.rejectWithValue(message);
@@ -54,6 +55,7 @@ export const getPopularCourses = createAsyncThunk(
     try {
       return await catalogService.getPopularCourses();
     } catch (error) {
+      console.error(error);
       let message = error.message || error.toString();
 
       return thunkAPI.rejectWithValue(message);
@@ -67,6 +69,7 @@ export const getCoursesByFilter = createAsyncThunk(
     try {
       return await catalogService.getCoursesByFilter(params);
     } catch (error) {
+      console.error(error);
       let message = error.message || error.toString();
 
       return thunkAPI.rejectWithValue(message);
@@ -80,6 +83,7 @@ export const getTags = createAsyncThunk(
     try {
       return await catalogService.getTags();
     } catch (error) {
+      console.error(error);
       let message = error.message || error.toString();
 
       return thunkAPI.rejectWithValue(message);
@@ -93,6 +97,7 @@ export const getCourseById = createAsyncThunk(
     try {
       return await catalogService.getCourseById(id);
     } catch (error) {
+      console.error(error);
       let message;
       if (error.response.status === 404) {
         message = 'Not found';
@@ -112,6 +117,7 @@ export const wishlistCourse = createAsyncThunk(
       const token = thunkAPI.getState().users.accessToken;
       return await catalogService.wishlistCourse(id, token);
     } catch (error) {
+      console.error(error);
       let message;
       if (error.response.status === 404) {
         message = 'Not found';
@@ -186,7 +192,7 @@ export const catalogSlice = createSlice({
         state.isSuccess = true;
         state.isLoading = false;
         state.courses = [...state.courses, ...action.payload.results];
-        state.resultsCount = action.payload.count;
+        state.resultsCount += action.payload.count;
         state.hasMore = action.payload.next != null;
       })
       .addCase(getCoursesByFilter.rejected, (state, action) => {
