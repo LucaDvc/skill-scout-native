@@ -3,10 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import CatalogCourseDetails from '../../../../components/catalog/course-details/CatalogCourseDetails';
 import { Layout, Spinner } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getCourseById,
-  statusesReset,
-} from '../../../../features/catalog/catalogSlice';
+import { getCourseById } from '../../../../features/catalog/catalogSlice';
 import Error from '../../../../components/layout/Error';
 
 const CourseDetailsTabsLayout = () => {
@@ -19,10 +16,6 @@ const CourseDetailsTabsLayout = () => {
 
   React.useEffect(() => {
     dispatch(getCourseById(courseId));
-
-    return () => {
-      dispatch(statusesReset());
-    };
   }, [courseId]);
 
   return isLoading ? (
