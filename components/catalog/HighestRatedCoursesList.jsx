@@ -12,11 +12,11 @@ const HighestRatedCoursesList = () => {
       actionCreator={getHighestRatedCourses}
       courseCardComponent={BasicCourseCard}
       selector={(state) => state.catalog.highestRatedCourses}
-      viewMoreLink='/highest-rated-courses'
+      viewMoreLink='/search/highest-rated-courses'
       ListHeaderComponent={
         <HorizontalCourseListTopNav
           title='Highest Rated Courses'
-          route='/highest-rated-course'
+          route='/search/highest-rated-courses'
         />
       }
       listBackgroundColor={theme['color-basic-100']}
