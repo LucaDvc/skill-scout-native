@@ -4,6 +4,7 @@ import usersReducer from './users/usersSlice';
 import learningReducer from './learning/learningSlice';
 import teachingReducer from './teaching/teachingSlice';
 import categoryReducer from './category/categorySlice';
+import reviewsReducer from './learning/reviews/reviewSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     learning: learningReducer,
     teaching: teachingReducer,
     category: categoryReducer,
+    reviews: reviewsReducer,
   },
 });
