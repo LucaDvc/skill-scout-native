@@ -30,9 +30,7 @@ export default PaymentPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      //TODO: Take user to the course learning page
-      // router.replace(`/learning/${courseId}`)
-      router.back();
+      router.replace(`/learning/${courseId}/(tabs)`);
       Toast.show('Enrolled successfully', {
         position: Toast.positions.CENTER,
       });
