@@ -20,8 +20,7 @@ import { router } from 'expo-router';
 import PopularCoursesList from '../../../components/catalog/PopularCoursesList';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPopularCourses } from '../../../features/catalog/catalogSlice';
-
-const PlusIcon = (props) => <Icon {...props} name='plus-outline' />;
+import { PlusIcon } from '../../../components/extra/icons';
 
 export default function HomeScreen() {
   const theme = useTheme();
