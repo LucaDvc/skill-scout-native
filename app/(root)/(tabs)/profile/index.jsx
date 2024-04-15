@@ -1,23 +1,31 @@
 import React from 'react';
 import {
   Avatar,
-  Button,
   Layout,
   Text,
   TopNavigation,
   TopNavigationAction,
+  useTheme,
 } from '@ui-kitten/components';
-import { useSelector } from 'react-redux';
-import { Image, StyleSheet, Platform, View, ScrollView } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  View,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import { router } from 'expo-router';
 import { EditIcon, SettingsIcon } from '../../../../components/extra/icons';
 import UnsignedUserProfile from '../../../../components/profile/UnsignedUserProfile';
 import UnconfirmedUserProfile from '../../../../components/profile/UnconfirmedUserProfile';
 import SignedInUserProfile from '../../../../components/profile/SignedInUserProfile';
 import awsConstants from '../../../../constants/awsConstants';
+import { getCourses } from '../../../../features/learning/learningSlice';
+import { getActiveCourses } from '../../../../features/teaching/teachingSlice';
 
 const UserHeader = ({ user }) => (
-  // TODO add wishlist, my reviews, my courses (teaching), maybe heatmap
   <View style={{ flexDirection: 'column', flex: 1 }}>
     <View
       style={{
@@ -58,10 +66,32 @@ const UserHeader = ({ user }) => (
 );
 
 const ProfileScreen = () => {
+  // TODO add wishlist, my reviews, my courses (teaching), maybe heatmap
+  const theme = useTheme();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const dispatch = useDispatch();
+
   const { user, accessToken } = useSelector((state) => state.users);
 
+  const { isLoading: learningLoading } = useSelector((state) => state.learning);
+  const { isLoading: teachingLoading } = useSelector((state) => state.teaching);
+
+  React.useEffect(() => {
+    if (!learningLoading && !teachingLoading) {
+      setRefreshing(false);
+    } else {
+      setRefreshing(true);
+    }
+  }, [learningLoading, teachingLoading]);
+
+  const onRefresh = React.useCallback(() => {
+    dispatch(getCourses());
+    dispatch(getActiveCourses());
+  }, [dispatch, getActiveCourses, getCourses]);
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: theme['color-basic-100'] }}>
       <TopNavigation
         alignment={user ? 'start' : 'center'}
         title={() =>
@@ -70,7 +100,12 @@ const ProfileScreen = () => {
         style={styles.topBar}
       />
       {user && accessToken ? (
-        <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <ScrollView
+          style={{ flex: 1, backgroundColor: theme['color-basic-100'] }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <SignedInUserProfile />
         </ScrollView>
       ) : (

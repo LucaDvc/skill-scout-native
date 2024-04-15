@@ -3,7 +3,7 @@ import BasicCourseCard from '../course-cards/BasicCourseCard';
 import { getActiveCourses } from '../../features/teaching/teachingSlice';
 import HorizontalCourseList from '../layout/HorizontalCourseList';
 import HorizontalCourseListTopNav from '../layout/HorizontalCourseListTopNav';
-import { Card, Text } from '@ui-kitten/components';
+import { Text } from '@ui-kitten/components';
 import { StyleSheet, Platform, Image } from 'react-native';
 
 const PublishedCoursesList = () => {
