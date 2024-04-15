@@ -2,8 +2,8 @@ import { Pressable, View } from 'react-native';
 import React from 'react';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { Avatar, Text } from '@ui-kitten/components';
-import Rating from '../../extra/Rating';
-import awsConstants from '../../../constants/awsConstants';
+import Rating from '../extra/Rating';
+import awsConstants from '../../constants/awsConstants';
 import { router } from 'expo-router';
 
 const ReviewCard = ({ review }) => {

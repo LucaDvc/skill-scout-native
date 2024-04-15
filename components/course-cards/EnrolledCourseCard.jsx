@@ -30,7 +30,7 @@ const EnrolledCourseCard = ({ course }) => {
   return course ? (
     <Card
       style={styles.card}
-      onPress={() => router.push(`(catalog)/${course.id}/(tabs)`)}
+      onPress={() => router.push(`learning/${course.id}/(tabs)`)}
       footer={() => <Footer course={course} />}
     >
       <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -48,6 +48,7 @@ const EnrolledCourseCard = ({ course }) => {
             alignItems: 'flex-start',
             marginHorizontal: 12,
             paddingRight: 24,
+            width: '80%',
           }}
         >
           <Text category='h6'>{course.title}</Text>
@@ -64,6 +65,7 @@ const EnrolledCourseCard = ({ course }) => {
               }
               animating={false}
               size='small'
+              style={{ width: '100%' }}
             />
           </View>
         </View>

@@ -19,6 +19,8 @@ const getReviews = async (token, courseId) => {
 };
 
 const postReveiw = async (token, courseId, review) => {
+  console.log(review);
+  console.log(courseId);
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -30,6 +32,7 @@ const postReveiw = async (token, courseId, review) => {
     review,
     config
   );
+  console.log(response);
 
   return response.data;
 };

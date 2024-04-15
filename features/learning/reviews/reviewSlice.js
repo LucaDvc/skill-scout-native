@@ -43,11 +43,13 @@ export const postReview = createAsyncThunk(
       const token = thunkAPI.getState().users.accessToken;
       return await reviewService.postReveiw(token, courseId, review);
     } catch (error) {
+      console.error(error);
       let message;
       if (error.response.status === 404) {
         message = 'Course not found';
       } else {
-        message = error.message || error.toString();
+        message =
+          error.response?.data?.error || error.message || error.toString();
       }
 
       return thunkAPI.rejectWithValue(message);
@@ -75,7 +77,7 @@ export const updateReview = createAsyncThunk(
 );
 
 export const reviewSlice = createSlice({
-  name: 'learning',
+  name: 'reviews',
   initialState,
   reducers: {
     reset: (state) => {
@@ -85,6 +87,12 @@ export const reviewSlice = createSlice({
       state.message = '';
       state.reviews = [];
       state.review = {};
+    },
+    statusesReset: (state) => {
+      state.post.isLoading = false;
+      state.post.isError = false;
+      state.post.isSuccess = false;
+      state.post.message = '';
     },
   },
   extraReducers: (builder) => {

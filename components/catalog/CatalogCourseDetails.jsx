@@ -2,27 +2,26 @@ import { ImageBackground, View, StyleSheet, BackHandler } from 'react-native';
 import React from 'react';
 import {
   Button,
-  Icon,
   Text,
   TopNavigation,
   TopNavigationAction,
   useTheme,
 } from '@ui-kitten/components';
-import { router, withLayoutContext } from 'expo-router';
-import CatalogTabBar from './CatalogTabBar';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Rating from '../../extra/Rating';
-import { HeartOutlineIcon, HeartIcon, PeopleIcon } from '../../extra/icons';
+import { router } from 'expo-router';
+
+import Rating from '../extra/Rating';
+import {
+  HeartOutlineIcon,
+  HeartIcon,
+  PeopleIcon,
+  BackIcon,
+} from '../extra/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { wishlistCourse } from '../../../features/catalog/catalogSlice';
-import { refreshAuthUser } from '../../../features/users/usersSlice';
+import { wishlistCourse } from '../../features/catalog/catalogSlice';
+import { refreshAuthUser } from '../../features/users/usersSlice';
 import Toast from 'react-native-root-toast';
-
-const BackIcon = (props) => <Icon {...props} name='arrow-back' />;
-
-const { Navigator } = createMaterialTopTabNavigator();
-
-const MaterialTopTabs = withLayoutContext(Navigator);
+import CourseDetailsTabBar from '../course-details/CourseDetailsTabBar';
+import MaterialTopTabs from '../layout/MaterialTopTabs';
 
 const CatalogCourseDetails = ({ course }) => {
   const backgroundImageHeight = 190;
@@ -66,6 +65,14 @@ const CatalogCourseDetails = ({ course }) => {
           }
         );
       }, 500);
+    } else {
+      router.push('/auth');
+    }
+  };
+
+  const handleJoinCourse = () => {
+    if (accessToken) {
+      router.push('/payment?courseId=' + course.id);
     } else {
       router.push('/auth');
     }
@@ -119,7 +126,7 @@ const CatalogCourseDetails = ({ course }) => {
               paddingHorizontal: 42,
               marginTop: 70,
             }}
-            onPress={() => router.push('/payment?courseId=' + course.id)}
+            onPress={handleJoinCourse}
           >
             Join Course
           </Button>
@@ -154,7 +161,7 @@ const CatalogCourseDetails = ({ course }) => {
           </View>
         </View>
       </ImageBackground>
-      <MaterialTopTabs tabBar={(props) => <CatalogTabBar {...props} />}>
+      <MaterialTopTabs tabBar={(props) => <CourseDetailsTabBar {...props} />}>
         <MaterialTopTabs.Screen
           name='info'
           options={{

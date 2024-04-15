@@ -1,17 +1,17 @@
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import CatalogCourseDetails from '../../../../components/catalog/CatalogCourseDetails';
 import { Layout, Spinner } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCourseById } from '../../../../features/catalog/catalogSlice';
+import { getCourseById } from '../../../../features/learning/learningSlice';
 import Error from '../../../../components/layout/Error';
+import LearningCourseDetails from '../../../../components/learning/LearningCourseDetails';
 
-const CourseDetailsTabsLayout = () => {
+const LearningCourseDetailsTabsLayout = () => {
   const { courseId } = useLocalSearchParams();
 
   const dispatch = useDispatch();
   const { course, isLoading, isError, isSuccess } = useSelector(
-    (state) => state.catalog
+    (state) => state.learning
   );
 
   React.useEffect(() => {
@@ -23,15 +23,15 @@ const CourseDetailsTabsLayout = () => {
       <Spinner size='giant' />
     </Layout>
   ) : Object.keys(course).length > 0 && isSuccess ? (
-    <CatalogCourseDetails course={course} />
+    <LearningCourseDetails course={course} />
   ) : (
     isError && (
       <Error
-        stateName='catalog'
+        stateName='learning'
         refreshCallback={() => dispatch(getCourseById(courseId))}
       />
     )
   );
 };
 
-export default CourseDetailsTabsLayout;
+export default LearningCourseDetailsTabsLayout;

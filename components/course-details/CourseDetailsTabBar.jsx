@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tab, TabBar } from '@ui-kitten/components';
 
-export default function CatalogTabBar({ navigation, state }) {
+export default function CourseDetailsTabBar({ navigation, state }) {
   return (
     <TabBar
       selectedIndex={state.index}

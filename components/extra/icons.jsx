@@ -17,6 +17,12 @@ export const ArrowRightIcon = (style) => <Icon {...style} name='arrow-right' />;
 
 export const CheckmarkIcon = (style) => <Icon {...style} name='checkmark' />;
 
+export const DoneAllIcon = (style) => <Icon {...style} name='done-all' />;
+
+export const CheckmarkCircleIcon = (style) => (
+  <Icon {...style} name='checkmark-circle' />
+);
+
 export const LockIcon = (style) => <Icon {...style} name='lock' />;
 
 export const PeopleIcon = (props) => <Icon {...props} name='people' />;

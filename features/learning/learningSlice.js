@@ -17,6 +17,7 @@ export const getCourses = createAsyncThunk(
       const token = thunkAPI.getState().users.accessToken;
       return await learningService.getCourses(token);
     } catch (error) {
+      console.error(error);
       let message = error.message || error.toString();
 
       return thunkAPI.rejectWithValue(message);

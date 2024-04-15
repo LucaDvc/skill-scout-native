@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import React from 'react';
 import { ProgressBar, Text } from '@ui-kitten/components';
-import Rating from '../../extra/Rating';
+import Rating from '../extra/Rating';
 
 const ReviewsOverview = ({ averageRating, reviews }) => {
   return (
@@ -50,7 +50,7 @@ const ReviewsOverview = ({ averageRating, reviews }) => {
           </View>
         </>
       ) : (
-        <Text category='p1'>No reviews yet :(</Text>
+        <Text category='p1'>No reviews yet</Text>
       )}
     </View>
   );
