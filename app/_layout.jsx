@@ -36,58 +36,60 @@ const App = () => {
     init();
   }, [dispatch, initializeAuth]);
 
-  const { refreshToken } = useSelector((state) => state.users);
+  const { refreshToken, initDone } = useSelector((state) => state.users);
 
   React.useEffect(() => {
     const checkAuthStatus = async () => {
-      if (refreshToken) {
+      if (initDone && refreshToken) {
         dispatch(refreshAccessToken());
       }
     };
 
     checkAuthStatus();
-  }, [dispatch, refreshToken]);
+  }, [dispatch, refreshToken, initDone]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
         <IconRegistry icons={EvaIconsPack} />
-        <JsStack screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-            name='(root)/(tabs)'
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name='(catalog)/[courseId]/(tabs)'
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name='(users)'
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name='(catalog)/search/index'
-            options={{
-              headerShown: false,
-            }}
-          />
-          <JsStack.Screen
-            name='(catalog)/search/filters'
-            options={{
-              // Set the presentation mode to modal for filters modal route.
-              ...TransitionPresets.ModalPresentationIOS,
-              presentation: 'modal',
-              gestureEnabled: true,
-              headerShown: false,
-            }}
-          />
-        </JsStack>
+        {initDone && (
+          <JsStack screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+              name='(root)/(tabs)'
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name='(catalog)/[courseId]/(tabs)'
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name='(users)'
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name='(catalog)/search/index'
+              options={{
+                headerShown: false,
+              }}
+            />
+            <JsStack.Screen
+              name='(catalog)/search/filters'
+              options={{
+                // Set the presentation mode to modal for filters modal route.
+                ...TransitionPresets.ModalPresentationIOS,
+                presentation: 'modal',
+                gestureEnabled: true,
+                headerShown: false,
+              }}
+            />
+          </JsStack>
+        )}
       </ApplicationProvider>
     </SafeAreaView>
   );

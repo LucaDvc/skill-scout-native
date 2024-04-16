@@ -3,22 +3,28 @@ import axios from 'axios';
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 const API_URL = `${BASE_URL}/api/catalog`;
 
-const getHighestRatedCourses = async () => {
+const getHighestRatedCourses = async (token) => {
   const response = await axios.get(
-    `${API_URL}/courses/?page=1&ordering=-avg_rating`
+    `${API_URL}/mobile/courses/?page=1&ordering=-avg_rating`,
+    token ? { headers: { Authorization: `Bearer ${token}` } } : {}
   );
   return response.data;
 };
 
-const getPopularCourses = async () => {
+const getPopularCourses = async (token) => {
   const response = await axios.get(
-    `${API_URL}/courses/?page=1&ordering=-enrolled_learners`
+    `${API_URL}/mobile/courses/?page=1&ordering=-enrolled_learners`,
+    token ? { headers: { Authorization: `Bearer ${token}` } } : {}
   );
   return response.data;
 };
 
-const getCoursesByFilter = async (params) => {
-  const response = await axios.get(`${API_URL}/courses/`, { params });
+const getCoursesByFilter = async (params, token) => {
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  const response = await axios.get(`${API_URL}/mobile/courses/`, {
+    params,
+    headers,
+  });
   return response.data;
 };
 

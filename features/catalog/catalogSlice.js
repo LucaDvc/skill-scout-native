@@ -45,7 +45,8 @@ export const getHighestRatedCourses = createAsyncThunk(
   'catalog/getHighestRatedCourses',
   async (_, thunkAPI) => {
     try {
-      return await catalogService.getHighestRatedCourses();
+      const token = thunkAPI.getState().users.accessToken;
+      return await catalogService.getHighestRatedCourses(token);
     } catch (error) {
       console.error(error);
       let message = error.message || error.toString();
@@ -59,7 +60,8 @@ export const getPopularCourses = createAsyncThunk(
   'catalog/getPopularCourses',
   async (_, thunkAPI) => {
     try {
-      return await catalogService.getPopularCourses();
+      const token = thunkAPI.getState().users.accessToken;
+      return await catalogService.getPopularCourses(token);
     } catch (error) {
       console.error(error);
       let message = error.message || error.toString();
@@ -73,7 +75,8 @@ export const getCoursesByFilter = createAsyncThunk(
   'catalog/getByFilter',
   async (params, thunkAPI) => {
     try {
-      return await catalogService.getCoursesByFilter(params);
+      const token = thunkAPI.getState().users.accessToken;
+      return await catalogService.getCoursesByFilter(params, token);
     } catch (error) {
       console.error(error);
       let message = error.message || error.toString();

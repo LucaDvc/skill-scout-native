@@ -25,10 +25,8 @@ import {
 } from '../../../features/catalog/catalogSlice';
 import { getCategories } from '../../../features/category/categorySlice';
 import { useDispatch, useSelector } from 'react-redux';
-import SearchResultCourseCard from '../../../components/course-cards/SearchResultCourseCard';
 import Error from '../../../components/layout/Error';
-
-const renderCourseItem = ({ item }) => <SearchResultCourseCard course={item} />;
+import { renderSearchedCourse } from '../../../utils/listRenders';
 
 const SearchPage = () => {
   const { search } = useLocalSearchParams();
@@ -177,11 +175,11 @@ const SearchPage = () => {
               />
             }
             data={courses}
-            renderItem={renderCourseItem}
+            renderItem={renderSearchedCourse}
             ListFooterComponent={renderFooter}
             onEndReached={fetchMoreData}
             onEndReachedThreshold={0.5}
-            style={{ backgroundColor: theme['color-basic-100'] }}
+            style={{ backgroundColor: theme['color-basic-100'], marginTop: 8 }}
           />
         ) : (
           <ScrollView

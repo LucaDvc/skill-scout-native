@@ -16,11 +16,10 @@ import {
   reset,
 } from '../../../features/catalog/catalogSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import SearchResultCourseCard from '../../../components/course-cards/SearchResultCourseCard';
 import Error from '../../../components/layout/Error';
 import { ScrollView } from 'react-native-gesture-handler';
+import { renderSearchedCourse } from '../../../utils/listRenders';
 
-const renderCourseItem = ({ item }) => <SearchResultCourseCard course={item} />;
 const ordering = '-enrolled_learners';
 
 const PopularCoursesPage = () => {
@@ -88,11 +87,11 @@ const PopularCoursesPage = () => {
               />
             }
             data={courses}
-            renderItem={renderCourseItem}
+            renderItem={renderSearchedCourse}
             ListFooterComponent={renderFooter}
             onEndReached={fetchData}
             onEndReachedThreshold={0.5}
-            style={{ backgroundColor: theme['color-basic-100'] }}
+            style={{ backgroundColor: theme['color-basic-100'], marginTop: 8 }}
           />
         ) : (
           <ScrollView

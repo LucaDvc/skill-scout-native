@@ -46,6 +46,7 @@ const SearchResultCourseCard = ({ course }) => {
             <Text category='p2' style={{ marginRight: 12 }}>
               {course.enrolled_learners}
             </Text>
+
             <StarIcon
               width={16}
               height={16}

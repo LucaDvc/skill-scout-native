@@ -3,8 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, List, Spinner, Text } from '@ui-kitten/components';
 import { RefreshIcon } from '../extra/icons';
+import BasicCourseCard from '../course-cards/BasicCourseCard';
+import EnrolledCourseCard from '../course-cards/EnrolledCourseCard';
 
-const pairUpCourses = (courses) => {
+const pairUpCourses = (courses, viewMore) => {
   const pairedCourses = [];
   for (let i = 0; i < courses.length; i += 2) {
     pairedCourses.push({
@@ -12,6 +14,11 @@ const pairUpCourses = (courses) => {
       course2: courses[i + 1] ? courses[i + 1] : null,
     });
   }
+
+  if (viewMore && courses.length % 2 === 0) {
+    pairedCourses.push({ course1: null, course2: 'ignore' });
+  }
+
   return pairedCourses;
 };
 
@@ -23,6 +30,7 @@ const HorizontalCourseList = ({
   listBackgroundColor,
   NoResultsComponent,
   viewMoreLink,
+  hybrid,
 }) => {
   const styles = React.useMemo(
     () =>
@@ -54,21 +62,54 @@ const HorizontalCourseList = ({
 
   React.useEffect(() => {
     if (!isLoading && courses) {
-      setPairedCourses(pairUpCourses(courses));
+      setPairedCourses(pairUpCourses(courses, viewMoreLink));
     }
   }, [courses, isLoading]);
 
   const renderCourseItem = React.useCallback(
     ({ item }) => (
       <View style={{ flexDirection: 'column' }}>
-        <CourseCardComponent course={item.course1} />
-        <CourseCardComponent
-          course={item.course2}
-          viewMoreLink={viewMoreLink}
-        />
+        {hybrid ? (
+          item.course1?.is_enrolled ? (
+            <EnrolledCourseCard
+              course={item.course1}
+              viewMoreLink={viewMoreLink}
+            />
+          ) : (
+            <BasicCourseCard
+              course={item.course1}
+              viewMoreLink={viewMoreLink}
+            />
+          )
+        ) : (
+          <CourseCardComponent
+            course={item.course1}
+            viewMoreLink={viewMoreLink}
+          />
+        )}
+
+        {item.course2 !== 'ignore' &&
+          (hybrid ? (
+            item.course2?.is_enrolled ? (
+              <EnrolledCourseCard
+                course={item.course2}
+                viewMoreLink={viewMoreLink}
+              />
+            ) : (
+              <BasicCourseCard
+                course={item.course2}
+                viewMoreLink={viewMoreLink}
+              />
+            )
+          ) : (
+            <CourseCardComponent
+              course={item.course2}
+              viewMoreLink={viewMoreLink}
+            />
+          ))}
       </View>
     ),
-    [CourseCardComponent]
+    [CourseCardComponent, hybrid, viewMoreLink]
   );
 
   return (

@@ -14,7 +14,7 @@ const Footer = ({ course }) => (
   </Button>
 );
 
-const EnrolledCourseCard = ({ course, viewMoreLink }) => {
+const SearchEnrolledCourseCard = ({ course, viewMoreLink }) => {
   const totalLessons = course?.chapters?.reduce(
     (acc, chapter) => acc + chapter.lessons.length,
     0
@@ -88,7 +88,7 @@ const EnrolledCourseCard = ({ course, viewMoreLink }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: 360,
+    width: 380,
     height: 140,
     margin: 8,
     borderRadius: 12,
@@ -108,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EnrolledCourseCard;
+export default SearchEnrolledCourseCard;

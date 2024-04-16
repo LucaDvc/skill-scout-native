@@ -21,6 +21,7 @@ const PopularCoursesList = () => {
       }
       listBackgroundColor={theme['color-basic-100']}
       courseListName={'popularCourses'}
+      hybrid={true}
     />
   );
 };

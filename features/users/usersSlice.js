@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   user: null,
+  initDone: false,
   accessToken: null,
   refreshToken: null,
   isError: false,
@@ -253,6 +254,7 @@ export const usersSlice = createSlice({
         state.user = action.payload.user;
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
+        state.initDone = true;
       })
       .addCase(register.pending, (state) => {
         state.isLoading = true;

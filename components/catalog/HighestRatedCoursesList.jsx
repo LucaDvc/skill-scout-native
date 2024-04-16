@@ -21,6 +21,7 @@ const HighestRatedCoursesList = () => {
       }
       listBackgroundColor={theme['color-basic-100']}
       courseListName={'highestRatedCourses'}
+      hybrid={true}
     />
   );
 };
