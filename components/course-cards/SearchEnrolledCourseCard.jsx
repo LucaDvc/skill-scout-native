@@ -15,11 +15,6 @@ const Footer = ({ course }) => (
 );
 
 const SearchEnrolledCourseCard = ({ course, viewMoreLink }) => {
-  const totalLessons = course?.chapters?.reduce(
-    (acc, chapter) => acc + chapter.lessons.length,
-    0
-  );
-
   return course ? (
     <Card
       style={styles.card}
@@ -50,11 +45,12 @@ const SearchEnrolledCourseCard = ({ course, viewMoreLink }) => {
             <Text category='p2'>
               {course.learner_progress.completed_lessons.length +
                 ' / ' +
-                totalLessons}
+                course.lessons_count}
             </Text>
             <ProgressBar
               progress={
-                course.learner_progress.completed_lessons.length / totalLessons
+                course.learner_progress.completed_lessons.length /
+                course.lessons_count
               }
               animating={false}
               size='small'
