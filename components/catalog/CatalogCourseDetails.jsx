@@ -17,17 +17,28 @@ import {
   BackIcon,
 } from '../extra/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { wishlistCourse } from '../../features/catalog/catalogSlice';
+import {
+  courseEnroll,
+  resetEnroll,
+  wishlistCourse,
+} from '../../features/catalog/catalogSlice';
 import { refreshAuthUser } from '../../features/users/usersSlice';
 import Toast from 'react-native-root-toast';
 import CourseDetailsTabBar from '../course-details/CourseDetailsTabBar';
 import MaterialTopTabs from '../layout/MaterialTopTabs';
+import LoadingModal from '../layout/LoadingModal';
 
 const CatalogCourseDetails = ({ course }) => {
   const backgroundImageHeight = 190;
   const theme = useTheme();
 
   const { accessToken, user } = useSelector((state) => state.users);
+  const {
+    isLoading: enrollLoading,
+    isError: enrollError,
+    message: enrollMessage,
+    isSuccess: enrollSuccess,
+  } = useSelector((state) => state.catalog.enroll);
   const dispatch = useDispatch();
 
   const [isWishlited, setIsWishlited] = React.useState(
@@ -52,6 +63,25 @@ const CatalogCourseDetails = ({ course }) => {
     return () => backHandler.remove();
   }, []);
 
+  React.useEffect(() => {
+    if (enrollSuccess) {
+      router.replace(`/learning/${course.id}/(tabs)`);
+      Toast.show('Enrolled successfully', {
+        position: Toast.positions.CENTER,
+      });
+    }
+
+    if (enrollError) {
+      Toast.show(enrollMessage, {
+        position: Toast.positions.CENTER,
+      });
+    }
+
+    return () => {
+      dispatch(resetEnroll());
+    };
+  }, [enrollSuccess, enrollError, enrollMessage]);
+
   const handleWishlist = () => {
     if (accessToken) {
       dispatch(wishlistCourse(course.id));
@@ -72,7 +102,11 @@ const CatalogCourseDetails = ({ course }) => {
 
   const handleJoinCourse = () => {
     if (accessToken) {
-      router.push('/payment?courseId=' + course.id);
+      if (course.price === '0') {
+        dispatch(courseEnroll(course.id));
+      } else {
+        router.push('/payment?courseId=' + course.id);
+      }
     } else {
       router.push('/auth');
     }
@@ -99,6 +133,8 @@ const CatalogCourseDetails = ({ course }) => {
         }
         style={styles.topNavigation}
       />
+
+      <LoadingModal visible={enrollLoading} />
 
       <ImageBackground
         blurRadius={10}
