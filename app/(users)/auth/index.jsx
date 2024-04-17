@@ -1,4 +1,4 @@
-import { View, TouchableWithoutFeedback, ImageBackground } from 'react-native';
+import { View, ImageBackground, Pressable } from 'react-native';
 import React from 'react';
 import {
   Button,
@@ -46,9 +46,9 @@ const Login = () => {
   };
 
   const renderPasswordIcon = (props) => (
-    <TouchableWithoutFeedback onPress={onPasswordIconPress}>
+    <Pressable onPress={onPasswordIconPress}>
       <Icon {...props} name={passwordVisible ? 'eye-off' : 'eye'} />
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 
   const onSubmit = () => {

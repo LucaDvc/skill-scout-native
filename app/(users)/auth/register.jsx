@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  TouchableWithoutFeedback,
-  ImageBackground,
-  View,
-  ScrollView,
-} from 'react-native';
+import { Pressable, ImageBackground, View, ScrollView } from 'react-native';
 import {
   Button,
   CheckBox,
@@ -123,9 +118,9 @@ export default Register = () => {
   );
 
   const renderPasswordIcon = (props) => (
-    <TouchableWithoutFeedback onPress={onPasswordIconPress}>
+    <Pressable onPress={onPasswordIconPress}>
       <Icon {...props} name={passwordVisible ? 'eye-off' : 'eye'} />
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 
   const renderCheckboxLabel = React.useCallback(

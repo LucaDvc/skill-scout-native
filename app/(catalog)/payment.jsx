@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import {
   Button,
   Divider,
@@ -9,7 +9,6 @@ import {
   StyleService,
   useStyleSheet,
 } from '@ui-kitten/components';
-import { TouchableWithoutFeedback } from 'react-native';
 import { KeyboardAvoidingView } from '../../components/layout/KeyboardAvoidingView';
 import { router, useLocalSearchParams } from 'expo-router';
 import { usePaymentForm } from '../../hooks/usePaymentForm';
@@ -57,9 +56,9 @@ export default PaymentPage = () => {
   };
 
   const renderCVVIcon = (props) => (
-    <TouchableWithoutFeedback onPress={onCVVIconPress}>
+    <Pressable onPress={onCVVIconPress}>
       <Icon {...props} name={cvvVisible ? 'eye' : 'eye-off'} />
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 
   if (isError) {
