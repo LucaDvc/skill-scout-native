@@ -62,7 +62,9 @@ const Modules = () => {
             {chapter.lessons.map((lesson, lessonIndex) => (
               <Pressable
                 key={`${chapterIndex}.${lessonIndex}`}
-                onPress={() => router.push(`/learning/lesson/${lesson.id}`)}
+                onPress={() =>
+                  router.push(`/learning/${course.id}/lessons/${lesson.id}`)
+                }
               >
                 <View style={styles.lessonInfoContainer}>
                   <Text
