@@ -21,9 +21,7 @@ const Lesson = () => {
   const [chapterIndex, setChapterIndex] = React.useState(null);
 
   const dispatch = useDispatch();
-  const { course, isLoading, isError, isSuccess } = useSelector(
-    (state) => state.learning
-  );
+  const { course, isLoading, isError } = useSelector((state) => state.learning);
 
   React.useEffect(() => {
     if (!course) {

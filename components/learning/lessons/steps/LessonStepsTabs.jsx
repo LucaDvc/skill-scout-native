@@ -16,6 +16,7 @@ import {
   VideoCheckedIcon,
   VideoIcon,
 } from '../../../../components/extra/icons';
+import { useWindowDimensions } from 'react-native';
 
 const stepConfig = {
   text: {
@@ -41,14 +42,16 @@ const stepConfig = {
 
 const LessonStepsTabs = ({ lesson }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const { height } = useWindowDimensions();
 
   const shouldLoadComponent = (index) => index === selectedIndex;
-
+  const topNavHeight = 56;
   return (
     <TabView
       selectedIndex={selectedIndex}
-      //   shouldLoadComponent={shouldLoadComponent}
+      shouldLoadComponent={shouldLoadComponent}
       onSelect={(index) => setSelectedIndex(index)}
+      style={{ height: height - topNavHeight }}
     >
       {lesson.lesson_steps.map((step) => {
         const { component: Component, icon } = stepConfig[step.type];
@@ -60,7 +63,7 @@ const LessonStepsTabs = ({ lesson }) => {
               <Icon {...props} fill={step.completed ? 'lightgray' : 'black'} />
             )}
           >
-            <Component lessonStep={step} />
+            <Component lesson={lesson} lessonStep={step} />
           </Tab>
         );
       })}

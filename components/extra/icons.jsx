@@ -16,6 +16,8 @@ export const EditIcon = (style) => <Icon {...style} name='edit' />;
 
 export const ArrowRightIcon = (style) => <Icon {...style} name='arrow-right' />;
 
+export const ArrowLeftIcon = (style) => <Icon {...style} name='arrow-left' />;
+
 export const CheckmarkIcon = (style) => <Icon {...style} name='checkmark' />;
 
 export const DoneAllIcon = (style) => <Icon {...style} name='done-all' />;

@@ -26,9 +26,26 @@ const getCourseById = async (id, token) => {
   return response.data;
 };
 
+const completeLessonStep = async (lessonStepId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(
+    `${API_URL}/progress/steps/${lessonStepId}/`,
+    {},
+    config
+  );
+
+  return response.data;
+};
+
 const learningService = {
   getCourses,
   getCourseById,
+  completeLessonStep,
 };
 
 export default learningService;

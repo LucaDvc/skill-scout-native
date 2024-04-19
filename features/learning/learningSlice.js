@@ -44,6 +44,21 @@ export const getCourseById = createAsyncThunk(
   }
 );
 
+export const completeLessonStep = createAsyncThunk(
+  'learning/completeLessonStep',
+  async (lessonStepId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      return await learningService.completeLessonStep(lessonStepId, token);
+    } catch (error) {
+      console.error(error);
+      let message = error.message || error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const learningSlice = createSlice({
   name: 'learning',
   initialState,
@@ -61,6 +76,13 @@ export const learningSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.message = '';
+    },
+    updateUiOnLessonStepComplete: (state, action) => {
+      const lessonStepId = action.payload;
+      state.course.chapters
+        .flatMap((chapter) => chapter.lessons)
+        .flatMap((lesson) => lesson.lesson_steps)
+        .find((step) => step.id === lessonStepId).completed = true;
     },
   },
   extraReducers: (builder) => {
@@ -96,4 +118,5 @@ export const learningSlice = createSlice({
 
 export default learningSlice.reducer;
 
-export const { reset, statusesReset } = learningSlice.actions;
+export const { reset, statusesReset, updateUiOnLessonStepComplete } =
+  learningSlice.actions;
