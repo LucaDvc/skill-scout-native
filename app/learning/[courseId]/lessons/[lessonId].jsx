@@ -14,6 +14,7 @@ import {
 } from '@ui-kitten/components';
 import { BackIcon } from '../../../../components/extra/icons';
 import LessonStepsTabs from '../../../../components/learning/lessons/steps/LessonStepsTabs';
+import { LessonContextProvider } from '../../../../context/LessonContext';
 
 const Lesson = () => {
   const { lessonId, courseId } = useLocalSearchParams();
@@ -21,7 +22,6 @@ const Lesson = () => {
 
   const [lesson, setLesson] = React.useState(null);
   const [findingLesson, setFindingLesson] = React.useState(true);
-  const [chapterIndex, setChapterIndex] = React.useState(null);
 
   const dispatch = useDispatch();
   const { course, isLoading, isError } = useSelector((state) => state.learning);
@@ -40,13 +40,11 @@ const Lesson = () => {
         .find((lesson) => lesson.id === lessonId);
 
       if (lesson) {
-        setLesson(lesson);
-        setFindingLesson(false);
-        setChapterIndex(
-          course.chapters.findIndex((chapter) =>
-            chapter.lessons.some((lesson) => lesson.id === lessonId)
-          )
+        const chapterIdx = course.chapters.findIndex((chapter) =>
+          chapter.lessons.some((lesson) => lesson.id === lessonId)
         );
+        setLesson({ ...lesson, chapterIndex: chapterIdx });
+        setFindingLesson(false);
       } else {
         router.back();
         Toast.show('Lesson not found', {
@@ -69,7 +67,7 @@ const Lesson = () => {
     <View>
       <TopNavigation
         title={() => (
-          <Text category='h6'>{`${chapterIndex + 1}.${lesson.order} ${
+          <Text category='h6'>{`${lesson.chapterIndex + 1}.${lesson.order} ${
             lesson.title
           }`}</Text>
         )}
@@ -77,11 +75,13 @@ const Lesson = () => {
         accessoryLeft={
           <TopNavigationAction
             icon={BackIcon}
-            onPress={() => router.replace(`learning/${courseId}`)}
+            onPress={() => router.replace(`learning/${courseId}/modules`)}
           />
         }
       />
-      <LessonStepsTabs lesson={lesson} />
+      <LessonContextProvider lesson={lesson}>
+        <LessonStepsTabs />
+      </LessonContextProvider>
     </View>
   );
 };

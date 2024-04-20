@@ -9,7 +9,7 @@ import {
   updateUiOnLessonStepComplete,
 } from '../../../../features/learning/learningSlice';
 
-const TextLessonStep = ({ lesson, lessonStep }) => {
+const TextLessonStep = ({ lessonStep }) => {
   const { width } = useWindowDimensions();
   const styles = useStyleSheet(themedStyles);
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const TextLessonStep = ({ lesson, lessonStep }) => {
       <View style={styles.contentContainer}>
         <RenderHTML contentWidth={width} source={{ html: lessonStep.text }} />
       </View>
-      <StepsNavigationButtons lesson={lesson} lessonStep={lessonStep} />
+      <StepsNavigationButtons lessonStep={lessonStep} />
     </ScrollView>
   );
 };

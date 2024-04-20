@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tab, TabView } from '@ui-kitten/components';
+import { Tab, TabView, useTheme } from '@ui-kitten/components';
 
 import TextLessonStep from '../../../../components/learning/lessons/steps/TextLessonStep';
 import VideoLessonStep from '../../../../components/learning/lessons/steps/VideoLessonStep';
@@ -17,7 +17,7 @@ import {
   VideoIcon,
 } from '../../../../components/extra/icons';
 import { useWindowDimensions } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLessonContext } from '../../../../context/LessonContext';
 
 const stepConfig = {
   text: {
@@ -41,22 +41,25 @@ const stepConfig = {
   },
 };
 
-const LessonStepsTabs = ({ lesson }) => {
-  const { lessonStepId } = useLocalSearchParams();
-  const initialIndex =
-    lesson.lesson_steps.findIndex((step) => step.id === lessonStepId) ?? 0;
-  const [selectedIndex, setSelectedIndex] = React.useState(initialIndex);
+const LessonStepsTabs = () => {
+  const { lesson, selectedStepIndex, setSelectedStepIndex } =
+    useLessonContext();
 
-  const { height } = useWindowDimensions();
-
-  const shouldLoadComponent = (index) => index === selectedIndex;
   const topNavHeight = 56;
+  const { height } = useWindowDimensions();
+  const theme = useTheme();
+
+  const shouldLoadComponent = (index) => index === selectedStepIndex;
+
   return (
     <TabView
-      selectedIndex={selectedIndex}
+      selectedIndex={selectedStepIndex}
       shouldLoadComponent={shouldLoadComponent}
-      onSelect={(index) => setSelectedIndex(index)}
-      style={{ height: height - topNavHeight }}
+      onSelect={(index) => setSelectedStepIndex(index)}
+      style={{
+        height: height - topNavHeight,
+        backgroundColor: theme['color-basic-200'],
+      }}
     >
       {lesson.lesson_steps.map((step) => {
         const { component: Component, icon } = stepConfig[step.type];
@@ -68,7 +71,7 @@ const LessonStepsTabs = ({ lesson }) => {
               <Icon {...props} fill={step.completed ? 'lightgray' : 'black'} />
             )}
           >
-            <Component lesson={lesson} lessonStep={step} />
+            <Component lessonStep={step} />
           </Tab>
         );
       })}
