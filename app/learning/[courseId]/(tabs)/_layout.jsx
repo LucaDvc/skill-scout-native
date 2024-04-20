@@ -15,7 +15,9 @@ const LearningCourseDetailsTabsLayout = () => {
   );
 
   React.useEffect(() => {
-    dispatch(getCourseById(courseId));
+    if (Object.keys(course).length === 0 || course.id !== courseId) {
+      dispatch(getCourseById(courseId));
+    }
   }, [courseId]);
 
   return isLoading ? (

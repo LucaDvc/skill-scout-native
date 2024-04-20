@@ -6,15 +6,18 @@ import { getCourseById } from '../../../../features/learning/learningSlice';
 import Toast from 'react-native-root-toast';
 import {
   Spinner,
+  StyleService,
   Text,
   TopNavigation,
   TopNavigationAction,
+  useStyleSheet,
 } from '@ui-kitten/components';
 import { BackIcon } from '../../../../components/extra/icons';
 import LessonStepsTabs from '../../../../components/learning/lessons/steps/LessonStepsTabs';
 
 const Lesson = () => {
   const { lessonId, courseId } = useLocalSearchParams();
+  const styles = useStyleSheet(themedStyles);
 
   const [lesson, setLesson] = React.useState(null);
   const [findingLesson, setFindingLesson] = React.useState(true);
@@ -24,13 +27,13 @@ const Lesson = () => {
   const { course, isLoading, isError } = useSelector((state) => state.learning);
 
   React.useEffect(() => {
-    if (!course) {
+    if (Object.keys(course).length === 0 || course.id !== courseId) {
       dispatch(getCourseById(courseId));
     }
   }, [courseId]);
 
   React.useEffect(() => {
-    if (course) {
+    if (Object.keys(course).length !== 0) {
       const lesson = course.chapters
         .map((chapter) => chapter.lessons)
         .flat()
@@ -72,7 +75,10 @@ const Lesson = () => {
         )}
         alignment='center'
         accessoryLeft={
-          <TopNavigationAction icon={BackIcon} onPress={() => router.back()} />
+          <TopNavigationAction
+            icon={BackIcon}
+            onPress={() => router.replace(`learning/${courseId}`)}
+          />
         }
       />
       <LessonStepsTabs lesson={lesson} />
@@ -80,11 +86,12 @@ const Lesson = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const themedStyles = StyleService.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'color-basic-100',
   },
 });
 

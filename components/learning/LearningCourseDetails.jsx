@@ -39,7 +39,15 @@ const LearningCourseDetails = ({ course }) => {
   }, []);
 
   const handleContinueCourse = () => {
-    // router.push(`learning/${course.id}/${last-completed-lessonId}`);
+    const lastStoppedLessonId =
+      course.learner_progress.last_stopped_lesson ??
+      course.chapters[0].lessons[0].id;
+    const lastStoppedStepId =
+      course.learner_progress.last_stopped_step ??
+      course.chapters[0].lessons[0].lesson_steps[0].id;
+    router.replace(
+      `/learning/${course.id}/lessons/${lastStoppedLessonId}?lessonStepId=${lastStoppedStepId}`
+    );
   };
 
   return (

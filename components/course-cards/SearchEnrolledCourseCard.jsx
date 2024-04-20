@@ -2,17 +2,7 @@ import React from 'react';
 import { Avatar, Button, Card, ProgressBar, Text } from '@ui-kitten/components';
 import { StyleSheet, Platform, View } from 'react-native';
 import { router } from 'expo-router';
-import { ArrowRightIcon } from '../extra/icons';
-
-const Footer = ({ course }) => (
-  <Button
-    appearance='ghost'
-    accessoryLeft={ArrowRightIcon}
-    onPress={() => router.push(`(catalog)/${course.id}/(tabs)`)}
-  >
-    Continue Learning
-  </Button>
-);
+import Footer from './EnrolledCourseCardFooter';
 
 const SearchEnrolledCourseCard = ({ course, viewMoreLink }) => {
   return course ? (

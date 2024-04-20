@@ -17,6 +17,7 @@ import {
   VideoIcon,
 } from '../../../../components/extra/icons';
 import { useWindowDimensions } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 
 const stepConfig = {
   text: {
@@ -41,7 +42,11 @@ const stepConfig = {
 };
 
 const LessonStepsTabs = ({ lesson }) => {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const { lessonStepId } = useLocalSearchParams();
+  const initialIndex =
+    lesson.lesson_steps.findIndex((step) => step.id === lessonStepId) ?? 0;
+  const [selectedIndex, setSelectedIndex] = React.useState(initialIndex);
+
   const { height } = useWindowDimensions();
 
   const shouldLoadComponent = (index) => index === selectedIndex;
