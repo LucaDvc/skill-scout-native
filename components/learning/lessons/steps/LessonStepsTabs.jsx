@@ -18,6 +18,7 @@ import {
 } from '../../../../components/extra/icons';
 import { useWindowDimensions } from 'react-native';
 import { useLessonContext } from '../../../../context/LessonContext';
+import { useFullscreenContext } from '../../../../context/FullscreenContext';
 
 const stepConfig = {
   text: {
@@ -44,6 +45,7 @@ const stepConfig = {
 const LessonStepsTabs = () => {
   const { lesson, selectedStepIndex, setSelectedStepIndex } =
     useLessonContext();
+  const { isFullscreen, videoLessonStep } = useFullscreenContext();
 
   const topNavHeight = 56;
   const { height } = useWindowDimensions();
@@ -51,7 +53,7 @@ const LessonStepsTabs = () => {
 
   const shouldLoadComponent = (index) => index === selectedStepIndex;
 
-  return (
+  return !isFullscreen ? (
     <TabView
       selectedIndex={selectedStepIndex}
       shouldLoadComponent={shouldLoadComponent}
@@ -76,6 +78,8 @@ const LessonStepsTabs = () => {
         );
       })}
     </TabView>
+  ) : (
+    <VideoLessonStep lessonStep={videoLessonStep} />
   );
 };
 

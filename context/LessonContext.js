@@ -7,7 +7,7 @@ export function useLessonContext() {
   return useContext(LessonContext);
 }
 
-export function LessonContextProvider({ children, lesson: currentLesson }) {
+export function LessonProvider({ children, lesson: currentLesson }) {
   const { lessonStepId } = useLocalSearchParams();
   const initialIndex =
     currentLesson.lesson_steps.findIndex((step) => step.id === lessonStepId) ??

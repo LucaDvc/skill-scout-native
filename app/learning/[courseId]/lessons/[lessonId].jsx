@@ -14,7 +14,9 @@ import {
 } from '@ui-kitten/components';
 import { BackIcon } from '../../../../components/extra/icons';
 import LessonStepsTabs from '../../../../components/learning/lessons/steps/LessonStepsTabs';
-import { LessonContextProvider } from '../../../../context/LessonContext';
+import { LessonProvider } from '../../../../context/LessonContext';
+import { FullscreenProvider } from '../../../../context/FullscreenContext';
+import LessonTopNavigation from '../../../../components/learning/lessons/LessonTopNavigation';
 
 const Lesson = () => {
   const { lessonId, courseId } = useLocalSearchParams();
@@ -64,25 +66,14 @@ const Lesson = () => {
       refreshCallback={() => dispatch(getCourseById(courseId))}
     />
   ) : (
-    <View>
-      <TopNavigation
-        title={() => (
-          <Text category='h6'>{`${lesson.chapterIndex + 1}.${lesson.order} ${
-            lesson.title
-          }`}</Text>
-        )}
-        alignment='center'
-        accessoryLeft={
-          <TopNavigationAction
-            icon={BackIcon}
-            onPress={() => router.replace(`learning/${courseId}/modules`)}
-          />
-        }
-      />
-      <LessonContextProvider lesson={lesson}>
-        <LessonStepsTabs />
-      </LessonContextProvider>
-    </View>
+    <FullscreenProvider>
+      <View>
+        <LessonTopNavigation lesson={lesson} courseId={courseId} />
+        <LessonProvider lesson={lesson}>
+          <LessonStepsTabs />
+        </LessonProvider>
+      </View>
+    </FullscreenProvider>
   );
 };
 

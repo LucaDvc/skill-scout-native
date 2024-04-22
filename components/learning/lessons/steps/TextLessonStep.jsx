@@ -43,10 +43,6 @@ const themedStyles = StyleService.create({
     justifyContent: 'space-between',
     paddingBottom: 40,
   },
-  layoutContainer: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
   contentContainer: {
     flex: 1,
     justifyContent: 'flex-start',
