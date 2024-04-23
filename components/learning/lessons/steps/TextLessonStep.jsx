@@ -46,6 +46,7 @@ const themedStyles = StyleService.create({
   contentContainer: {
     flex: 1,
     justifyContent: 'flex-start',
+    marginHorizontal: 12,
   },
 });
 

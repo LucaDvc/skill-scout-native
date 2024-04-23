@@ -22,9 +22,7 @@ export const CheckmarkIcon = (style) => <Icon {...style} name='checkmark' />;
 
 export const DoneAllIcon = (style) => <Icon {...style} name='done-all' />;
 
-export const CheckmarkCircleIcon = (style) => (
-  <Icon {...style} name='checkmark-circle' />
-);
+export const CheckmarkCircleIcon = (style) => <Icon {...style} name='checkmark-circle' />;
 
 export const LockIcon = (style) => <Icon {...style} name='lock' />;
 
@@ -36,35 +34,25 @@ export const ForwardIcon = (props) => <Icon {...props} name='arrow-forward' />;
 
 export const RefreshIcon = (props) => <Icon {...props} name='refresh' />;
 
-export const HeartOutlineIcon = (props) => (
-  <Icon {...props} name='heart-outline' />
-);
+export const HeartOutlineIcon = (props) => <Icon {...props} name='heart-outline' />;
 
 export const HeartIcon = (props) => <Icon {...props} name='heart' />;
 
-export const ClockOutlineIcon = (props) => (
-  <Icon {...props} name='clock-outline' />
-);
+export const ClockOutlineIcon = (props) => <Icon {...props} name='clock-outline' />;
 
 export const BarChart2OutlineIcon = (props) => (
   <Icon {...props} name='bar-chart-2-outline' />
 );
 
-export const FolderOutlineIcon = (props) => (
-  <Icon {...props} name='folder-outline' />
-);
+export const FolderOutlineIcon = (props) => <Icon {...props} name='folder-outline' />;
 
-export const ListOutlineIcon = (props) => (
-  <Icon {...props} name='list-outline' />
-);
+export const ListOutlineIcon = (props) => <Icon {...props} name='list-outline' />;
 
 export const PersonDoneOutlineIcon = (props) => (
   <Icon {...props} name='person-done-outline' />
 );
 
-export const PeopleOutlineIcon = (props) => (
-  <Icon {...props} name='people-outline' />
-);
+export const PeopleOutlineIcon = (props) => <Icon {...props} name='people-outline' />;
 
 export const HashIcon = (props) => <Icon {...props} name='hash' />;
 
@@ -72,9 +60,7 @@ export const SearchIcon = (props) => <Icon {...props} name='search' />;
 
 export const OptionsIcon = (props) => <Icon {...props} name='options-2' />;
 
-export const ArrowIosRightIcon = (props) => (
-  <Icon {...props} name='arrow-ios-forward' />
-);
+export const ArrowIosRightIcon = (props) => <Icon {...props} name='arrow-ios-forward' />;
 
 export const CloseIcon = (props) => <Icon {...props} name='close-outline' />;
 
@@ -201,4 +187,12 @@ export const CodeCheckedIcon = (props) => (
       />
     </G>
   </Svg>
+);
+
+export const CloseCircleOutlineIcon = (props) => (
+  <Icon {...props} name='close-circle-outline' />
+);
+
+export const CheckmarkCircle2OutlineIcon = (props) => (
+  <Icon {...props} name='checkmark-circle-2-outline' />
 );
