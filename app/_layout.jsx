@@ -7,16 +7,10 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { store } from '../features/store';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  initializeAuth,
-  refreshAccessToken,
-} from '../features/users/usersSlice';
+import { initializeAuth, refreshAccessToken } from '../features/users/usersSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootSiblingParent } from 'react-native-root-siblings';
-import {
-  createStackNavigator,
-  TransitionPresets,
-} from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
 import { withLayoutContext } from 'expo-router';
 
@@ -36,7 +30,7 @@ const App = () => {
     init();
   }, [dispatch, initializeAuth]);
 
-  const { refreshToken, initDone } = useSelector((state) => state.users);
+  const { refreshToken, initDone, tokenRefreshing } = useSelector((state) => state.users);
 
   React.useEffect(() => {
     const checkAuthStatus = async () => {
@@ -52,7 +46,7 @@ const App = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
         <IconRegistry icons={EvaIconsPack} />
-        {initDone && (
+        {initDone && !tokenRefreshing && (
           <JsStack screenOptions={{ headerShown: false }}>
             <Stack.Screen
               name='(root)/(tabs)'

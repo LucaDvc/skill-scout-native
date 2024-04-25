@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const initialState = {
   user: null,
   initDone: false,
+  tokenRefreshing: false,
   accessToken: null,
   refreshToken: null,
   isError: false,
@@ -14,36 +15,30 @@ const initialState = {
   errors: {},
 };
 
-export const initializeAuth = createAsyncThunk(
-  'users/initializeAuth',
-  async () => {
-    const user = JSON.parse(await AsyncStorage.getItem('user'));
-    const refreshToken = await AsyncStorage.getItem('refreshToken');
-    const accessToken = await AsyncStorage.getItem('accessToken');
-    return { user, refreshToken, accessToken };
-  }
-);
+export const initializeAuth = createAsyncThunk('users/initializeAuth', async () => {
+  const user = JSON.parse(await AsyncStorage.getItem('user'));
+  const refreshToken = await AsyncStorage.getItem('refreshToken');
+  const accessToken = await AsyncStorage.getItem('accessToken');
+  return { user, refreshToken, accessToken };
+});
 
-export const register = createAsyncThunk(
-  'users/register',
-  async (user, thunkAPI) => {
-    try {
-      return await usersService.register(user);
-    } catch (error) {
-      let message = error.message || error.toString();
+export const register = createAsyncThunk('users/register', async (user, thunkAPI) => {
+  try {
+    return await usersService.register(user);
+  } catch (error) {
+    let message = error.message || error.toString();
 
-      if (
-        error.response &&
-        error.response.data &&
-        typeof error.response.data === 'object'
-      ) {
-        message = error.response.data;
-      }
-
-      return thunkAPI.rejectWithValue(message);
+    if (
+      error.response &&
+      error.response.data &&
+      typeof error.response.data === 'object'
+    ) {
+      message = error.response.data;
     }
+
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
 export const login = createAsyncThunk('users/login', async (user, thunkAPI) => {
   try {
@@ -380,16 +375,16 @@ export const usersSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(refreshAccessToken.pending, (state) => {
-        state.isLoading = true;
+        state.tokenRefreshing = true;
       })
       .addCase(refreshAccessToken.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.tokenRefreshing = false;
         state.isSuccess = true;
         state.accessToken = action.payload.access;
         AsyncStorage.setItem('accessToken', action.payload.access);
       })
-      .addCase(refreshAccessToken.rejected, (state, action) => {
-        state.isLoading = false;
+      .addCase(refreshAccessToken.rejected, (state) => {
+        state.tokenRefreshing = true;
         state.accessToken = null;
         state.refreshToken = null;
         state.user = null;
