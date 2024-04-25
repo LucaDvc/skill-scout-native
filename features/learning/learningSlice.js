@@ -10,20 +10,17 @@ const initialState = {
   message: '',
 };
 
-export const getCourses = createAsyncThunk(
-  'learning/getCourses',
-  async (_, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().users.accessToken;
-      return await learningService.getCourses(token);
-    } catch (error) {
-      console.error(error);
-      let message = error.message || error.toString();
+export const getCourses = createAsyncThunk('learning/getCourses', async (_, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().users.accessToken;
+    return await learningService.getCourses(token);
+  } catch (error) {
+    console.error(error);
+    let message = error.message || error.toString();
 
-      return thunkAPI.rejectWithValue(message);
-    }
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
 export const getCourseById = createAsyncThunk(
   'learning/getCourseById',
@@ -79,10 +76,21 @@ export const learningSlice = createSlice({
     },
     updateUiOnLessonStepComplete: (state, action) => {
       const lessonStepId = action.payload;
-      state.course.chapters
-        .flatMap((chapter) => chapter.lessons)
-        .flatMap((lesson) => lesson.lesson_steps)
-        .find((step) => step.id === lessonStepId).completed = true;
+      state.course = {
+        ...state.course,
+        chapters: (state.course.chapters
+          .flatMap((chapter) => chapter.lessons)
+          .flatMap((lesson) => lesson.lesson_steps)
+          .find((step) => step.id === lessonStepId).completed = true),
+        learner_progress: {
+          ...state.course.learner_progress,
+          last_stopped_step: lessonStepId,
+          completed_steps: [
+            ...state.course.learner_progress.completed_steps,
+            lessonStepId,
+          ],
+        },
+      };
     },
   },
   extraReducers: (builder) => {

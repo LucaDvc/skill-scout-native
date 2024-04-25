@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, { Path, G } from 'react-native-svg';
+import Svg, { Path, G, Circle } from 'react-native-svg';
 import { Icon } from '@ui-kitten/components';
 
 export const EmailIcon = (style) => <Icon {...style} name='email' />;
@@ -196,3 +196,5 @@ export const CloseCircleOutlineIcon = (props) => (
 export const CheckmarkCircle2OutlineIcon = (props) => (
   <Icon {...props} name='checkmark-circle-2-outline' />
 );
+
+export const InfoOutlineIcon = (props) => <Icon {...props} name='info-outline' />;
