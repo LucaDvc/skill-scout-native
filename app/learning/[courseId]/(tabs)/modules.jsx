@@ -10,23 +10,16 @@ const Modules = () => {
   const theme = useTheme();
 
   const dispatch = useDispatch();
-  const { course, isLoading } = useSelector((state) => state.learning);
-
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  React.useEffect(() => {
-    setRefreshing(isLoading);
-  }, [isLoading]);
+  const { course } = useSelector((state) => state.learning);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
     dispatch(getCourseById(course.id));
   }, []);
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
       style={{ backgroundColor: theme['color-basic-100'] }}
     >
       <Layout level='1'>

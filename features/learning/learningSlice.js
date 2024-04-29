@@ -45,7 +45,6 @@ export const completeLessonStep = createAsyncThunk(
   'learning/completeLessonStep',
   async (lessonStepId, thunkAPI) => {
     try {
-      console.log('dispatching completeLessonStep');
       const token = thunkAPI.getState().users.accessToken;
       return await learningService.completeLessonStep(lessonStepId, token);
     } catch (error) {
@@ -76,7 +75,6 @@ export const learningSlice = createSlice({
       state.message = '';
     },
     updateUiOnLessonStepComplete: (state, action) => {
-      console.log('dispatching updateUiOnLessonStepComplete');
       const lessonStepId = action.payload;
 
       state.course = {

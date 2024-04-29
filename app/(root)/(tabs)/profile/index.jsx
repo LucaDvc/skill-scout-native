@@ -8,14 +8,7 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Image,
-  StyleSheet,
-  Platform,
-  View,
-  ScrollView,
-  RefreshControl,
-} from 'react-native';
+import { StyleSheet, Platform, View, ScrollView, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
 import { EditIcon, SettingsIcon } from '../../../../components/extra/icons';
 import UnsignedUserProfile from '../../../../components/profile/UnsignedUserProfile';
@@ -53,9 +46,7 @@ const UserHeader = ({ user }) => (
     >
       <Avatar
         source={{
-          uri: user.picture
-            ? user.picture
-            : awsConstants.DEFAULT_USER_PICTURE_URL,
+          uri: user.picture ? user.picture : awsConstants.DEFAULT_USER_PICTURE_URL,
         }}
         size='giant'
         style={{ marginRight: 32, height: 70, width: 70 }}
@@ -68,22 +59,10 @@ const UserHeader = ({ user }) => (
 const ProfileScreen = () => {
   // TODO add wishlist, my reviews, my courses (teaching), maybe heatmap
   const theme = useTheme();
-  const [refreshing, setRefreshing] = React.useState(false);
 
   const dispatch = useDispatch();
 
   const { user, accessToken } = useSelector((state) => state.users);
-
-  const { isLoading: learningLoading } = useSelector((state) => state.learning);
-  const { isLoading: teachingLoading } = useSelector((state) => state.teaching);
-
-  React.useEffect(() => {
-    if (!learningLoading && !teachingLoading) {
-      setRefreshing(false);
-    } else {
-      setRefreshing(true);
-    }
-  }, [learningLoading, teachingLoading]);
 
   const onRefresh = React.useCallback(() => {
     dispatch(getCourses());
@@ -102,9 +81,7 @@ const ProfileScreen = () => {
       {user && accessToken ? (
         <ScrollView
           style={{ flex: 1, backgroundColor: theme['color-basic-100'] }}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
         >
           <SignedInUserProfile />
         </ScrollView>

@@ -9,13 +9,7 @@ import {
   TopNavigation,
   useTheme,
 } from '@ui-kitten/components';
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  Platform,
-  RefreshControl,
-} from 'react-native';
+import { ScrollView, StyleSheet, View, Platform, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
 import PopularCoursesList from '../../../components/catalog/PopularCoursesList';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,14 +19,7 @@ import { PlusIcon } from '../../../components/extra/icons';
 export default function HomeScreen() {
   const theme = useTheme();
 
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  const { isLoading } = useSelector((state) => state.catalog.popularCourses);
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    setRefreshing(isLoading);
-  }, [isLoading]);
 
   const onRefresh = React.useCallback(() => {
     dispatch(getPopularCourses());
@@ -41,9 +28,7 @@ export default function HomeScreen() {
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme['color-basic-100'] }}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
+      refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
     >
       <TopNavigation
         alignment='center'
@@ -61,8 +46,8 @@ export default function HomeScreen() {
             onPress={() => router.push('/catalog')}
           >
             <Text>
-              <Text style={{ fontWeight: 'bold' }}>Discover</Text> free online
-              courses. Tap to find
+              <Text style={{ fontWeight: 'bold' }}>Discover</Text> free online courses.
+              Tap to find
             </Text>
           </Card>
 

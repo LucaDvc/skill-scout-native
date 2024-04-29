@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Input, Layout, Text, useTheme } from '@ui-kitten/components';
+import { Divider, Input, Layout, useTheme } from '@ui-kitten/components';
 import {
   ScrollView,
   StyleSheet,
@@ -7,15 +7,10 @@ import {
   Pressable,
   View,
   RefreshControl,
-  Keyboard,
 } from 'react-native';
-import {
-  BackIcon,
-  OptionsIcon,
-  SearchIcon,
-} from '../../../../components/extra/icons';
+import { BackIcon, OptionsIcon, SearchIcon } from '../../../../components/extra/icons';
 import HighestRatedCoursesList from '../../../../components/catalog/HighestRatedCoursesList';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   getHighestRatedCourses,
   getPopularCourses,
@@ -29,28 +24,9 @@ import { router } from 'expo-router';
 export default function CatalogScreen() {
   const theme = useTheme();
   const [searchValue, setSearchValue] = React.useState('');
-  const [refreshing, setRefreshing] = React.useState(false);
   const [searchOptionsVisible, setSearchOptionsVisible] = React.useState(false);
   const searchInputRef = React.useRef(null);
-
-  const { isLoading: highestRatedLoading } = useSelector(
-    (state) => state.catalog.highestRatedCourses
-  );
-  const { isLoading: popularLoading } = useSelector(
-    (state) => state.catalog.popularCourses
-  );
-  const { isLoading: categoriesLoading } = useSelector(
-    (state) => state.category
-  );
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    if (!highestRatedLoading && !popularLoading && !categoriesLoading) {
-      setRefreshing(false);
-    } else {
-      setRefreshing(true);
-    }
-  }, [highestRatedLoading, popularLoading]);
 
   const onRefresh = React.useCallback(() => {
     dispatch(getHighestRatedCourses());
@@ -66,12 +42,7 @@ export default function CatalogScreen() {
 
   return (
     <View style={{ flex: 1 }}>
-      <View
-        style={[
-          styles.topNavigation,
-          { backgroundColor: theme['color-basic-100'] },
-        ]}
-      >
+      <View style={[styles.topNavigation, { backgroundColor: theme['color-basic-100'] }]}>
         <Input
           ref={searchInputRef}
           value={searchValue}
@@ -122,9 +93,7 @@ export default function CatalogScreen() {
       <ScrollView
         style={{ flex: 1, backgroundColor: theme['color-basic-100'] }}
         showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+        refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
       >
         <Layout>
           <HighestRatedCoursesList />

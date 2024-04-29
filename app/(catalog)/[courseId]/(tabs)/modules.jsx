@@ -10,25 +10,16 @@ const Modules = () => {
   const theme = useTheme();
 
   const dispatch = useDispatch();
-  const { course, isLoading } = useSelector((state) => state.catalog);
-
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  React.useEffect(() => {
-    setRefreshing(isLoading);
-  }, [isLoading]);
+  const { course } = useSelector((state) => state.catalog);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
     dispatch(getCourseById(courseId));
   }, []);
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
+      refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
       style={{ backgroundColor: theme['color-basic-100'] }}
     >
       <Layout level='1'>
@@ -46,10 +37,9 @@ const Modules = () => {
 
             {chapter.lessons.map((lesson, lessonIndex) => (
               <View key={`${chapterIndex}.${lessonIndex}`}>
-                <Text
-                  category='p1'
-                  style={{ marginLeft: 32, marginVertical: 16 }}
-                >{`${chapterIndex + 1}.${lesson.order} ${lesson.title}`}</Text>
+                <Text category='p1' style={{ marginLeft: 32, marginVertical: 16 }}>{`${
+                  chapterIndex + 1
+                }.${lesson.order} ${lesson.title}`}</Text>
                 <Divider />
               </View>
             ))}

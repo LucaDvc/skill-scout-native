@@ -25,27 +25,18 @@ const Info = () => {
   const { courseId } = useLocalSearchParams();
 
   const dispatch = useDispatch();
-  const { course, isLoading } = useSelector((state) => state.catalog);
+  const { course } = useSelector((state) => state.catalog);
 
   const { width } = useWindowDimensions();
 
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  React.useEffect(() => {
-    setRefreshing(isLoading);
-  }, [isLoading]);
-
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
     dispatch(getCourseById(courseId));
   }, []);
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
+      refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
     >
       <Layout>
         <Text category='p2' style={{ marginHorizontal: 16, marginVertical: 8 }}>
@@ -58,35 +49,22 @@ const Info = () => {
           About
         </Text>
         <View style={{ margin: 16 }}>
-          <RenderHtml
-            contentWidth={width}
-            source={{ html: course.description }}
-          />
+          <RenderHtml contentWidth={width} source={{ html: course.description }} />
         </View>
 
         <Divider />
 
-        <Text
-          category='s1'
-          style={{ marginTop: 16, marginLeft: 16, fontWeight: 'bold' }}
-        >
+        <Text category='s1' style={{ marginTop: 16, marginLeft: 16, fontWeight: 'bold' }}>
           <ListOutlineIcon width={16} height={16} style={styles.icons} />
           Requirements
         </Text>
         <View style={{ margin: 16 }}>
-          <RenderHtml
-            contentWidth={width}
-            source={{ html: course.requirements }}
-          />
+          <RenderHtml contentWidth={width} source={{ html: course.requirements }} />
         </View>
 
         <View style={styles.courseMetaItemView}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <PersonDoneOutlineIcon
-              width={16}
-              height={16}
-              style={styles.icons}
-            />
+            <PersonDoneOutlineIcon width={16} height={16} style={styles.icons} />
             <Text category='s1' style={{ fontWeight: 'bold' }}>
               Instructor
             </Text>
@@ -98,9 +76,7 @@ const Info = () => {
               alignItems: 'center',
               flexDirection: 'row',
             }}
-            onPress={() =>
-              router.push(`(users)/profile/${course.instructor.id}`)
-            }
+            onPress={() => router.push(`(users)/profile/${course.instructor.id}`)}
           >
             <View
               style={{

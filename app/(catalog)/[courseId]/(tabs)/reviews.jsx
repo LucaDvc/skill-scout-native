@@ -28,16 +28,11 @@ const Reviews = () => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       style={{ backgroundColor: theme['color-basic-100'] }}
     >
       <Layout>
-        <ReviewsOverview
-          averageRating={course.average_rating}
-          reviews={course.reviews}
-        />
+        <ReviewsOverview averageRating={course.average_rating} reviews={course.reviews} />
 
         <Divider style={{ marginVertical: 4 }} />
         {course.reviews.map((review) => (
