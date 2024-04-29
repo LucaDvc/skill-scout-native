@@ -1,18 +1,10 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById } from '../../../../features/learning/learningSlice';
 import Toast from 'react-native-root-toast';
-import {
-  Spinner,
-  StyleService,
-  Text,
-  TopNavigation,
-  TopNavigationAction,
-  useStyleSheet,
-} from '@ui-kitten/components';
-import { BackIcon } from '../../../../components/extra/icons';
+import { Spinner, StyleService, useStyleSheet } from '@ui-kitten/components';
 import LessonStepsTabs from '../../../../components/learning/lessons/steps/LessonStepsTabs';
 import { LessonProvider } from '../../../../context/LessonContext';
 import { FullscreenProvider } from '../../../../context/FullscreenContext';
@@ -61,10 +53,7 @@ const Lesson = () => {
       <Spinner size='giant' />
     </View>
   ) : isError ? (
-    <Error
-      state={'learning'}
-      refreshCallback={() => dispatch(getCourseById(courseId))}
-    />
+    <Error state={'learning'} refreshCallback={() => dispatch(getCourseById(courseId))} />
   ) : (
     <FullscreenProvider>
       <View>

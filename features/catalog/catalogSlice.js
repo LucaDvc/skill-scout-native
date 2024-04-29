@@ -86,19 +86,16 @@ export const getCoursesByFilter = createAsyncThunk(
   }
 );
 
-export const getTags = createAsyncThunk(
-  'catalog/getTags',
-  async (_, thunkAPI) => {
-    try {
-      return await catalogService.getTags();
-    } catch (error) {
-      console.error(error);
-      let message = error.message || error.toString();
+export const getTags = createAsyncThunk('catalog/getTags', async (_, thunkAPI) => {
+  try {
+    return await catalogService.getTags();
+  } catch (error) {
+    console.error(error);
+    let message = error.message || error.toString();
 
-      return thunkAPI.rejectWithValue(message);
-    }
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
 export const getCourseById = createAsyncThunk(
   'catalog/getCourseById',
@@ -198,6 +195,9 @@ export const catalogSlice = createSlice({
     builder
       .addCase(getHighestRatedCourses.pending, (state) => {
         state.highestRatedCourses.isLoading = true;
+        state.highestRatedCourses.isError = false;
+        state.highestRatedCourses.isSuccess = false;
+        state.highestRatedCourses.message = '';
       })
       .addCase(getHighestRatedCourses.fulfilled, (state, action) => {
         state.highestRatedCourses.isSuccess = true;
@@ -211,6 +211,9 @@ export const catalogSlice = createSlice({
       })
       .addCase(getPopularCourses.pending, (state) => {
         state.popularCourses.isLoading = true;
+        state.popularCourses.isSuccess = false;
+        state.popularCourses.isError = false;
+        state.popularCourses.message = '';
       })
       .addCase(getPopularCourses.fulfilled, (state, action) => {
         state.popularCourses.courses = action.payload.results.slice(0, 7);

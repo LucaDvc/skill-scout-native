@@ -1,10 +1,4 @@
-import {
-  Pressable,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { Divider, Layout, Text, useTheme } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,9 +26,7 @@ const Modules = () => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       style={{ backgroundColor: theme['color-basic-100'] }}
     >
       <Layout level='1'>
@@ -51,28 +43,19 @@ const Modules = () => {
                 </Text>
               </View>
               {chapter.completed && (
-                <DoneAllIcon
-                  width={24}
-                  height={24}
-                  fill={theme['color-primary-500']}
-                />
+                <DoneAllIcon width={24} height={24} fill={theme['color-primary-500']} />
               )}
             </Layout>
 
             {chapter.lessons.map((lesson, lessonIndex) => (
               <Pressable
                 key={`${chapterIndex}.${lessonIndex}`}
-                onPress={() =>
-                  router.push(`/learning/${course.id}/lessons/${lesson.id}`)
-                }
+                onPress={() => router.push(`/learning/${course.id}/lessons/${lesson.id}`)}
               >
                 <View style={styles.lessonInfoContainer}>
-                  <Text
-                    category='p1'
-                    style={{ marginLeft: 32, marginVertical: 16 }}
-                  >{`${chapterIndex + 1}.${lesson.order} ${
-                    lesson.title
-                  }`}</Text>
+                  <Text category='p1' style={{ marginLeft: 32, marginVertical: 16 }}>{`${
+                    chapterIndex + 1
+                  }.${lesson.order} ${lesson.title}`}</Text>
                   {lesson.completed && (
                     <CheckmarkIcon
                       width={24}

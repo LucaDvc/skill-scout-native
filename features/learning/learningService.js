@@ -32,6 +32,7 @@ const completeLessonStep = async (lessonStepId, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
+  console.log('calling completeLessonStep');
 
   const response = await axios.post(
     `${API_URL}/progress/steps/${lessonStepId}/`,

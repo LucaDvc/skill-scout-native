@@ -10,17 +10,12 @@ const getReviews = async (token, courseId) => {
     },
   };
 
-  const response = await axios.get(
-    `${API_URL}/courses/${courseId}/reviews/`,
-    config
-  );
+  const response = await axios.get(`${API_URL}/courses/${courseId}/reviews/`, config);
 
   return response.data;
 };
 
 const postReveiw = async (token, courseId, review) => {
-  console.log(review);
-  console.log(courseId);
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -32,7 +27,6 @@ const postReveiw = async (token, courseId, review) => {
     review,
     config
   );
-  console.log(response);
 
   return response.data;
 };
@@ -44,11 +38,7 @@ const updateReview = async (token, reviewId, review) => {
     },
   };
 
-  const response = await axios.put(
-    `${API_URL}/reviews/${reviewId}/`,
-    review,
-    config
-  );
+  const response = await axios.put(`${API_URL}/reviews/${reviewId}/`, review, config);
 
   return response.data;
 };

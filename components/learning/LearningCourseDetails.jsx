@@ -15,11 +15,6 @@ import MaterialTopTabs from '../layout/MaterialTopTabs';
 const LearningCourseDetails = ({ course }) => {
   const backgroundImageHeight = 190;
 
-  const totalLessons = course?.chapters?.reduce(
-    (acc, chapter) => acc + chapter.lessons.length,
-    0
-  );
-
   React.useEffect(() => {
     const backAction = () => {
       if (router.canGoBack()) {
@@ -30,18 +25,14 @@ const LearningCourseDetails = ({ course }) => {
       return true;
     };
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    );
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 
     return () => backHandler.remove();
   }, []);
 
   const handleContinueCourse = () => {
     const lastStoppedLessonId =
-      course.learner_progress.last_stopped_lesson ??
-      course.chapters[0].lessons[0].id;
+      course.learner_progress.last_stopped_lesson ?? course.chapters[0].lessons[0].id;
     const lastStoppedStepId =
       course.learner_progress.last_stopped_step ??
       course.chapters[0].lessons[0].lesson_steps[0].id;
@@ -108,7 +99,7 @@ const LearningCourseDetails = ({ course }) => {
             }}
           >
             <Text>Current porgress</Text>
-            <Text>{`${course.learner_progress.completed_lessons.length} / ${totalLessons}`}</Text>
+            <Text>{`${course.learner_progress.completed_lessons.length} / ${course.lessons_count}`}</Text>
           </View>
         </View>
       </ImageBackground>

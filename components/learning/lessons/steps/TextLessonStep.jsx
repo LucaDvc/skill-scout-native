@@ -22,10 +22,7 @@ const TextLessonStep = ({ lessonStep }) => {
   }, [lessonStep.id]);
 
   return (
-    <ScrollView
-      style={styles.scrollView}
-      contentContainerStyle={styles.scrollContainer}
-    >
+    <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContainer}>
       <View style={styles.contentContainer}>
         <RenderHTML contentWidth={width} source={{ html: lessonStep.text }} />
       </View>

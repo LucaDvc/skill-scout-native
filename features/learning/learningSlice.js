@@ -45,6 +45,7 @@ export const completeLessonStep = createAsyncThunk(
   'learning/completeLessonStep',
   async (lessonStepId, thunkAPI) => {
     try {
+      console.log('dispatching completeLessonStep');
       const token = thunkAPI.getState().users.accessToken;
       return await learningService.completeLessonStep(lessonStepId, token);
     } catch (error) {
@@ -75,22 +76,44 @@ export const learningSlice = createSlice({
       state.message = '';
     },
     updateUiOnLessonStepComplete: (state, action) => {
+      console.log('dispatching updateUiOnLessonStepComplete');
       const lessonStepId = action.payload;
+
       state.course = {
         ...state.course,
-        chapters: (state.course.chapters
-          .flatMap((chapter) => chapter.lessons)
-          .flatMap((lesson) => lesson.lesson_steps)
-          .find((step) => step.id === lessonStepId).completed = true),
-        learner_progress: {
-          ...state.course.learner_progress,
-          last_stopped_step: lessonStepId,
-          completed_steps: [
-            ...state.course.learner_progress.completed_steps,
-            lessonStepId,
-          ],
-        },
+        chapters: state.course.chapters.map((chapter) => ({
+          ...chapter,
+          lessons: chapter.lessons.map((lesson) => {
+            // Update lesson step
+            const updatedLessonSteps = lesson.lesson_steps.map((step) => {
+              if (step.id === lessonStepId) {
+                return { ...step, completed: true };
+              }
+              return step;
+            });
+
+            // Check if all steps are completed
+            const isLessonCompleted = updatedLessonSteps.every((step) => step.completed);
+
+            if (
+              isLessonCompleted &&
+              !state.course.learner_progress.completed_lessons.includes(lesson.id)
+            ) {
+              state.course.learner_progress.completed_lessons.push(lesson.id);
+            }
+
+            // Return the updated lesson object
+            return {
+              ...lesson,
+              completed: isLessonCompleted,
+              lesson_steps: updatedLessonSteps,
+            };
+          }),
+        })),
       };
+
+      state.course.learner_progress.last_stopped_step = lessonStepId;
+      state.course.learner_progress.completed_steps.push(lessonStepId);
     },
   },
   extraReducers: (builder) => {

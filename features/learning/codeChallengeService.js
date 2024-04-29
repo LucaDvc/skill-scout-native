@@ -26,7 +26,7 @@ const getSubmissionResult = async (
   taskToken,
   accessToken,
   maxRetries = 10,
-  retryDelay = 1500
+  retryDelay = 750
 ) => {
   const config = {
     headers: {

@@ -43,8 +43,7 @@ const stepConfig = {
 };
 
 const LessonStepsTabs = () => {
-  const { lesson, selectedStepIndex, setSelectedStepIndex } =
-    useLessonContext();
+  const { lesson, selectedStepIndex, setSelectedStepIndex } = useLessonContext();
   const { isFullscreen, videoLessonStep } = useFullscreenContext();
 
   const topNavHeight = 56;

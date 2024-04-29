@@ -16,7 +16,6 @@ const getQuizStep = async (quizStepId, token) => {
 };
 
 const submitQuiz = async (quizStepId, choiceIds, token) => {
-  console.log('in service submit');
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -30,8 +29,6 @@ const submitQuiz = async (quizStepId, choiceIds, token) => {
     },
     config
   );
-
-  console.log(response.data);
 
   return response.data;
 };

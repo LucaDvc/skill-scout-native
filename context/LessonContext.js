@@ -10,11 +10,14 @@ export function useLessonContext() {
 export function LessonProvider({ children, lesson: currentLesson }) {
   const { lessonStepId } = useLocalSearchParams();
   const initialIndex =
-    currentLesson.lesson_steps.findIndex((step) => step.id === lessonStepId) ??
-    0;
+    currentLesson.lesson_steps.findIndex((step) => step.id === lessonStepId) ?? 0;
 
   const [lesson, setLesson] = useState(currentLesson);
   const [selectedStepIndex, setSelectedStepIndex] = useState(initialIndex);
+
+  React.useEffect(() => {
+    setLesson(currentLesson);
+  }, [currentLesson]);
 
   return (
     <LessonContext.Provider
