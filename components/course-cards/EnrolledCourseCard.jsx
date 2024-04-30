@@ -39,8 +39,7 @@ const EnrolledCourseCard = ({ course, viewMoreLink }) => {
             </Text>
             <ProgressBar
               progress={
-                course.learner_progress.completed_lessons.length /
-                course.lessons_count
+                course.learner_progress.completed_lessons.length / course.lessons_count
               }
               animating={false}
               size='small'
@@ -74,7 +73,7 @@ const EnrolledCourseCard = ({ course, viewMoreLink }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: 360,
+    width: 370,
     height: 140,
     margin: 8,
     borderRadius: 12,

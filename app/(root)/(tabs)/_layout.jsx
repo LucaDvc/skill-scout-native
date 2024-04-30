@@ -9,18 +9,21 @@ const TabsLayout = () => {
         name='index'
         options={{
           headerShown: false,
+          unmountOnBlur: true,
         }}
       />
       <Tabs.Screen
         name='catalog/index'
         options={{
           headerShown: false,
+          unmountOnBlur: true,
         }}
       />
       <Tabs.Screen
         name='profile/index'
         options={{
           headerShown: false,
+          unmountOnBlur: true,
         }}
       />
     </Tabs>

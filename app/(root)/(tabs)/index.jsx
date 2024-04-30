@@ -1,20 +1,19 @@
 import React from 'react';
 import {
-  Button,
   Card,
   Divider,
-  Icon,
   Layout,
   Text,
   TopNavigation,
   useTheme,
 } from '@ui-kitten/components';
-import { ScrollView, StyleSheet, View, Platform, RefreshControl } from 'react-native';
+import { ScrollView, StyleSheet, Platform, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
 import PopularCoursesList from '../../../components/catalog/PopularCoursesList';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getPopularCourses } from '../../../features/catalog/catalogSlice';
-import { PlusIcon } from '../../../components/extra/icons';
+import MyCourses from '../../../components/home/MyCourses';
+import { getCourses } from '../../../features/learning/learningSlice';
 
 export default function HomeScreen() {
   const theme = useTheme();
@@ -23,6 +22,7 @@ export default function HomeScreen() {
 
   const onRefresh = React.useCallback(() => {
     dispatch(getPopularCourses());
+    dispatch(getCourses());
   }, []);
 
   return (
@@ -53,31 +53,9 @@ export default function HomeScreen() {
 
           {/* My courses */}
           <Divider />
-          <Layout
-            style={{
-              justifyContent: 'flex-start',
-              padding: 24,
-            }}
-            level='2'
-          >
-            <Text category='h6' style={{ marginBottom: 18 }}>
-              My courses
-            </Text>
-            <Text category='h6' style={{ color: theme['color-primary-700'] }}>
-              Your courses will{'\n'}appear here
-            </Text>
-            <Button
-              accessoryLeft={PlusIcon}
-              appearance='outline'
-              style={{
-                marginTop: 24,
-                backgroundColor: 'inherit',
-              }}
-              onPress={() => router.push('/catalog')}
-            >
-              Search for courses in Catalog
-            </Button>
-          </Layout>
+
+          <MyCourses />
+
           <Divider />
 
           {/* Popular */}

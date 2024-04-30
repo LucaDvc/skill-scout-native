@@ -1,20 +1,19 @@
-import {
-  Text,
-  TopNavigation,
-  TopNavigationAction,
-} from '@ui-kitten/components';
+import { Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import React from 'react';
 import { ForwardIcon } from '../extra/icons';
 import { router } from 'expo-router';
 
-const HorizontalCourseListTopNav = ({ title, route }) => {
+const HorizontalCourseListTopNav = ({ title, route, style }) => {
   return (
     <TopNavigation
       title={() => <Text category='h6'>{title}</Text>}
-      style={{
-        height: 36,
-        paddingHorizontal: 24,
-      }}
+      style={[
+        {
+          height: 36,
+          paddingHorizontal: 24,
+        },
+        { ...style },
+      ]}
       accessoryRight={
         <TopNavigationAction
           icon={ForwardIcon}

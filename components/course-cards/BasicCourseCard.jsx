@@ -65,9 +65,7 @@ const BasicCourseCard = ({ course, viewMoreLink }) => {
       <Text
         style={{
           color:
-            course.price === '0'
-              ? theme['color-primary-600']
-              : theme['color-info-200'],
+            course.price === '0' ? theme['color-primary-600'] : theme['color-info-200'],
         }}
       >
         {course.price === '0' ? 'Free' : '$' + course.price}
@@ -97,7 +95,7 @@ const BasicCourseCard = ({ course, viewMoreLink }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: 360,
+    width: 370,
     height: 140,
     margin: 8,
     borderRadius: 12,

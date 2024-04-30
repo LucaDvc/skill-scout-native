@@ -2,6 +2,8 @@ import React from 'react';
 import Svg, { Path, G, Circle } from 'react-native-svg';
 import { Icon } from '@ui-kitten/components';
 
+export const HomeIcon = (props) => <Icon {...props} name='home' />;
+
 export const EmailIcon = (style) => <Icon {...style} name='email' />;
 
 export const PersonIcon = (style) => <Icon {...style} name='person' />;
