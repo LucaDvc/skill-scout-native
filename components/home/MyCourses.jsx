@@ -20,7 +20,7 @@ import { router } from 'expo-router';
 const MyCourses = () => {
   const styles = useStyleSheet(themedStyles);
   const theme = useTheme();
-  const { user } = useSelector((state) => state.users);
+  const { user, accessToken } = useSelector((state) => state.users);
 
   const wishlistCardPress = () => {
     router.push('/wishlist');
@@ -28,7 +28,7 @@ const MyCourses = () => {
 
   const searchCoursesPress = () => router.push('/catalog');
 
-  return user.enrolled_courses.length === 0 ? (
+  return !accessToken || user?.enrolled_courses?.length === 0 ? (
     <Layout
       style={{
         justifyContent: 'flex-start',
