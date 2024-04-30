@@ -1,6 +1,5 @@
 import { View, ScrollView, RefreshControl } from 'react-native';
 import React from 'react';
-import { useLocalSearchParams } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById } from '../../../../features/catalog/catalogSlice';
 import { Divider, Layout, useTheme } from '@ui-kitten/components';
@@ -8,27 +7,19 @@ import ReviewsOverview from '../../../../components/course-details/ReviewsOvervi
 import ReviewCard from '../../../../components/course-details/ReviewCard';
 
 const Reviews = () => {
-  const { courseId } = useLocalSearchParams();
   const theme = useTheme();
 
   const dispatch = useDispatch();
-  const { course, isLoading } = useSelector((state) => state.catalog);
-
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  React.useEffect(() => {
-    setRefreshing(isLoading);
-  }, [isLoading]);
+  const { course } = useSelector((state) => state.catalog);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    dispatch(getCourseById(courseId));
+    dispatch(getCourseById(course.id));
   }, []);
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      refreshControl={<RefreshControl refreshing={false} onRefresh={onRefresh} />}
       style={{ backgroundColor: theme['color-basic-100'] }}
     >
       <Layout>

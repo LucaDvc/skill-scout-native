@@ -19,18 +19,15 @@ import {
   PersonDoneOutlineIcon,
 } from '../../../../components/extra/icons';
 import { getCourseById } from '../../../../features/catalog/catalogSlice';
-import { useLocalSearchParams } from 'expo-router';
 
 const Info = () => {
-  const { courseId } = useLocalSearchParams();
-
   const dispatch = useDispatch();
   const { course } = useSelector((state) => state.catalog);
 
   const { width } = useWindowDimensions();
 
   const onRefresh = React.useCallback(() => {
-    dispatch(getCourseById(courseId));
+    dispatch(getCourseById(course.id));
   }, []);
 
   return (

@@ -2,18 +2,16 @@ import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { Divider, Layout, Text, useTheme } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocalSearchParams } from 'expo-router';
 import { getCourseById } from '../../../../features/catalog/catalogSlice';
 
 const Modules = () => {
-  const { courseId } = useLocalSearchParams();
   const theme = useTheme();
 
   const dispatch = useDispatch();
   const { course } = useSelector((state) => state.catalog);
 
   const onRefresh = React.useCallback(() => {
-    dispatch(getCourseById(courseId));
+    dispatch(getCourseById(course.id));
   }, []);
 
   return (
