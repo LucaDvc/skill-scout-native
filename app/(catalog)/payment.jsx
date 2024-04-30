@@ -7,6 +7,9 @@ import {
   Input,
   Layout,
   StyleService,
+  Text,
+  TopNavigation,
+  TopNavigationAction,
   useStyleSheet,
 } from '@ui-kitten/components';
 import { KeyboardAvoidingView } from '../../components/layout/KeyboardAvoidingView';
@@ -17,6 +20,7 @@ import { courseEnroll, resetEnroll } from '../../features/catalog/catalogSlice';
 import LoadingModal from '../../components/layout/LoadingModal';
 import Error from '../../components/layout/Error';
 import Toast from 'react-native-root-toast';
+import { BackIcon } from '../../components/extra/icons';
 
 export default PaymentPage = () => {
   const { courseId } = useLocalSearchParams();
@@ -40,14 +44,8 @@ export default PaymentPage = () => {
     };
   }, [isSuccess]);
 
-  const {
-    fields,
-    setters,
-    fieldsStatus,
-    validateForm,
-    cvvVisible,
-    onCVVIconPress,
-  } = usePaymentForm();
+  const { fields, setters, fieldsStatus, validateForm, cvvVisible, onCVVIconPress } =
+    usePaymentForm();
 
   const onPayButtonPress = () => {
     if (validateForm()) {
@@ -73,6 +71,14 @@ export default PaymentPage = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
+      <TopNavigation
+        alignment='center'
+        title={() => <Text category='h6'>Payment</Text>}
+        appearance='control'
+        accessoryLeft={
+          <TopNavigationAction icon={BackIcon} onPress={() => router.back()} />
+        }
+      />
       <LoadingModal visible={isLoading} />
       <Layout style={styles.form} level='1'>
         <Input
