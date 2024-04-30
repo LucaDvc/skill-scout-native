@@ -29,6 +29,13 @@ const initialState = {
     isLoading: false,
     message: '',
   },
+  wishlist: {
+    courses: [],
+    isError: false,
+    isSuccess: false,
+    isLoading: false,
+    message: '',
+  },
   courses: [],
   resultsCount: 0,
   hasMore: true,
@@ -151,6 +158,20 @@ export const courseEnroll = createAsyncThunk(
         message = error.response.data.error || error.toString();
       }
 
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getWishlist = createAsyncThunk(
+  'catalog/getWishlist',
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      return await catalogService.getWishlist(token);
+    } catch (error) {
+      console.error(error);
+      let message = error.message || error.toString();
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -288,6 +309,22 @@ export const catalogSlice = createSlice({
       .addCase(courseEnroll.rejected, (state) => {
         state.enroll.isLoading = false;
         state.enroll.isError = true;
+      })
+      .addCase(getWishlist.pending, (state) => {
+        state.wishlist.isLoading = true;
+        state.wishlist.isError = false;
+        state.wishlist.isSuccess = false;
+        state.wishlist.message = '';
+        state.wishlist.courses = [];
+      })
+      .addCase(getWishlist.fulfilled, (state, action) => {
+        state.wishlist.courses = action.payload;
+        state.wishlist.isLoading = false;
+        state.wishlist.isSuccess = true;
+      })
+      .addCase(getWishlist.rejected, (state) => {
+        state.wishlist.isLoading = false;
+        state.wishlist.isError = true;
       });
   },
 });

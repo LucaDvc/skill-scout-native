@@ -66,6 +66,17 @@ const courseEnroll = async (courseId, token) => {
   return response.data;
 };
 
+const getWishlist = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(`${API_URL}/wishlist/`, config);
+  return response.data;
+};
+
 const catalogService = {
   getHighestRatedCourses,
   getPopularCourses,
@@ -74,6 +85,7 @@ const catalogService = {
   getCourseById,
   wishlistCourse,
   courseEnroll,
+  getWishlist,
 };
 
 export default catalogService;
