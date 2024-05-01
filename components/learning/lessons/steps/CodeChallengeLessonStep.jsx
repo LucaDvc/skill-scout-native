@@ -38,8 +38,8 @@ const CodeChallengeLessonStep = ({ lessonStep }) => {
     if (lessonStep.initial_code) {
       const decoded = atob(lessonStep.initial_code);
       setInitialCode(decoded);
-      setInitializing(false);
     }
+    setInitializing(false);
   }, [lessonStep.id]);
 
   if (initializing) {
