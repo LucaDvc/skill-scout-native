@@ -8,7 +8,7 @@ const EnrolledCourseCard = ({ course, viewMoreLink }) => {
   return course ? (
     <Card
       style={styles.card}
-      onPress={() => router.push(`learning/${course.id}/(tabs)`)}
+      onPress={() => router.push(`learning/${course.id}/modules`)}
       footer={() => <Footer course={course} />}
     >
       <View style={{ display: 'flex', flexDirection: 'row' }}>

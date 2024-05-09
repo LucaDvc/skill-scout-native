@@ -384,7 +384,7 @@ export const usersSlice = createSlice({
         AsyncStorage.setItem('accessToken', action.payload.access);
       })
       .addCase(refreshAccessToken.rejected, (state) => {
-        state.tokenRefreshing = true;
+        state.tokenRefreshing = false;
         state.accessToken = null;
         state.refreshToken = null;
         state.user = null;

@@ -10,20 +10,37 @@ import {
 import { ScrollView, StyleSheet, Platform, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
 import PopularCoursesList from '../../../components/catalog/PopularCoursesList';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getPopularCourses } from '../../../features/catalog/catalogSlice';
 import MyCourses from '../../../components/home/MyCourses';
 import { getCourses } from '../../../features/learning/learningSlice';
+import Discover from '../../../components/home/Discover';
+import { useCourseToContinue } from '../../../hooks/useCourseToContinue';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HomeScreen() {
   const theme = useTheme();
 
   const dispatch = useDispatch();
 
+  const { setRefresh, refresh } = useCourseToContinue();
+
+  const { accessToken } = useSelector((state) => state.users);
+
   const onRefresh = React.useCallback(() => {
     dispatch(getPopularCourses());
-    dispatch(getCourses());
-  }, []);
+    if (accessToken) {
+      dispatch(getCourses());
+      setRefresh((prevState) => prevState + 1);
+    }
+  }, [dispatch, setRefresh]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log('Home screen focused');
+      onRefresh();
+    }, [])
+  );
 
   return (
     <ScrollView
@@ -40,17 +57,8 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         <Layout level='1' style={{ flex: 1 }}>
-          {/* Discover courses */}
-          <Card
-            style={{ padding: 12, borderRadius: 12, margin: 16 }}
-            onPress={() => router.push('/catalog')}
-          >
-            <Text>
-              <Text style={{ fontWeight: 'bold' }}>Discover</Text> free online courses.
-              Tap to find
-            </Text>
-          </Card>
-
+          {/* Discover or continue courses */}
+          <Discover key={refresh ? refresh : 'no-course'} />
           {/* My courses */}
           <Divider />
 

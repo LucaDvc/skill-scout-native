@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import learningService from './learningService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   courses: [],
@@ -45,8 +46,26 @@ export const completeLessonStep = createAsyncThunk(
   'learning/completeLessonStep',
   async (lessonStepId, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().users.accessToken;
-      return await learningService.completeLessonStep(lessonStepId, token);
+      const { accessToken: token, user } = thunkAPI.getState().users;
+      const learnerProgress = await learningService.completeLessonStep(
+        lessonStepId,
+        token
+      );
+      const currentCourse = thunkAPI.getState().learning.course;
+      const continueCourseData = {
+        id: currentCourse.id,
+        image: currentCourse.image,
+        title: currentCourse.title,
+        totalLessons: currentCourse.lessons_count,
+        completedLessons: learnerProgress.completed_lessons.length,
+        lessonId: learnerProgress.last_stopped_lesson,
+        lessonStepId: learnerProgress.last_stopped_step,
+      };
+      await AsyncStorage.setItem(
+        `continue-${user.id}`,
+        JSON.stringify(continueCourseData)
+      );
+      return learnerProgress;
     } catch (error) {
       console.error(error);
       let message = error.message || error.toString();
@@ -118,6 +137,8 @@ export const learningSlice = createSlice({
     builder
       .addCase(getCourses.pending, (state) => {
         state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
       })
       .addCase(getCourses.fulfilled, (state, action) => {
         state.isLoading = false;

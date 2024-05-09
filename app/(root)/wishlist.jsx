@@ -29,7 +29,6 @@ const WishlistScreen = () => {
 
   const handleRefresh = () => {
     dispatch(getWishlist());
-    console.log(courses);
   };
 
   if (isError) {

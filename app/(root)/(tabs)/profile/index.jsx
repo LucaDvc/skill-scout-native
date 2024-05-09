@@ -65,9 +65,11 @@ const ProfileScreen = () => {
   const { user, accessToken } = useSelector((state) => state.users);
 
   const onRefresh = React.useCallback(() => {
-    dispatch(getCourses());
-    dispatch(getActiveCourses());
-  }, [dispatch, getActiveCourses, getCourses]);
+    if (accessToken) {
+      dispatch(getCourses());
+      dispatch(getActiveCourses());
+    }
+  }, [dispatch, getActiveCourses, getCourses, accessToken]);
 
   return (
     <View style={{ flex: 1, backgroundColor: theme['color-basic-100'] }}>
