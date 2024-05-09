@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Divider, Layout, useTheme } from '@ui-kitten/components';
 import ReviewsOverview from '../../../../components/course-details/ReviewsOverview';
 import ReviewCard from '../../../../components/course-details/ReviewCard';
-import ReviewForm from '../../../../components/learning/ReviewForm';
+import ReviewContainer from '../../../../components/learning/ReviewContainer';
 import { getReviews } from '../../../../features/learning/reviews/reviewSlice';
 
 const Reviews = () => {
@@ -14,9 +14,7 @@ const Reviews = () => {
 
   const { course } = useSelector((state) => state.learning);
 
-  const { reviews, averageRating, isLoading } = useSelector(
-    (state) => state.reviews
-  );
+  const { reviews, averageRating, isLoading } = useSelector((state) => state.reviews);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -36,9 +34,7 @@ const Reviews = () => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       style={{ backgroundColor: theme['color-basic-100'] }}
     >
       <Layout>
@@ -48,7 +44,7 @@ const Reviews = () => {
 
             <Divider style={styles.divider} />
 
-            <ReviewForm
+            <ReviewContainer
               courseId={course.id}
               completionRatio={course.learner_progress.completion_ratio}
             />

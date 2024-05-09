@@ -13,7 +13,7 @@ import { EditIcon } from '../extra/icons';
 import { router } from 'expo-router';
 import Toast from 'react-native-root-toast';
 
-const ReviewForm = ({ courseId, completionRatio }) => {
+const ReviewContainer = ({ courseId, completionRatio }) => {
   const [rating, setRating] = React.useState('');
   const [comment, setComment] = React.useState('');
 
@@ -24,9 +24,7 @@ const ReviewForm = ({ courseId, completionRatio }) => {
 
   const [ratingStatus, setRatingStatus] = React.useState('basic');
 
-  const alreadyReviewed = reviews.some(
-    (review) => review.learner.id === user?.id
-  );
+  const alreadyReviewed = reviews.some((review) => review.learner.id === user?.id);
 
   const handleRatingChange = (textValue) => {
     if (textValue === '' || textValue === '.') {
@@ -123,9 +121,7 @@ const ReviewForm = ({ courseId, completionRatio }) => {
           <Button
             onPress={handleSubmit}
             disabled={isLoading}
-            accessoryRight={(props) =>
-              isLoading ? <Spinner size='small' /> : null
-            }
+            accessoryRight={(props) => (isLoading ? <Spinner size='small' /> : null)}
           >
             Submit
           </Button>
@@ -155,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ReviewForm;
+export default ReviewContainer;

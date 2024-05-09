@@ -15,6 +15,12 @@ const initialState = {
     isLoading: false,
     message: '',
   },
+  update: {
+    isError: false,
+    isSuccess: false,
+    isLoading: false,
+    message: '',
+  },
 };
 
 export const getReviews = createAsyncThunk(
@@ -36,6 +42,25 @@ export const getReviews = createAsyncThunk(
   }
 );
 
+export const getUserReview = createAsyncThunk(
+  'learning/reviews/getUserReview',
+  async (courseId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      return await reviewService.getUserReview(token, courseId);
+    } catch (error) {
+      let message;
+      if (error.response.status === 404) {
+        message = 'Review not found';
+      } else {
+        message = error.message || error.toString();
+      }
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const postReview = createAsyncThunk(
   'learning/reviews/postReview',
   async ({ courseId, review }, thunkAPI) => {
@@ -48,8 +73,7 @@ export const postReview = createAsyncThunk(
       if (error.response.status === 404) {
         message = 'Course not found';
       } else {
-        message =
-          error.response?.data?.error || error.message || error.toString();
+        message = error.response?.data?.error || error.message || error.toString();
       }
 
       return thunkAPI.rejectWithValue(message);
@@ -93,6 +117,10 @@ export const reviewSlice = createSlice({
       state.post.isError = false;
       state.post.isSuccess = false;
       state.post.message = '';
+      state.update.isLoading = false;
+      state.update.isError = false;
+      state.update.isSuccess = false;
+      state.update.message = '';
     },
   },
   extraReducers: (builder) => {
@@ -106,10 +134,24 @@ export const reviewSlice = createSlice({
         const reviews = action.payload;
         state.reviews = reviews;
         state.averageRating =
-          reviews.reduce((acc, review) => acc + review.rating, 0) /
-          reviews.length;
+          reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
       })
       .addCase(getReviews.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getUserReview.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.isError = false;
+      })
+      .addCase(getUserReview.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.review = action.payload;
+      })
+      .addCase(getUserReview.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -129,17 +171,19 @@ export const reviewSlice = createSlice({
         state.post.message = action.payload;
       })
       .addCase(updateReview.pending, (state) => {
-        state.isLoading = true;
+        state.update.isLoading = true;
+        state.update.isSuccess = false;
+        state.update.isError = false;
       })
       .addCase(updateReview.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.review = action.payload;
+        state.update.isLoading = false;
+        state.update.isSuccess = true;
+        state.update.review = action.payload;
       })
       .addCase(updateReview.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        state.update.isLoading = false;
+        state.update.isError = true;
+        state.update.message = action.payload;
       });
   },
 });

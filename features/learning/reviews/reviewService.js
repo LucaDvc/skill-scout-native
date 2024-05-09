@@ -31,6 +31,18 @@ const postReveiw = async (token, courseId, review) => {
   return response.data;
 };
 
+const getUserReview = async (token, courseId) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(`${API_URL}/courses/${courseId}/user-review/`, config);
+
+  return response.data;
+};
+
 const updateReview = async (token, reviewId, review) => {
   const config = {
     headers: {
@@ -47,6 +59,7 @@ const learningService = {
   getReviews,
   postReveiw,
   updateReview,
+  getUserReview,
 };
 
 export default learningService;
