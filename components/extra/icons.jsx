@@ -200,3 +200,5 @@ export const CheckmarkCircle2OutlineIcon = (props) => (
 );
 
 export const InfoOutlineIcon = (props) => <Icon {...props} name='info-outline' />;
+
+export const LogoutIcon = (props) => <Icon {...props} name='log-out' />;

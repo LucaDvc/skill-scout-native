@@ -10,51 +10,57 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, Platform, View, ScrollView, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
-import { EditIcon, SettingsIcon } from '../../../../components/extra/icons';
+import { EditIcon, LogoutIcon, SettingsIcon } from '../../../../components/extra/icons';
 import UnsignedUserProfile from '../../../../components/profile/UnsignedUserProfile';
 import UnconfirmedUserProfile from '../../../../components/profile/UnconfirmedUserProfile';
 import SignedInUserProfile from '../../../../components/profile/SignedInUserProfile';
 import awsConstants from '../../../../constants/awsConstants';
 import { getCourses } from '../../../../features/learning/learningSlice';
 import { getActiveCourses } from '../../../../features/teaching/teachingSlice';
+import SignOutModal from '../../../../components/profile/settings/SignOutModal';
 
-const UserHeader = ({ user }) => (
-  <View style={{ flexDirection: 'column', flex: 1 }}>
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-        marginTop: 10,
-      }}
-    >
-      <TopNavigationAction
-        icon={<EditIcon />}
-        onPress={() => router.push('/(users)/profile/edit')}
-      />
-      <TopNavigationAction
-        icon={<SettingsIcon />}
-        onPress={() => router.push('/(users)/profile/settings')}
-      />
-    </View>
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        padding: 16,
-      }}
-    >
-      <Avatar
-        source={{
-          uri: user.picture ? user.picture : awsConstants.DEFAULT_USER_PICTURE_URL,
+const UserHeader = ({ user }) => {
+  const [logoutVisible, setLogoutVisible] = React.useState(false);
+
+  return (
+    <View style={{ flexDirection: 'column', flex: 1 }}>
+      <SignOutModal visible={logoutVisible} setVisible={setLogoutVisible} />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'flex-end',
+          marginTop: 10,
         }}
-        size='giant'
-        style={{ marginRight: 32, height: 70, width: 70 }}
-      />
-      <Text category='h5'>{user.first_name + ' ' + user.last_name}</Text>
+      >
+        <TopNavigationAction
+          icon={<EditIcon />}
+          onPress={() => router.push('/profile/edit')}
+        />
+        <TopNavigationAction
+          icon={<LogoutIcon />}
+          onPress={() => setLogoutVisible(true)}
+        />
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          padding: 16,
+        }}
+      >
+        <Avatar
+          source={{
+            uri: user.picture ? user.picture : awsConstants.DEFAULT_USER_PICTURE_URL,
+          }}
+          size='giant'
+          style={{ marginRight: 32, height: 70, width: 70 }}
+        />
+        <Text category='h5'>{user.first_name + ' ' + user.last_name}</Text>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 const ProfileScreen = () => {
   // TODO add wishlist, my reviews, my courses (teaching), maybe heatmap

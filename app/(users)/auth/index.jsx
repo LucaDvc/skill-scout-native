@@ -11,7 +11,7 @@ import {
   TopNavigationAction,
   useStyleSheet,
 } from '@ui-kitten/components';
-import { router } from 'expo-router';
+import { router } from 'expo-router/build';
 import { BackIcon } from '../../../components/extra/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, reset } from '../../../features/users/usersSlice';
@@ -59,8 +59,9 @@ const Login = () => {
 
   React.useEffect(() => {
     if (isSuccess) {
-      router.replace('/');
       dispatch(reset());
+      router.dismissAll();
+      router.navigate('/');
     }
 
     return () => {

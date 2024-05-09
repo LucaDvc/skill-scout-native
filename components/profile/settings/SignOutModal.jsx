@@ -1,20 +1,22 @@
 import { Button, Card, Modal, Text } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout, reset } from '../../../features/users/usersSlice';
-import { router } from 'expo-router';
+import Toast from 'react-native-root-toast';
 
 const SignOutModal = ({ visible, setVisible }) => {
   const dispatch = useDispatch();
-  const { isSuccess } = useSelector((state) => state.users);
 
-  React.useEffect(() => {
-    if (isSuccess) {
-      router.replace('/profile');
-      dispatch(reset());
-    }
-  }, [isSuccess]);
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(reset());
+    Toast.show('Logged out successfully', {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.BOTTOM,
+      shadow: true,
+    });
+  };
 
   return (
     <Modal visible={visible} backdropStyle={styles.backdrop}>
@@ -28,7 +30,7 @@ const SignOutModal = ({ visible, setVisible }) => {
           <Button onPress={() => setVisible(false)} status='basic'>
             No
           </Button>
-          <Button onPress={() => dispatch(logout())} status='danger'>
+          <Button onPress={handleLogout} status='danger'>
             Yes
           </Button>
         </View>

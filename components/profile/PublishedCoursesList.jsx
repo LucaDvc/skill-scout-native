@@ -25,11 +25,8 @@ const PublishedCoursesList = () => {
             source={require('../../assets/mascot-pointer.png')}
             style={{ height: 150, width: 150 }}
           />
-          <Text
-            category='s1'
-            style={{ textAlign: 'center', fontWeight: 'bold' }}
-          >
-            Here you will be able to preview the courses you publish.
+          <Text category='s1' style={{ textAlign: 'center', fontWeight: 'bold' }}>
+            Here you'll be able to see your published courses
           </Text>
         </>
       }
