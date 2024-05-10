@@ -154,7 +154,11 @@ export const refreshAuthUser = createAsyncThunk(
     try {
       const userId = thunkAPI.getState().users.user.id;
       const token = thunkAPI.getState().users.accessToken;
-      return await usersService.getUserById(userId, token);
+
+      const user = await usersService.getAuthUser(userId, token);
+      await AsyncStorage.setItem('user', JSON.stringify(user));
+
+      return user;
     } catch (error) {
       let message = error.message || error.toString();
 
@@ -378,7 +382,6 @@ export const usersSlice = createSlice({
       })
       .addCase(refreshAccessToken.fulfilled, (state, action) => {
         state.tokenRefreshing = false;
-        state.isSuccess = true;
         state.accessToken = action.payload.access;
         AsyncStorage.setItem('accessToken', action.payload.access);
       })

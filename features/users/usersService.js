@@ -93,7 +93,7 @@ const resetPassword = async (token, uidb64, password) => {
   return response.data;
 };
 
-const getUserById = async (userId, token) => {
+const getAuthUser = async (userId, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -102,13 +102,11 @@ const getUserById = async (userId, token) => {
 
   const response = await axios.get(`${API_URL}/${userId}/`, config);
 
-  if (response.data) {
-    try {
-      await AsyncStorage.setItem('user', JSON.stringify(response.data));
-    } catch (error) {
-      throw new Error('Failed to save user locally');
-    }
-  }
+  return response.data;
+};
+
+const getUserById = async (userId) => {
+  const response = await axios.get(`${API_URL}/${userId}/`);
 
   return response.data;
 };
@@ -123,6 +121,7 @@ const usersService = {
   updateProfile,
   sendForgotPasswordEmail,
   resetPassword,
+  getAuthUser,
   getUserById,
 };
 
