@@ -202,3 +202,11 @@ export const CheckmarkCircle2OutlineIcon = (props) => (
 export const InfoOutlineIcon = (props) => <Icon {...props} name='info-outline' />;
 
 export const LogoutIcon = (props) => <Icon {...props} name='log-out' />;
+
+export const GlobeIcon = (props) => <Icon {...props} name='globe' />;
+
+export const FacebookIcon = (props) => <Icon {...props} name='facebook' />;
+
+export const LinkedInIcon = (props) => <Icon {...props} name='linkedin' />;
+
+export const GoogleIcon = (props) => <Icon {...props} name='google' />;

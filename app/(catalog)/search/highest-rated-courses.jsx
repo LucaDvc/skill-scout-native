@@ -11,14 +11,11 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import { BackIcon } from '../../../components/extra/icons';
-import {
-  getCoursesByFilter,
-  reset,
-} from '../../../features/catalog/catalogSlice';
+import { getCoursesByFilter, reset } from '../../../features/catalog/catalogSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Error from '../../../components/layout/Error';
 import { ScrollView } from 'react-native-gesture-handler';
-import { renderSearchedCourse } from '../../../utils/listRenders';
+import { renderSearchedCourse } from '../../../utils/courseListUtils';
 
 const ordering = '-avg_rating';
 
@@ -28,9 +25,7 @@ const HighestRatedCoursesPage = () => {
   const theme = useTheme();
 
   const dispatch = useDispatch();
-  const { courses, isLoading, isError, hasMore } = useSelector(
-    (state) => state.catalog
-  );
+  const { courses, isLoading, isError, hasMore } = useSelector((state) => state.catalog);
 
   const fetchData = (pageToFetch = page) => {
     const searchParams = { page: pageToFetch + 1, ordering };
@@ -81,10 +76,7 @@ const HighestRatedCoursesPage = () => {
         ) : courses.length > 0 ? (
           <List
             refreshControl={
-              <RefreshControl
-                refreshing={isLoading}
-                onRefresh={handleRefresh}
-              />
+              <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />
             }
             data={courses}
             renderItem={renderSearchedCourse}
@@ -97,10 +89,7 @@ const HighestRatedCoursesPage = () => {
           <ScrollView
             contentContainerStyle={styles.container}
             refreshControl={
-              <RefreshControl
-                refreshing={isLoading}
-                onRefresh={handleRefresh}
-              />
+              <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />
             }
           >
             <Text category='h5'>No results found</Text>

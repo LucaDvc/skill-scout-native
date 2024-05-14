@@ -5,6 +5,7 @@ const ProfileLayout = () => {
   return (
     <Stack>
       <Stack.Screen name='edit' options={{ headerShown: false }} />
+      <Stack.Screen name='[userId]' options={{ headerShown: false }} />
     </Stack>
   );
 };

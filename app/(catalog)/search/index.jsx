@@ -9,14 +9,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import { Link, router, useLocalSearchParams, useNavigation } from 'expo-router';
-import {
-  Input,
-  Layout,
-  List,
-  Spinner,
-  Text,
-  useTheme,
-} from '@ui-kitten/components';
+import { Input, Layout, List, Spinner, Text, useTheme } from '@ui-kitten/components';
 import { BackIcon, OptionsIcon } from '../../../components/extra/icons';
 import {
   getCoursesByFilter,
@@ -26,7 +19,7 @@ import {
 import { getCategories } from '../../../features/category/categorySlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Error from '../../../components/layout/Error';
-import { renderSearchedCourse } from '../../../utils/listRenders';
+import { renderSearchedCourse } from '../../../utils/courseListUtils';
 
 const SearchPage = () => {
   const { search } = useLocalSearchParams();
@@ -101,10 +94,7 @@ const SearchPage = () => {
       router.navigate('/catalog');
       return true;
     };
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    );
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
     return () => {
       backHandler.remove();
       dispatch(resetFilters());
@@ -128,12 +118,7 @@ const SearchPage = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View
-        style={[
-          styles.topNavigation,
-          { backgroundColor: theme['color-basic-100'] },
-        ]}
-      >
+      <View style={[styles.topNavigation, { backgroundColor: theme['color-basic-100'] }]}>
         <Input
           value={inputValue}
           placeholder='Search courses'
@@ -169,10 +154,7 @@ const SearchPage = () => {
         ) : courses.length > 0 ? (
           <List
             refreshControl={
-              <RefreshControl
-                refreshing={isLoading}
-                onRefresh={handleRefresh}
-              />
+              <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />
             }
             data={courses}
             renderItem={renderSearchedCourse}
@@ -185,10 +167,7 @@ const SearchPage = () => {
           <ScrollView
             contentContainerStyle={styles.container}
             refreshControl={
-              <RefreshControl
-                refreshing={isLoading}
-                onRefresh={handleRefresh}
-              />
+              <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />
             }
           >
             <Text category='h5'>No results found</Text>

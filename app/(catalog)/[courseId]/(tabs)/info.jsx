@@ -19,6 +19,7 @@ import {
   PersonDoneOutlineIcon,
 } from '../../../../components/extra/icons';
 import { getCourseById } from '../../../../features/catalog/catalogSlice';
+import { router } from 'expo-router';
 
 const Info = () => {
   const dispatch = useDispatch();

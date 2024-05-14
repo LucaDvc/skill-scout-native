@@ -53,7 +53,11 @@ const SearchResultCourseCard = ({ course }) => {
               fill={theme['color-basic-600']}
               style={{ marginRight: 2 }}
             />
-            <Text category='p2'>{course.average_rating.toFixed(1)}</Text>
+            <Text category='p2'>
+              {course.average_rating % 1 === 0
+                ? course.average_rating?.toFixed(0)
+                : course.average_rating?.toFixed(1)}
+            </Text>
           </View>
 
           <Text category='s1' numberOfLines={2} ellipsizeMode='tail'>

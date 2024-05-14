@@ -5,22 +5,7 @@ import { Button, List, Spinner, Text } from '@ui-kitten/components';
 import { RefreshIcon } from '../extra/icons';
 import BasicCourseCard from '../course-cards/BasicCourseCard';
 import EnrolledCourseCard from '../course-cards/EnrolledCourseCard';
-
-const pairUpCourses = (courses, viewMore) => {
-  const pairedCourses = [];
-  for (let i = 0; i < courses.length; i += 2) {
-    pairedCourses.push({
-      course1: courses[i],
-      course2: courses[i + 1] ? courses[i + 1] : null,
-    });
-  }
-
-  if (viewMore && courses.length % 2 === 0) {
-    pairedCourses.push({ course1: null, course2: 'ignore' });
-  }
-
-  return pairedCourses;
-};
+import { pairUpCourses } from '../../utils/courseListUtils';
 
 const HorizontalCourseList = ({
   actionCreator,
@@ -71,41 +56,23 @@ const HorizontalCourseList = ({
       <View style={{ flexDirection: 'column' }}>
         {hybrid ? (
           item.course1?.is_enrolled ? (
-            <EnrolledCourseCard
-              course={item.course1}
-              viewMoreLink={viewMoreLink}
-            />
+            <EnrolledCourseCard course={item.course1} viewMoreLink={viewMoreLink} />
           ) : (
-            <BasicCourseCard
-              course={item.course1}
-              viewMoreLink={viewMoreLink}
-            />
+            <BasicCourseCard course={item.course1} viewMoreLink={viewMoreLink} />
           )
         ) : (
-          <CourseCardComponent
-            course={item.course1}
-            viewMoreLink={viewMoreLink}
-          />
+          <CourseCardComponent course={item.course1} viewMoreLink={viewMoreLink} />
         )}
 
         {item.course2 !== 'ignore' &&
           (hybrid ? (
             item.course2?.is_enrolled ? (
-              <EnrolledCourseCard
-                course={item.course2}
-                viewMoreLink={viewMoreLink}
-              />
+              <EnrolledCourseCard course={item.course2} viewMoreLink={viewMoreLink} />
             ) : (
-              <BasicCourseCard
-                course={item.course2}
-                viewMoreLink={viewMoreLink}
-              />
+              <BasicCourseCard course={item.course2} viewMoreLink={viewMoreLink} />
             )
           ) : (
-            <CourseCardComponent
-              course={item.course2}
-              viewMoreLink={viewMoreLink}
-            />
+            <CourseCardComponent course={item.course2} viewMoreLink={viewMoreLink} />
           ))}
       </View>
     ),
@@ -121,9 +88,7 @@ const HorizontalCourseList = ({
         </View>
       ) : isError ? (
         <View style={styles.innerView}>
-          <Text status='danger'>
-            {'An error occurred while fetching the courses.'}
-          </Text>
+          <Text status='danger'>{'An error occurred while fetching the courses.'}</Text>
           <Button
             appearance='ghost'
             status='basic'
@@ -133,9 +98,7 @@ const HorizontalCourseList = ({
         </View>
       ) : courses.length === 0 ? (
         <View style={styles.innerView}>
-          {NoResultsComponent || (
-            <Text category='h6'>{'No courses found.'}</Text>
-          )}
+          {NoResultsComponent || <Text category='h6'>{'No courses found.'}</Text>}
         </View>
       ) : (
         <List
