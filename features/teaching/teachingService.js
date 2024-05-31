@@ -1,6 +1,7 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+const BASE_URL = Constants.expoConfig.extra.apiUrl;
 const API_URL = BASE_URL + '/api/teaching';
 
 const getActiveCourses = async (token) => {
