@@ -1,7 +1,8 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+const BASE_URL = Constants.expoConfig.extra.apiUrl;
 const API_URL = `${BASE_URL}/api/users`;
 
 // Register new user
