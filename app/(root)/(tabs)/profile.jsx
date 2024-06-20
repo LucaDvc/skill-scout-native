@@ -10,14 +10,14 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, Platform, View, ScrollView, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
-import { EditIcon, LogoutIcon, SettingsIcon } from '../../../../components/extra/icons';
-import UnsignedUserProfile from '../../../../components/profile/UnsignedUserProfile';
-import UnconfirmedUserProfile from '../../../../components/profile/UnconfirmedUserProfile';
-import SignedInUserProfile from '../../../../components/profile/SignedInUserProfile';
-import awsConstants from '../../../../constants/awsConstants';
-import { getCourses } from '../../../../features/learning/learningSlice';
-import { getActiveCourses } from '../../../../features/teaching/teachingSlice';
-import SignOutModal from '../../../../components/profile/settings/SignOutModal';
+import { EditIcon, LogoutIcon, SettingsIcon } from '../../../components/extra/icons';
+import UnsignedUserProfile from '../../../components/profile/UnsignedUserProfile';
+import UnconfirmedUserProfile from '../../../components/profile/UnconfirmedUserProfile';
+import SignedInUserProfile from '../../../components/profile/SignedInUserProfile';
+import awsConstants from '../../../constants/awsConstants';
+import { getCourses } from '../../../features/learning/learningSlice';
+import { getActiveCourses } from '../../../features/teaching/teachingSlice';
+import SignOutModal from '../../../components/profile/settings/SignOutModal';
 
 const UserHeader = ({ user }) => {
   const [logoutVisible, setLogoutVisible] = React.useState(false);

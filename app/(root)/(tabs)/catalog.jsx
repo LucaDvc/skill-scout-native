@@ -8,17 +8,17 @@ import {
   View,
   RefreshControl,
 } from 'react-native';
-import { BackIcon, OptionsIcon, SearchIcon } from '../../../../components/extra/icons';
-import HighestRatedCoursesList from '../../../../components/catalog/HighestRatedCoursesList';
+import { BackIcon, OptionsIcon, SearchIcon } from '../../../components/extra/icons';
+import HighestRatedCoursesList from '../../../components/catalog/HighestRatedCoursesList';
 import { useDispatch } from 'react-redux';
 import {
   getHighestRatedCourses,
   getPopularCourses,
-} from '../../../../features/catalog/catalogSlice';
-import PopularCoursesList from '../../../../components/catalog/PopularCoursesList';
-import TopCategoriesGrid from '../../../../components/catalog/TopCategoriesGrid';
-import { getCategories } from '../../../../features/category/categorySlice';
-import SearchPopover from '../../../../components/catalog/SearchPopover';
+} from '../../../features/catalog/catalogSlice';
+import PopularCoursesList from '../../../components/catalog/PopularCoursesList';
+import TopCategoriesGrid from '../../../components/catalog/TopCategoriesGrid';
+import { getCategories } from '../../../features/category/categorySlice';
+import SearchPopover from '../../../components/catalog/SearchPopover';
 import { router } from 'expo-router';
 
 export default function CatalogScreen() {

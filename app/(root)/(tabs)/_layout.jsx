@@ -13,14 +13,14 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name='catalog/index'
+        name='catalog'
         options={{
           headerShown: false,
           unmountOnBlur: true,
         }}
       />
       <Tabs.Screen
-        name='profile/index'
+        name='profile'
         options={{
           headerShown: false,
           unmountOnBlur: true,

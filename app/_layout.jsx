@@ -8,7 +8,6 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import { store } from '../features/store';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { initializeAuth, refreshAccessToken } from '../features/users/usersSlice';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
@@ -24,7 +23,6 @@ const App = () => {
   React.useEffect(() => {
     const init = async () => {
       dispatch(initializeAuth());
-      //await AsyncStorage.clear();
     };
 
     init();
