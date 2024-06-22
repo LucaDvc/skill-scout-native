@@ -33,7 +33,7 @@ const SearchPage = () => {
 
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.category);
-  const { courses, isLoading, isError, message, isSuccess, hasMore, filters } =
+  const { courses, isLoading, isError, message, isSuccess, filters, resultsCount } =
     useSelector((state) => state.catalog);
 
   React.useEffect(() => {
@@ -63,6 +63,10 @@ const SearchPage = () => {
   };
 
   const fetchMoreData = () => {
+    const maxPage = Math.ceil(resultsCount / 10);
+    if (page >= maxPage) {
+      return;
+    }
     const searchParams = { page: page + 1 };
     if (searchValue) {
       searchParams.search = searchValue;
@@ -77,11 +81,8 @@ const SearchPage = () => {
     }
 
     setSearchParams(searchParams);
-
-    if (hasMore) {
-      setPage(page + 1);
-      dispatch(getCoursesByFilter(searchParams));
-    }
+    setPage(page + 1);
+    dispatch(getCoursesByFilter(searchParams));
   };
 
   React.useEffect(() => {
@@ -109,7 +110,13 @@ const SearchPage = () => {
 
   const renderFooter = () => {
     if (!isLoading) return null;
-    return <Spinner style={{ margin: 20 }} />;
+    return (
+      <View
+        style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 8 }}
+      >
+        <Spinner size='giant' />
+      </View>
+    );
   };
 
   if (isError) {
@@ -149,19 +156,17 @@ const SearchPage = () => {
         />
       </View>
       <Layout style={styles.container}>
-        {isLoading ? (
+        {isLoading && courses.length === 0 ? (
           <Spinner size='giant' />
         ) : courses.length > 0 ? (
           <List
-            refreshControl={
-              <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />
-            }
+            refreshControl={<RefreshControl onRefresh={handleRefresh} />}
             data={courses}
             renderItem={renderSearchedCourse}
             ListFooterComponent={renderFooter}
             onEndReached={fetchMoreData}
             onEndReachedThreshold={0.5}
-            style={{ backgroundColor: theme['color-basic-100'], marginTop: 8 }}
+            style={{ backgroundColor: theme['color-basic-100'], marginVertical: 8 }}
           />
         ) : (
           <ScrollView

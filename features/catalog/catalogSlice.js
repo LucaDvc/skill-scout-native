@@ -253,7 +253,7 @@ export const catalogSlice = createSlice({
         state.isSuccess = true;
         state.isLoading = false;
         state.courses = [...state.courses, ...action.payload.results];
-        state.resultsCount += action.payload.count;
+        state.resultsCount = action.payload.count;
         state.hasMore = action.payload.next != null;
       })
       .addCase(getCoursesByFilter.rejected, (state, action) => {
