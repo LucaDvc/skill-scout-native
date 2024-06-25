@@ -103,7 +103,7 @@ const runCode = async (code, testCase, languageId) => {
     config
   );
 
-  return response;
+  return response.data;
 };
 
 const getCodeChallenge = async (stepId, token) => {
@@ -114,8 +114,6 @@ const getCodeChallenge = async (stepId, token) => {
   };
 
   const response = await axios.get(`${API_URL}/code-challenge-steps/${stepId}/`, config);
-
-  console.log(response.data);
 
   return response.data;
 };

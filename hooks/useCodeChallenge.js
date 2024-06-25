@@ -138,6 +138,7 @@ export const useCodeChallenge = (lessonStepId, languageId, firstTestCase, retry)
   }, [submissionToken]);
 
   const handleRunCode = async (code) => {
+    setTestResult(null);
     setTestRunning(true);
     if (!code) {
       Toast.show('Please write some code before submitting.', {
@@ -147,9 +148,18 @@ export const useCodeChallenge = (lessonStepId, languageId, firstTestCase, retry)
       return;
     }
 
+    let base64Code;
+    try {
+      base64Code = btoa(code);
+    } catch (error) {
+      console.error('Failed to encode code:', error);
+      Toast.show('Invalid input', { position: Toast.positions.BOTTOM });
+      return;
+    }
+
     try {
       const response = await codeChallengeService.runCode(
-        btoa(code),
+        base64Code,
         failedTestCase,
         languageId
       );

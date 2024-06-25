@@ -53,18 +53,21 @@ const CodeChallengeLessonStep = ({ lessonStep }) => {
 
   React.useEffect(() => {
     if (codeChallengeStep) {
-      setInitialCode(atob(codeChallengeStep.submitted_code));
+      if (codeChallengeStep.submitted_code) {
+        setInitialCode(atob(codeChallengeStep.submitted_code));
+        setInitializing(false);
+      }
     }
-    setInitializing(false);
   }, [codeChallengeStep]);
 
   React.useEffect(() => {
     setLanguage(findLanguageName(lessonStep.language_id));
-    if (lessonStep.initial_code && !codeChallengeStep) {
+    if (lessonStep.initial_code && !lessonStep.completed) {
       const decoded = atob(lessonStep.initial_code);
       setInitialCode(decoded);
     }
-  }, [lessonStep.id, codeChallengeStep]);
+    setInitializing(false);
+  }, [lessonStep.id]);
 
   if (initializing || fetchLoading) {
     return (
