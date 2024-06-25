@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View, Image } from 'react-native';
+import { Dimensions, StyleSheet, View, Image, BackHandler } from 'react-native';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 import { ResizeMode } from 'expo-av';
 import React, { useState } from 'react';
@@ -11,6 +11,7 @@ import {
   completeLessonStep,
   updateUiOnLessonStepComplete,
 } from '../../../../features/learning/learningSlice';
+import { router } from 'expo-router';
 
 const VideoLessonStep = ({ lessonStep }) => {
   const {
@@ -34,12 +35,9 @@ const VideoLessonStep = ({ lessonStep }) => {
 
     const generateThumbnail = async () => {
       try {
-        const { uri } = await VideoThumbnails.getThumbnailAsync(
-          lessonStep.video_file,
-          {
-            time: 15000,
-          }
-        );
+        const { uri } = await VideoThumbnails.getThumbnailAsync(lessonStep.video_file, {
+          time: 15000,
+        });
         setThumbnail(uri);
       } catch (e) {
         console.warn(e);
@@ -48,6 +46,23 @@ const VideoLessonStep = ({ lessonStep }) => {
 
     generateThumbnail();
   }, [lessonStep.id]);
+
+  React.useEffect(() => {
+    const backAction = () => {
+      if (!isFullscreen) {
+        router.back();
+      } else {
+        handleExitFullscreen();
+      }
+      return true; // Return true to prevent the default back behavior
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [isFullscreen]);
 
   return (
     <View style={styles.contentContainer}>
@@ -99,9 +114,7 @@ const VideoLessonStep = ({ lessonStep }) => {
               : Dimensions.get('window').width - 16,
           }}
           header={
-            <Text style={{ color: '#FFF', marginLeft: 4 }}>
-              {lessonStep.title}
-            </Text>
+            <Text style={{ color: '#FFF', marginLeft: 4 }}>{lessonStep.title}</Text>
           }
         />
       </View>
@@ -118,7 +131,7 @@ const styles = StyleSheet.create({
   },
   videoContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'start',
     alignItems: 'center',
   },
   text: {
