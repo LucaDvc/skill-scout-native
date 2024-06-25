@@ -17,9 +17,9 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "@EXPO_PUBLIC_API_URL",
-        "EXPO_PUBLIC_JUDGE0_URL": "@EXPO_PUBLIC_JUDGE0_URL",
-        "EXPO_PUBLIC_JUDGE0_AUTH_TOKEN": "@EXPO_PUBLIC_JUDGE0_AUTH_TOKEN"
+        "EXPO_PUBLIC_API_URL": "http://167.172.99.206",
+        "EXPO_PUBLIC_JUDGE0_URL": "http://206.189.62.229:2358",
+        "EXPO_PUBLIC_JUDGE0_AUTH_TOKEN": "lXFyNT4ZsdtzMEz41ulNHnc5vgxIfxmXTFyd47stb1F5oWl7FXOT2EW6VVORxZVT"
       }
     },
     "production": {

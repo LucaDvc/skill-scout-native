@@ -24,6 +24,10 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#053726"
       },
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ],
       "package": "com.lukadvc.skillscout"
     },
     "web": {
