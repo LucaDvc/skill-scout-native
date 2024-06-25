@@ -24,7 +24,7 @@ const submitQuiz = async (quizStepId, choiceIds, token) => {
   };
 
   const response = await axios.post(
-    `${API_URL}/quiz-steps/${quizStepId}/submit/`,
+    `${API_URL}/quiz-steps/${quizStepId}/`,
     {
       quiz_choices: choiceIds,
     },

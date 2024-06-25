@@ -99,17 +99,6 @@ const QuizLessonStep = ({ lessonStep }) => {
 
           {lessonStep.completed || result ? (
             <View>
-              {lessonStep.completed || result?.passed ? (
-                <Card status='info' style={styles.card}>
-                  <View style={styles.resultCardHeader}>
-                    <InfoOutlineIcon
-                      fill={theme['color-info-default']}
-                      style={styles.icon}
-                    />
-                    <Text>Explanation: {quizStep.explanation}</Text>
-                  </View>
-                </Card>
-              ) : null}
               <Card
                 status={result?.passed || lessonStep.completed ? 'success' : 'danger'}
                 style={styles.card}
@@ -134,6 +123,21 @@ const QuizLessonStep = ({ lessonStep }) => {
                   )}
                 </View>
               </Card>
+              {lessonStep.completed || result?.passed ? (
+                <Card status='info' style={styles.card}>
+                  <View style={styles.resultCardHeader}>
+                    <InfoOutlineIcon
+                      fill={theme['color-info-default']}
+                      style={styles.icon}
+                    />
+                    <Text>Explanation</Text>
+                  </View>
+                  <RenderHTML
+                    contentWidth={width}
+                    source={{ html: quizStep.explanation }}
+                  />
+                </Card>
+              ) : null}
             </View>
           ) : null}
         </View>
