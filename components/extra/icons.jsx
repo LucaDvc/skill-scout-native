@@ -20,6 +20,10 @@ export const ArrowRightIcon = (style) => <Icon {...style} name='arrow-right' />;
 
 export const ArrowLeftIcon = (style) => <Icon {...style} name='arrow-left' />;
 
+export const ArrowUpwardIcon = (style) => <Icon {...style} name='arrow-upward' />;
+
+export const ArrowDownwardIcon = (style) => <Icon {...style} name='arrow-downward' />;
+
 export const CheckmarkIcon = (style) => <Icon {...style} name='checkmark' />;
 
 export const DoneAllIcon = (style) => <Icon {...style} name='done-all' />;
