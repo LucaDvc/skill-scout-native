@@ -69,19 +69,19 @@ export const CloseIcon = (props) => <Icon {...props} name='close-outline' />;
 export const TextAlignLeftIcon = (props) => (
   <Svg
     xmlns='http://www.w3.org/2000/svg'
+    xmlSpace='preserve'
     width={24}
     height={24}
-    fill='none'
-    viewBox='0 0 24 24'
+    style={{
+      fillRule: 'evenodd',
+      clipRule: 'evenodd',
+      strokeLinejoin: 'round',
+      strokeMiterlimit: 2,
+    }}
+    viewBox='0 0 32 32'
     {...props}
   >
-    <Path
-      stroke='#000'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      strokeWidth={2}
-      d='M4 18h10M4 14h16M4 10h10M4 6h16'
-    />
+    <Path d='m3.95 5.41 24.038.081a1.5 1.5 0 0 0 .01-3L3.96 2.41a1.501 1.501 0 0 0-.01 3ZM3.95 29.404l24.038.081a1.5 1.5 0 0 0 .01-3L3.96 26.404a1.5 1.5 0 0 0-.01 3ZM3.973 17.461l24.038.081a1.5 1.5 0 0 0 .01-3l-24.037-.081a1.501 1.501 0 0 0-1.506 1.495 1.502 1.502 0 0 0 1.495 1.505ZM4 23.5h12a1.5 1.5 0 0 0 0-3H4a1.5 1.5 0 0 0 0 3ZM4 11.5h12a1.5 1.5 0 0 0 0-3H4a1.5 1.5 0 0 0 0 3Z' />
   </Svg>
 );
 
@@ -89,8 +89,8 @@ export const TextAlignLeftCheckedLightgrayIcon = (props) => (
   <Svg
     xmlns='http://www.w3.org/2000/svg'
     viewBox='12.868 4.171 500 500'
-    width={24}
-    height={24}
+    width={20}
+    height={20}
     {...props}
   >
     <Path
@@ -210,3 +210,26 @@ export const FacebookIcon = (props) => <Icon {...props} name='facebook' />;
 export const LinkedInIcon = (props) => <Icon {...props} name='linkedin' />;
 
 export const GoogleIcon = (props) => <Icon {...props} name='google' />;
+
+export const FileTextIcon = (props) => <Icon {...props} name='file-text' />;
+
+export const SwapIcon = (props) => <Icon {...props} name='swap' />;
+
+export const WriteIcon = (props) => (
+  <Svg
+    xmlns='http://www.w3.org/2000/svg'
+    width={24}
+    height={24}
+    fill='none'
+    viewBox='0 0 24 24'
+    {...props}
+  >
+    <Path fill='#0F0F0F' d='M1 22a1 1 0 0 1 1-1h20a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1Z' />
+    <Path
+      fill='#0F0F0F'
+      fillRule='evenodd'
+      d='M18.306 1.879a3 3 0 0 0-4.243 0L3.389 12.553a3 3 0 0 0-.807 1.47l-.533 2.398a2 2 0 0 0 2.386 2.386l2.398-.533a3 3 0 0 0 1.47-.807L18.977 6.793a3 3 0 0 0 0-4.243l-.671-.671Zm-2.829 1.414a1 1 0 0 1 1.414 0l.672.671a1 1 0 0 1 0 1.415L15.641 7.3l-2.085-2.086 1.921-1.921Zm-3.336 3.336-7.338 7.338a1 1 0 0 0-.269.49l-.533 2.398 2.398-.533a1 1 0 0 0 .49-.27l7.338-7.338-2.086-2.085Z'
+      clipRule='evenodd'
+    />
+  </Svg>
+);

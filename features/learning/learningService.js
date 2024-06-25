@@ -43,10 +43,30 @@ const completeLessonStep = async (lessonStepId, token) => {
   return response.data;
 };
 
+const sendEngagementData = async (stepId, timeSpent, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(
+    `${API_URL}/analytics/engagement/`,
+    {
+      step_id: stepId,
+      time_spent: timeSpent,
+    },
+    config
+  );
+  console.log(response.data);
+  return response.data;
+};
+
 const learningService = {
   getCourses,
   getCourseById,
   completeLessonStep,
+  sendEngagementData,
 };
 
 export default learningService;
