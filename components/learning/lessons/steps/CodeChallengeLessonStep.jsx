@@ -122,7 +122,6 @@ const CodeChallengeLessonStep = ({ lessonStep }) => {
             showLineNumbers
             autoFocus={false}
             initialValue={initialCode}
-            readOnly={lessonStep.completed}
             onChange={(newCode) => setCode(newCode)}
           />
 
