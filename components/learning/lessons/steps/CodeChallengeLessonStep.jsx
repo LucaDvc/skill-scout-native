@@ -1,6 +1,7 @@
 import { ScrollView, View, useWindowDimensions } from 'react-native';
 import React from 'react';
 import {
+  Button,
   Card,
   Spinner,
   StyleService,
@@ -16,6 +17,7 @@ import RenderHTML from 'react-native-render-html';
 import {
   CheckmarkCircle2OutlineIcon,
   CloseCircleOutlineIcon,
+  RefreshIcon,
 } from '../../../extra/icons';
 import { KeyboardAvoidingView } from '../../../layout/KeyboardAvoidingView';
 import { useCodeChallenge } from '../../../../hooks/useCodeChallenge';
@@ -25,27 +27,65 @@ const CodeChallengeLessonStep = ({ lessonStep }) => {
   const styles = useStyleSheet(themedStyles);
   const { width } = useWindowDimensions();
 
-  const { loading, result, handleSubmit } = useCodeChallenge(lessonStep.id);
-
+  const [retry, setRetry] = React.useState(false);
   const [language, setLanguage] = React.useState('');
   const [initialCode, setInitialCode] = React.useState('');
   const [code, setCode] = React.useState('');
 
   const [initializing, setInitializing] = React.useState(true);
 
+  const {
+    codeChallengeStep,
+    fetchLoading,
+    fetchError,
+    loading,
+    result,
+    handleSubmit,
+    handleRunCode,
+    testRunning,
+    testResult,
+  } = useCodeChallenge(
+    lessonStep.id,
+    lessonStep.language_id,
+    lessonStep.test_cases[0],
+    retry
+  );
+
+  React.useEffect(() => {
+    if (codeChallengeStep) {
+      setInitialCode(atob(codeChallengeStep.submitted_code));
+    }
+    setInitializing(false);
+  }, [codeChallengeStep]);
+
   React.useEffect(() => {
     setLanguage(findLanguageName(lessonStep.language_id));
-    if (lessonStep.initial_code) {
+    if (lessonStep.initial_code && !codeChallengeStep) {
       const decoded = atob(lessonStep.initial_code);
       setInitialCode(decoded);
     }
-    setInitializing(false);
-  }, [lessonStep.id]);
+  }, [lessonStep.id, codeChallengeStep]);
 
-  if (initializing) {
+  if (initializing || fetchLoading) {
     return (
       <View style={styles.loadingContainer}>
         <Spinner size='giant' />
+      </View>
+    );
+  }
+
+  if (fetchError) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text status='danger'>
+          {'An error occurred while fetching the code challenge.'}
+        </Text>
+        <Button
+          appearance='ghost'
+          status='basic'
+          accessoryLeft={RefreshIcon}
+          onPress={() => setRetry(!retry)}
+        />
       </View>
     );
   }
@@ -79,6 +119,7 @@ const CodeChallengeLessonStep = ({ lessonStep }) => {
             showLineNumbers
             autoFocus={false}
             initialValue={initialCode}
+            readOnly={lessonStep.completed}
             onChange={(newCode) => setCode(newCode)}
           />
 
@@ -120,7 +161,7 @@ const CodeChallengeLessonStep = ({ lessonStep }) => {
                       height: 200,
                     },
                   }}
-                  syntaxStyle={CodeEditorSyntaxStyles.atelierCaveLight}
+                  syntaxStyle={CodeEditorSyntaxStyles.obsidian}
                   autoFocus={false}
                   readOnly
                   initialValue={result.message}
@@ -128,10 +169,72 @@ const CodeChallengeLessonStep = ({ lessonStep }) => {
               )}
             </View>
           )}
+
+          {testResult !== null && (
+            <View
+              style={{
+                marginHorizontal: 8,
+              }}
+            >
+              <Card
+                status={testResult.passed ? 'success' : 'danger'}
+                style={styles.resultCard}
+              >
+                <View style={styles.resultCardHeader}>
+                  {testResult.passed ? (
+                    <>
+                      <CheckmarkCircle2OutlineIcon
+                        fill={theme['color-success-default']}
+                        style={styles.icon}
+                      />
+                      <Text>Passed.</Text>
+                    </>
+                  ) : (
+                    <>
+                      <CloseCircleOutlineIcon
+                        fill={theme['color-danger-default']}
+                        style={styles.icon}
+                      />
+                      <Text>Failed.</Text>
+                    </>
+                  )}
+                </View>
+              </Card>
+              <CodeEditor
+                style={{
+                  ...{
+                    fontSize: 15,
+                    height: 200,
+                  },
+                }}
+                syntaxStyle={CodeEditorSyntaxStyles.obsidian}
+                autoFocus={false}
+                readOnly
+                initialValue={testResult.message}
+              />
+            </View>
+          )}
+        </View>
+        <View
+          style={{
+            marginHorizontal: 16,
+            marginTop: 16,
+          }}
+        >
+          <Button
+            appearance={'outline'}
+            status={testRunning ? 'info' : 'primary'}
+            style={{ backgroundColor: 'transparent' }}
+            onPress={() => handleRunCode(code)}
+            disabled={testRunning || lessonStep.completed}
+            accessoryRight={() => (testRunning ? <Spinner size='small' /> : null)}
+          >
+            {testRunning ? 'Running' : 'Run code'}
+          </Button>
         </View>
         <StepsNavigationButtons
           lessonStep={lessonStep}
-          showSubmitButton={true}
+          showSubmitButton={!lessonStep.completed || result?.passed}
           onSubmit={() => handleSubmit(code)}
           loading={loading}
         />

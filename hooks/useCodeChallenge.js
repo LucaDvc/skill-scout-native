@@ -8,17 +8,47 @@ import {
 import Toast from 'react-native-root-toast';
 import { encode as btoa, decode as atob } from 'base-64';
 
-export const useCodeChallenge = (lessonStepId) => {
+export const useCodeChallenge = (lessonStepId, languageId, firstTestCase, retry) => {
+  const [fetchLoading, setFetchLoading] = useState(true);
+  const [codeChallengeStep, setCodeChallengeStep] = useState(null);
+  const [fetchError, setFetchError] = useState(false);
+
   const [submissionToken, setSubmissionToken] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const [failedTestCase, setFailedTestCase] = useState(firstTestCase);
+  const [testRunning, setTestRunning] = useState(false);
+  const [testResult, setTestResult] = useState(null);
+
   const { accessToken } = useSelector((state) => state.users);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchCodeChallenge = async () => {
+      try {
+        setFetchLoading(true);
+        setFetchError(false);
+        const response = await codeChallengeService.getCodeChallenge(
+          lessonStepId,
+          accessToken
+        );
+        setCodeChallengeStep(response);
+      } catch (error) {
+        console.error('Failed to fetch code challenge step:', error);
+        setFetchError(true);
+      } finally {
+        setFetchLoading(false);
+      }
+    };
+
+    fetchCodeChallenge();
+  }, [lessonStepId, retry]);
 
   const handleSubmit = async (code) => {
     setResult(null);
     setLoading(true);
+    setTestResult(null);
 
     if (!code) {
       Toast.show('Please write some code before submitting.', {
@@ -58,7 +88,8 @@ export const useCodeChallenge = (lessonStepId) => {
       try {
         const response = await codeChallengeService.getSubmissionResult(
           submissionToken,
-          accessToken
+          accessToken,
+          20
         );
         const submission = response.submission;
         if (submission.passed) {
@@ -68,6 +99,7 @@ export const useCodeChallenge = (lessonStepId) => {
         } else {
           if (!submission.error_message) {
             const firstFailedTest = submission.test_results.find((test) => !test.passed);
+            setFailedTestCase(firstFailedTest);
             const input = atob(firstFailedTest.input);
             const expectedOutput = atob(firstFailedTest.expected_output);
             const actualOutput = firstFailedTest.stdout && atob(firstFailedTest.stdout);
@@ -79,6 +111,7 @@ export const useCodeChallenge = (lessonStepId) => {
             const testWithError = submission.test_results.find(
               (test) => test.compile_err || test.stderr
             );
+            setFailedTestCase(testWithError);
             const errorMessageBase64 = testWithError.compile_err || testWithError.stderr;
             const errorMessage = atob(errorMessageBase64);
             setResult({
@@ -104,9 +137,68 @@ export const useCodeChallenge = (lessonStepId) => {
     }
   }, [submissionToken]);
 
+  const handleRunCode = async (code) => {
+    setTestRunning(true);
+    if (!code) {
+      Toast.show('Please write some code before submitting.', {
+        position: Toast.positions.BOTTOM,
+      });
+      setTestRunning(false);
+      return;
+    }
+
+    try {
+      const response = await codeChallengeService.runCode(
+        btoa(code),
+        failedTestCase,
+        languageId
+      );
+
+      if (response.status.description === 'Accepted') {
+        setTestResult({
+          passed: true,
+          message: `Test case passed.\n\nInput: ${atob(
+            failedTestCase.input
+          )}\n\nOutput: \n${atob(response.stdout)}`,
+        });
+      } else if (response.status.description === 'Wrong Answer') {
+        setTestResult({
+          passed: false,
+          message: `Test case failed.\n\nInput: ${atob(
+            failedTestCase.input
+          )}\n\nExpected output: ${atob(
+            failedTestCase.expected_output
+          )}\n\nYour code output: \n${atob(response.stdout)}`,
+        });
+      } else {
+        setTestResult({
+          passed: false,
+          message: `Test case failed.\n\nInput: ${atob(
+            failedTestCase.input
+          )}\n\nError: ${atob(response.stderr || response.compile_output)}`,
+        });
+      }
+    } catch (error) {
+      console.error('Failed to run code:', error);
+      Toast.show('Failed to run code. Please try again.', {
+        position: Toast.positions.BOTTOM,
+      });
+    }
+    setTestRunning(false);
+  };
+
   return {
+    codeChallengeStep,
+    fetchLoading,
+    fetchError,
+
     loading,
     result,
     handleSubmit,
+
+    testRunning,
+    failedTestCase,
+    handleRunCode,
+    testResult,
   };
 };
