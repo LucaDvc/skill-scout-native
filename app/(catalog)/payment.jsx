@@ -21,6 +21,7 @@ import LoadingModal from '../../components/layout/LoadingModal';
 import Error from '../../components/layout/Error';
 import Toast from 'react-native-root-toast';
 import { BackIcon } from '../../components/extra/icons';
+import { refreshAuthUser } from '../../features/users/usersSlice';
 
 export default PaymentPage = () => {
   const { courseId } = useLocalSearchParams();
@@ -50,6 +51,9 @@ export default PaymentPage = () => {
   const onPayButtonPress = () => {
     if (validateForm()) {
       dispatch(courseEnroll(courseId));
+      setTimeout(() => {
+        dispatch(refreshAuthUser());
+      }, 1000);
     }
   };
 

@@ -10,12 +10,7 @@ import {
 import { router } from 'expo-router';
 
 import Rating from '../extra/Rating';
-import {
-  HeartOutlineIcon,
-  HeartIcon,
-  PeopleIcon,
-  BackIcon,
-} from '../extra/icons';
+import { HeartOutlineIcon, HeartIcon, PeopleIcon, BackIcon } from '../extra/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   courseEnroll,
@@ -55,10 +50,7 @@ const CatalogCourseDetails = ({ course }) => {
       return true;
     };
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    );
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 
     return () => backHandler.remove();
   }, []);
@@ -88,12 +80,9 @@ const CatalogCourseDetails = ({ course }) => {
       setIsWishlited(!isWishlited);
       setTimeout(() => {
         dispatch(refreshAuthUser());
-        Toast.show(
-          `Course ${!isWishlited ? 'added to' : 'removed from'} wishlist`,
-          {
-            position: Toast.positions.BOTTOM,
-          }
-        );
+        Toast.show(`Course ${!isWishlited ? 'added to' : 'removed from'} wishlist`, {
+          position: Toast.positions.BOTTOM,
+        });
       }, 500);
     } else {
       router.push('/auth');
@@ -104,6 +93,9 @@ const CatalogCourseDetails = ({ course }) => {
     if (accessToken) {
       if (course.price === '0') {
         dispatch(courseEnroll(course.id));
+        setTimeout(() => {
+          dispatch(refreshAuthUser());
+        }, 1000);
       } else {
         router.push('/payment?courseId=' + course.id);
       }

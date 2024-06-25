@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Text,
-  TopNavigation,
-  TopNavigationAction,
-} from '@ui-kitten/components';
+import { Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { router } from 'expo-router';
 import { BackIcon } from '../../extra/icons';
 import { useFullscreenContext } from '../../../context/FullscreenContext';
@@ -13,9 +9,9 @@ const LessonTopNavigation = ({ lesson, courseId }) => {
   return !isFullscreen ? (
     <TopNavigation
       title={() => (
-        <Text category='h6'>{`${lesson.chapterIndex + 1}.${lesson.order} ${
-          lesson.title
-        }`}</Text>
+        <Text category='h6' style={{ maxWidth: 320 }}>{`${lesson.chapterIndex + 1}.${
+          lesson.order
+        } ${lesson.title}`}</Text>
       )}
       alignment='center'
       accessoryLeft={

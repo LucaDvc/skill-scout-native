@@ -63,7 +63,6 @@ const UserHeader = ({ user }) => {
 };
 
 const ProfileScreen = () => {
-  // TODO add wishlist, my reviews, my courses (teaching), maybe heatmap
   const theme = useTheme();
 
   const dispatch = useDispatch();

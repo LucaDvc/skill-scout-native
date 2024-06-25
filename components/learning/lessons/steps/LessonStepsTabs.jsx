@@ -20,6 +20,7 @@ import { useFullscreenContext } from '../../../../context/FullscreenContext';
 import learningService from '../../../../features/learning/learningService';
 import { useSelector } from 'react-redux';
 import SortingProblemStep from './SortingProblemStep';
+import TextProblemStep from './TextProblemStep';
 
 const stepConfig = {
   text: {
@@ -39,7 +40,7 @@ const stepConfig = {
     icon: CodeIcon,
   },
   text_problem: {
-    component: CodeChallengeLessonStep,
+    component: TextProblemStep,
     icon: WriteIcon,
   },
   sorting_problem: {

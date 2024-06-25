@@ -60,7 +60,7 @@ const MyCourses = () => {
         ListHeaderComponent={
           <HorizontalCourseListTopNav
             title='My Courses'
-            route='/enrolled-courses'
+            route='/learning/enrolled-courses'
             style={{ backgroundColor: theme['color-basic-200'] }}
           />
         }
