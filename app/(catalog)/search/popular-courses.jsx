@@ -20,29 +20,44 @@ import { renderSearchedCourse } from '../../../utils/courseListUtils';
 const ordering = '-enrolled_learners';
 
 const PopularCoursesPage = () => {
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(1);
 
   const theme = useTheme();
 
   const dispatch = useDispatch();
-  const { courses, isLoading, isError, hasMore } = useSelector((state) => state.catalog);
+  const { courses, isLoading, isError, resultsCount } = useSelector(
+    (state) => state.catalog
+  );
 
-  const fetchData = (pageToFetch = page) => {
-    const searchParams = { page: pageToFetch + 1, ordering };
-    if (hasMore) {
-      setPage(pageToFetch + 1);
-      dispatch(getCoursesByFilter(searchParams));
+  const fetchData = () => {
+    const searchParams = { page: 1, ordering };
+    dispatch(getCoursesByFilter(searchParams));
+  };
+
+  const fetchMoreData = () => {
+    const maxPage = Math.ceil(resultsCount / 10);
+    if (page >= maxPage) {
+      return;
     }
+    const searchParams = { page: page + 1, ordering };
+    setPage(page + 1);
+    dispatch(getCoursesByFilter(searchParams));
   };
 
   React.useEffect(() => {
     dispatch(reset());
-    dispatch(getCoursesByFilter({ page: 1, ordering }));
+    fetchData();
   }, [dispatch]);
 
   const renderFooter = () => {
     if (!isLoading) return null;
-    return <Spinner style={{ margin: 20 }} />;
+    return (
+      <View
+        style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 8 }}
+      >
+        <Spinner size='giant' />
+      </View>
+    );
   };
 
   const handleRefresh = () => {
@@ -71,19 +86,17 @@ const PopularCoursesPage = () => {
         style={styles.topNavigation}
       />
       <Layout style={styles.container}>
-        {isLoading ? (
+        {isLoading && courses.length === 0 ? (
           <Spinner size='giant' />
         ) : courses.length > 0 ? (
           <List
-            refreshControl={
-              <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />
-            }
+            refreshControl={<RefreshControl onRefresh={handleRefresh} />}
             data={courses}
             renderItem={renderSearchedCourse}
             ListFooterComponent={renderFooter}
-            onEndReached={fetchData}
+            onEndReached={fetchMoreData}
             onEndReachedThreshold={0.5}
-            style={{ backgroundColor: theme['color-basic-100'], marginTop: 8 }}
+            style={{ backgroundColor: theme['color-basic-100'], marginVertical: 8 }}
           />
         ) : (
           <ScrollView
