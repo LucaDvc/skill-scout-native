@@ -13,6 +13,9 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 
 import { withLayoutContext } from 'expo-router';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs(true);
+
 const { Navigator } = createStackNavigator();
 
 export const JsStack = withLayoutContext(Navigator);

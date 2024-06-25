@@ -11,7 +11,7 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components';
 import { useCourseToContinue } from '../../hooks/useCourseToContinue';
-import { ImageBackground, View } from 'react-native';
+import { ImageBackground, Pressable, View } from 'react-native';
 import { RefreshIcon } from '../extra/icons';
 import { router } from 'expo-router';
 
@@ -77,11 +77,13 @@ const Discover = () => {
             Continue Learning
           </Button>
           <View style={styles.courseInfoContainer}>
-            <Avatar
-              shape='rounded'
-              source={{ uri: course.image }}
-              style={styles.courseAvatar}
-            />
+            <Pressable onPress={() => router.navigate(`/learning/${course.id}/modules`)}>
+              <Avatar
+                shape='rounded'
+                source={{ uri: course.image }}
+                style={styles.courseAvatar}
+              />
+            </Pressable>
             <View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
               <Text style={{ color: 'white', fontSize: 17 }}>{course.title}</Text>
               <Text
